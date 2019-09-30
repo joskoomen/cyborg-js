@@ -25,7 +25,6 @@ export default class Component {
   }
 
   /**
-   * @abstract
    * @param {Object} pData Notification Data Object
    */
   handleNotifications(pData: Object): void {}
@@ -80,7 +79,6 @@ export default class Component {
   }
 
   /**
-   * @abstract
    * @param {Object} pData
    * @returns {string}
    */
