@@ -132,9 +132,8 @@ export default class MotherBoard {
       const component: Component = self.components[0];
       if (component) {
         component.el.remove();
-        //        component.destroy();
       }
-      self.component.shift();
+      self.components.shift();
     }
   }
 
