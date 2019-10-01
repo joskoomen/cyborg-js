@@ -1,6 +1,6 @@
 {
   "name": "@ypa/cyborg-js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "CyborgJS - A SEO Friendly Framework",
   "main": "src/index.js",
   "browser": "dist/main.umd.js",
