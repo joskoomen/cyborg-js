@@ -23,7 +23,7 @@ And registered in your app with all other components in the `componentsMap`:
 
 MotherBoard.getInstance().componentsMap = {
   'my-menu': MyMenuComponent,
-  'my-other-coponent': MyOtherComponent,
+  'my-other-component': MyOtherComponent,
 };
 ```
 Where the `key` is equal to your `data-component` value and the value is the `class` of the `component`.
@@ -58,8 +58,9 @@ Other methods available in `components` and all overridable:
 * `destroy(): void;` Garbage collection;
 
 ## Getting started
-#### App.js 
 The following parts of code is enough to get started:
+
+### App.js 
 ```
 // @flow
 
@@ -79,6 +80,61 @@ class App {
 
 const app = new DVCApp();
 ```
+### FirstComponent.js 
+```
+// @flow
+import { Component } from '@ypa/cyborg-js';
+
+export default class FirstComponent extends Component {
+  
+  bind(pEl:HTMLElement):void {
+    super.bind(pEl);
+    // do some init work
+  }
+  
+  handleNotifications(pData:Object):void {
+    switch(pData.notification) {
+      default:
+        break;
+      case 'someChanges':
+        // this.render uses the getTemplate method to render
+        // new data with the given template.
+        this.render({'title': pData.title});
+        break;
+      case 'updateSomething':
+        this.render({'title': 'update something'});
+        break;
+  }
+  
+  getTemplate(pData:Object):string {
+    return `<p>Hello ${pData.title}</p>`;
+  }
+}
+```
+
+### AnotherComponent.js 
+```
+// @flow
+import { Component } from '@ypa/cyborg-js';
+
+export default class AnotherComponent extends Component {
+  
+  bind(pEl:HTMLElement):void {
+    super.bind(pEl);
+    const handler:function = this.handleClicks.bind(this);
+    // eventlisteners are for HTMLElements only
+    // Components have them as well, which get registered for  
+    // garbage collection. 
+    // EventListeners are removed when Component is destroyed 
+    this.addEventListener('click', handler);
+  }
+  
+  handleClicks(e:MouseEvent):void {
+    this.notify('someChanges', {'title':'Clicked'});
+  }
+  
+}
+```
 
 #### HTML
 ```
@@ -88,9 +144,9 @@ const app = new DVCApp();
             <!-- The data-notifications is optional to add Notification Listeners comma separated -->
             <p>Hello world</p>
         </div>
-        <div data-component="another">
-            <p>Another element</p>
-        </div>
+        <button data-component="another">
+            Click Me!
+        </button>
     </div>
 ```
 
