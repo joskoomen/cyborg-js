@@ -19,7 +19,7 @@ Every component is added to a `HTMLElement` via your web application views or ht
 </ul>
 ```
 And registered in your app with all other components in the `componentsMap`:
-```
+```.js
 
 MotherBoard.getInstance().componentsMap = {
   'my-menu': MyMenuComponent,
@@ -32,7 +32,7 @@ Where the `key` is equal to your `data-component` value and the value is the `cl
 `Notifications` are like global events. You can add and remove listeners in your `component`. You can add listeners via the `addListener` method or direct in your components tag like `data-notifications="my-notification"` the value can be comma separated for multiple notifications.
 
 The following example is how to add or remove a listener, or send a notification in your javascript.
-```
+```.js
 // add a listener
 this.addListener('my-notification');
 
@@ -61,7 +61,7 @@ Other methods available in `components` and all overridable:
 The following parts of code is enough to get started:
 
 ### App.js 
-```
+```.js
 // @flow
 
 import FirstComponent from './components/FirstComponent';
@@ -78,10 +78,10 @@ class App {
   }
 }
 
-const app = new DVCApp();
+const app = new App();
 ```
 ### FirstComponent.js 
-```
+```.js
 // @flow
 import { Component } from '@ypa/cyborg-js';
 
@@ -113,7 +113,7 @@ export default class FirstComponent extends Component {
 ```
 
 ### AnotherComponent.js 
-```
+```.js
 // @flow
 import { Component } from '@ypa/cyborg-js';
 
