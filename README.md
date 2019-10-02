@@ -57,6 +57,43 @@ Other methods available in `components` and all overridable:
 * `get el(): HTMLElement;` A public method to get the connected `HTMLElement` in your custom component;
 * `destroy(): void;` Garbage collection;
 
+## Getting started
+#### App.js 
+The following parts of code is enough to get started:
+```
+// @flow
+
+import FirstComponent from './components/FirstComponent';
+import AnotherComponent from './components/AnotherComponent';
+import { MotherBoard } from '@ypa/cyborg-js';
+
+class App {
+  
+  constructor() {
+    MotherBoard.getInstance().componentsMap = {
+      'first': FirstComponent,
+      'another': AnotherComponent
+    };
+  }
+}
+
+const app = new DVCApp();
+```
+
+#### HTML
+```
+    <div class="container">
+        <div data-component="first" data-notifications="someChanges,updateSomething">
+            <!-- The data-component attribute is part where you map the Class to this HTMLElement -->
+            <!-- The data-notifications is optional to add Notification Listeners comma separated -->
+            <p>Hello world</p>
+        </div>
+        <div data-component="another">
+            <p>Another element</p>
+        </div>
+    </div>
+```
+
 ## Upcoming updates
 * Unit tests;
 * Component generator (cli);
