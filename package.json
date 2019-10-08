@@ -1,8 +1,8 @@
 {
   "name": "@ypa/cyborg-js",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "CyborgJS - A SEO Friendly Framework",
-  "main": "src/index.js",
+  "main": "dist/main.umd.js",
   "browser": "dist/main.umd.js",
   "author": "Jos Koomen <jos@yourpersonalagency.nl>",
   "license": "MIT",
