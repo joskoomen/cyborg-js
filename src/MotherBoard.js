@@ -74,24 +74,28 @@ export default class MotherBoard {
     if (components.length > 0) {
       const self: MotherBoard = this;
       components.forEach((el: HTMLElement) => {
-        const ComponentClass: any = self.getComponentByName(self.componentsMap, el.dataset.component);
-        if (ComponentClass) {
-          const component: any = new ComponentClass();
+        const componentsArray: Array<string> = el.dataset.component.split(' ').join('').split(',');
+        componentsArray.forEach((componentString: string) => {
+          const ComponentClass: any = self.getComponentByName(self.componentsMap, componentString);
+          if (ComponentClass) {
+            const component: any = new ComponentClass();
 
-          self.registerNotifcation({
-            name: el.dataset.component,
-            notifications: el.dataset.notifications,
-            classRef: component
-          });
+            self.registerNotifcation({
+              name: componentString,
+              notifications: el.dataset.notifications,
+              classRef: component
+            });
 
-          component.bind(el);
-          self.components.push(component);
+            component.bind(el);
+            self.components.push(component);
 
-          component.addEventListener(EventNames.NODE_REMOVED, function() {
-            component.destroy();
-          }, false);
-        }
+            component.addEventListener(EventNames.NODE_REMOVED, function() {
+              component.destroy();
+            }, false);
+          }
+        });
       });
+
     }
   }
 
