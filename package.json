@@ -1,12 +1,14 @@
 {
   "name": "@ypa/cyborg-js",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "CyborgJS - A SEO Friendly Framework",
   "main": "dist/main.umd.js",
   "browser": "dist/main.umd.js",
   "author": "Jos Koomen <jos@yourpersonalagency.nl>",
   "license": "MIT",
   "private": false,
+  "repository" : "https://github.com/your-personal-agency/cyborg-js",
+  "homepage" : "https://cyborg-js.org",
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup -c",
     "dev": "rollup -c",

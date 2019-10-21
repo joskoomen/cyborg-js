@@ -1,6 +1,12 @@
 #  Cyborg JS
 Cyborg JS is a SEO friendly framework created with [Flow type](https://flow.org/) , which is created for large web applications where Javascript is only for additional and functional use.
 
+## Links
+- [Documentation](https://cyborg-js.org)
+- [CLI](https://github.com/your-personal-agency/cyborg-js-generators)
+- [Issues](https://github.com/your-personal-agency/cyborg-js/issues)
+- [Community chat](https://gitter.im/cyborg-js/community)
+
 To use Cyborg JS in your application you need to create a `MotherBoard instance`. The `MotherBoard` is a `singleton` and the center of your application.
 Every `component` can communicate through `Notifications` and all `components` are created, and removed via the `MotherBoard`. Once you registered your `component`, everything is automated.
 
@@ -44,18 +50,7 @@ let optionalDataObject:Object = {'foo' : bar};
 this.notify('my-notification', optionalDataObject);
 ```
 ## The Component
-Each component has at least the following methods:
-* `bind(el:HTMLElement):void` This is called when the element is binded in the DOM and ready to excelerate;
-* `onload():void` In `window.onload` this gets automatically triggered;
-* `handleNotifications(pData:Object):void` All notifications are handled by one method. `pData.notification` shows which notification is fired. So you know what to do next;
-
-Other methods available in `components` and all overridable:
-* `addEventListener(pEvent:string, pHandler:function):void;` EventListeners as you know them. Automatically added to the connected `HTMLElement` and are automatically cleared on `destroy`;
-* `removeEventListener(pEvent:string, pHandler:function):void;` The ability to remove your eventListener whenever you need;
-* `getTemplate(pData: Object): string;` A literal template string of a template when there is need of layout changes on data updates;
-* `render(pData: Object): void;` Render the literal template with new data;
-* `get el(): HTMLElement;` A public method to get the connected `HTMLElement` in your custom component;
-* `destroy(): void;` Garbage collection;
+The Component is your connection with your `HTMLElements`. It can be described as a `ViewController`. Read more about the `Cyborg JS Component` in it's [own section](https://cyborg-js.org/#/component?id=components) . 
 
 ## Getting started
 The following parts of code is enough to get started:
@@ -152,6 +147,5 @@ export default class AnotherComponent extends Component {
 
 ## Upcoming updates
 * Unit tests;
-* Component generator (cli);
 * Investigate if [Redux](https://redux.js.org) can be an advantage;
 * Investigate if `.jsx` is a serious option for alternative templates;
