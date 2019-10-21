@@ -128,7 +128,6 @@ export default class MotherBoard {
 
   /**
    * destroy application
-   * @private
    */
   destroy(): void {
     const self = this;
