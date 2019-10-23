@@ -1,10 +1,10 @@
 /* eslint-disable filenames/match-exported, sort-keys */
+import pkg from './package.json';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import sourcemaps from 'rollup-plugin-sourcemaps';
-import pkg from './package.json';
 
 // eslint-disable-next-line no-process-env
 const production = process.env.NODE_ENV === 'production';
