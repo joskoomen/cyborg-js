@@ -12,11 +12,11 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup -c",
     "dev": "rollup -c",
-    "precommit": "yarn lint --fix",
     "lint": "eslint --ignore-pa th ./.gitignore './src/**/*.js'",
+    "test": "cross-env NODE_ENV=test jest",
+    "precommit": "yarn lint --fix",
     "prebuild": "rimraf dist",
-    "prepush": "yarn test",
-    "test": "cross-env NODE_ENV=test jest"
+    "prepush": "yarn test"
   },
   "files": [
     "dist",
@@ -49,7 +49,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "flow-bin": "^0.102.0",
     "jest": "^24.7.1",
-    "jest-environment-jsdom": "^24.7.1",
+    "jest-environment-jsdom": "^24.9.0",
     "rimraf": "^2.6.3",
     "rollup": "^1.12.5",
     "rollup-plugin-babel": "^4.3.2",

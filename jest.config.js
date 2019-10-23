@@ -10,7 +10,7 @@ module.exports = {
   moduleFileExtensions: ['js', 'json'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/'],
   testRegex: '__tests__/.*\\.spec\\.js$',
-  testURL: 'http://localhost',
+  testURL: 'https://cyborg-js.org',
   transform: {
     '.+\\.js?$': 'babel-jest'
   },
