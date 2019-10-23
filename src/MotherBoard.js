@@ -80,7 +80,7 @@ export default class MotherBoard {
           if (ComponentClass) {
             const component: any = new ComponentClass();
 
-            self.registerNotifcation({
+            self.registerNotification({
               name: componentString,
               notifications: el.dataset.notifications,
               classRef: component
@@ -102,7 +102,7 @@ export default class MotherBoard {
   /**
    * Register Notifications.
    */
-  registerNotifcation(pObject: Object): void {
+  registerNotification(pObject: Object): void {
     if (pObject.notifications) {
       const notifications: Array<string> = pObject.notifications.replace(' ', '').split(',');
       const classRef: Component = pObject.classRef;
