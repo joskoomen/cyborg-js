@@ -90,6 +90,10 @@ export default class Component {
     return this.#el;
   }
 
+  get events(): Array<EventObject> {
+    return this.#events;
+  }
+
   /**
    * Garbage collection ;)
    */
