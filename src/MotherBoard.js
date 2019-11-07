@@ -43,11 +43,10 @@ export default class MotherBoard {
       self.destroy();
     };
 
-    self.bind();
 
-    // document.addEventListener(EventNames.DOCUMENT_READY, () => {
-    //   self.bind();
-    // }, false);
+    document.addEventListener(EventNames.DOCUMENT_READY, () => {
+      self.bind();
+    }, false);
   }
 
   /**
