@@ -12,6 +12,7 @@ export default class MotherBoard {
   components: Array<any>;
 
   componentsMap: Object;
+  #observer: MutationObserver;
 
   constructor() {
     if (MotherBoard.#instance) {
@@ -42,9 +43,11 @@ export default class MotherBoard {
       self.destroy();
     };
 
-    document.addEventListener(EventNames.DOCUMENT_READY, () => {
-      self.bind();
-    }, false);
+    self.bind();
+
+    // document.addEventListener(EventNames.DOCUMENT_READY, () => {
+    //   self.bind();
+    // }, false);
   }
 
   /**
@@ -73,6 +76,16 @@ export default class MotherBoard {
     const components: NodeList<HTMLElement> = pEl.querySelectorAll('[data-component]');
     if (components.length > 0) {
       const self: MotherBoard = this;
+
+      this.#observer = new MutationObserver(function(mutations) {
+        console.log('mutations', mutations);
+        mutations.forEach(function(mutation) {
+          console.log('mutation', mutation);
+        });
+      });
+
+      this.#observer.observe(components);
+
       components.forEach((el: HTMLElement) => {
         const componentsArray: Array<string> = el.dataset.component.split(' ').join('').split(',');
         componentsArray.forEach((componentString: string) => {
@@ -131,6 +144,7 @@ export default class MotherBoard {
    */
   destroy(): void {
     const self = this;
+    self.#observer.disconnect();
     while (self.components.length > 0) {
       const component: Component = self.components[0];
       if (component) {
@@ -138,6 +152,7 @@ export default class MotherBoard {
       }
       self.components.shift();
     }
+
   }
 
 }
