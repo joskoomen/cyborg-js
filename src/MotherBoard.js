@@ -77,14 +77,14 @@ export default class MotherBoard {
     if (components.length > 0) {
       const self: MotherBoard = this;
 
-      this.#observer = new MutationObserver(function(mutations) {
+      this.#observer = new MutationObserver(function(mutations: any) {
         console.log('mutations', mutations);
-        mutations.forEach(function(mutation) {
+        mutations.forEach(function(mutation: any) {
           console.log('mutation', mutation);
         });
       });
 
-      this.#observer.observe(components);
+      this.#observer.observe(window.document);
 
       components.forEach((el: HTMLElement) => {
         const componentsArray: Array<string> = el.dataset.component.split(' ').join('').split(',');
