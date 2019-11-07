@@ -84,7 +84,7 @@ export default class MotherBoard {
         });
       });
 
-      this.#observer.observe(window.document);
+      this.#observer.observe(pEl, { attributes: true, childList: true, characterData: true });
 
       components.forEach((el: HTMLElement) => {
         const componentsArray: Array<string> = el.dataset.component.split(' ').join('').split(',');
