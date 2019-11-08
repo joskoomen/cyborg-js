@@ -6,21 +6,16 @@ import EventNames from './events/EventNames';
  * Motherboard
  */
 export default class MotherBoard {
-
   static #instance: MotherBoard;
 
-  components: Array<any>;
-
-  componentsMap: Object;
-  #observer: MutationObserver;
+  #components: Array<any>;
 
   constructor() {
     if (MotherBoard.#instance) {
       throw new Error('Use MotherBoard.getInstance()');
     }
     MotherBoard.#instance = this;
-    this.components = [];
-    this.init();
+    this.#components = [];
   }
 
   static getInstance(): MotherBoard {
@@ -33,8 +28,9 @@ export default class MotherBoard {
   /**
    * Init Application.
    */
-  init(): void {
+  init(pComponentsMap: Object, pTarget: HTMLElement = window.document): void {
     const self: MotherBoard = this;
+
     window.onload = function() {
       self.onload();
     };
@@ -43,17 +39,16 @@ export default class MotherBoard {
       self.destroy();
     };
 
-
     document.addEventListener(EventNames.DOCUMENT_READY, () => {
-      self.bind();
+      self.bind(pTarget, pComponentsMap);
     }, false);
   }
 
   /**
    * Document ready handler
    */
-  bind(): void {
-    this.build(window.document);
+  bind(pTarget: HTMLElement, pComponentsMap: Object): void {
+    this.build(pTarget, pComponentsMap);
 
     const html: HTMLHtmlElement | null = document.querySelector('html');
     if (html) {
@@ -66,31 +61,22 @@ export default class MotherBoard {
    * Window onload handler
    */
   onload(): void {
-    this.components.forEach((pComponent: any) => {
+    this.#components.forEach((pComponent: any) => {
       pComponent.onload();
     });
   }
 
-  build(pEl: HTMLElement): void {
+  build(pEl: HTMLElement, pComponentsMap: Object): void {
     const components: NodeList<HTMLElement> = pEl.querySelectorAll('[data-component]');
     if (components.length > 0) {
       const self: MotherBoard = this;
 
-      this.#observer = new MutationObserver(function(mutations: any) {
-        console.log('mutations', mutations);
-        mutations.forEach(function(mutation: any) {
-          console.log('mutation', mutation);
-        });
-      });
-
-      this.#observer.observe(pEl, { attributes: true, childList: true, characterData: true });
-
       components.forEach((el: HTMLElement) => {
         const componentsArray: Array<string> = el.dataset.component.split(' ').join('').split(',');
         componentsArray.forEach((componentString: string) => {
-          const ComponentClass: any = self.getComponentByName(self.componentsMap, componentString);
+          const ComponentClass: any = self.getComponentByName(pComponentsMap, componentString);
           if (ComponentClass) {
-            const component: any = new ComponentClass();
+            let component: any = new ComponentClass();
 
             self.registerNotification({
               name: componentString,
@@ -99,15 +85,29 @@ export default class MotherBoard {
             });
 
             component.bind(el);
-            self.components.push(component);
+            self.#components.push(component);
 
-            component.addEventListener(EventNames.NODE_REMOVED, function() {
-              component.destroy();
-            }, false);
+            let observer: MutationObserver = new MutationObserver((mutations: Array<MutationRecord>) => {
+              mutations.forEach((mutation: MutationRecord) => {
+                mutation.removedNodes.forEach((removedNode: Node) => {
+                  if (component && (removedNode === el)) {
+                    component.destroy();
+                    observer.disconnect();
+                    observer = undefined;
+                    component = undefined;
+                    el = undefined;
+                  }
+                });
+              });
+            });
+
+            observer.observe(document, {
+              childList: true,
+              subtree: true
+            });
           }
         });
       });
-
     }
   }
 
@@ -132,6 +132,10 @@ export default class MotherBoard {
     return NotificationController.getInstance();
   }
 
+  get components(): Array<any> {
+    return this.#components;
+  }
+
   /**
    */
   getComponentByName(pObject: Object, pName: string): any {
@@ -143,15 +147,14 @@ export default class MotherBoard {
    */
   destroy(): void {
     const self = this;
-    self.#observer.disconnect();
-    while (self.components.length > 0) {
-      const component: Component = self.components[0];
+    const { shift } = self.#components;
+    while (self.#components > 0) {
+      const component: Component = self.#components[0];
       if (component) {
         component.el.remove();
       }
-      self.components.shift();
+      shift();
     }
 
   }
-
 }

@@ -1,6 +1,5 @@
 // @flow
 
 export default {
-  DOCUMENT_READY: 'DOMContentLoaded',
-  NODE_REMOVED: 'DOMNodeRemovedFromDocument'
+  DOCUMENT_READY: 'DOMContentLoaded'
 };
