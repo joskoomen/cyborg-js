@@ -156,5 +156,6 @@ export default class MotherBoard {
       shift();
     }
 
+    self.#components = undefined;
   }
 }
