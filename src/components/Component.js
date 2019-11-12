@@ -102,5 +102,9 @@ export default class Component {
       this.removeEventListener(this.#events[0].name, this.#events[0].handler);
     }
     this.#motherboard.notifier.removeAllListenersFor(this);
+
+    this.#el = undefined;
+    this.#events = undefined;
+    this.#motherboard = undefined;
   }
 }
