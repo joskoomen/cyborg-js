@@ -47,6 +47,13 @@ export default class MotherBoard {
           if (ComponentClass) {
             let component: any = new ComponentClass();
             component.init(this);
+
+            self.registerNotification({
+              name: componentString,
+              notifications: el.dataset.notifications,
+              classRef: component
+            });
+
             component.bind(el);
             self.#components.push(component);
 
