@@ -9,6 +9,14 @@ export default class Component {
   #motherboard: MotherBoard;
 
   /**
+   * @internal
+   * @param pMotherBoard
+   */
+  init(pMotherBoard: MotherBoard): void {
+    this.#motherboard = pMotherBoard;
+  }
+
+  /**
    * Bind your component in the system.
    * @param {HTMLElement} pEl Connected Node
    */
@@ -17,7 +25,6 @@ export default class Component {
     this.name = pEl.dataset.component;
     //
     this.#events = [];
-    this.#motherboard = MotherBoard.getInstance();
   };
 
   onload(): void {
