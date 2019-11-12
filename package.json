@@ -50,6 +50,7 @@
     "flow-bin": "^0.102.0",
     "jest": "^24.7.1",
     "jest-environment-jsdom": "^24.9.0",
+    "redux": "^4.0.4",
     "rimraf": "^2.6.3",
     "rollup": "^1.12.5",
     "rollup-plugin-babel": "^4.3.2",

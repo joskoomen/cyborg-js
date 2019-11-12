@@ -7,6 +7,7 @@ import { equal } from './functions/equal';
 import { shuffle } from './functions/shuffle';
 
 class App {
+
   constructor(pMotherBoard: MotherBoard, pComponentsMap: Object, pTarget: HTMLElement = window.document) {
     if (!pMotherBoard) {
       pMotherBoard = new MotherBoard();
