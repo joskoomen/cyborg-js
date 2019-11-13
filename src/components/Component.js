@@ -82,7 +82,7 @@ export default class Component {
       }
     }
     this.el.innerHTML = this.getTemplate(pData);
-    this.#motherboard.build(this.el);
+    this.#motherboard.bind(this.el);
   }
 
   /**

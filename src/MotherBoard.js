@@ -36,7 +36,7 @@ export default class MotherBoard {
    * Document ready handler
    */
   bind(pTarget: HTMLElement, pComponentsMap: Object): void {
-    const components: NodeList<HTMLElement> = pEl.querySelectorAll('[data-component]');
+    const components: NodeList<HTMLElement> = pTarget.querySelectorAll('[data-component]');
     if (components.length > 0) {
       const self: MotherBoard = this;
 
@@ -64,8 +64,8 @@ export default class MotherBoard {
                     component.destroy();
                     observer.disconnect();
                     observer = undefined;
-                    component = undefined;
                     el = undefined;
+                    component = undefined;
                   }
                 });
               });
@@ -127,13 +127,14 @@ export default class MotherBoard {
    */
   destroy(): void {
     const self = this;
-    const { shift } = self.#components;
-    while (self.#components > 0) {
-      const component: Component = self.#components[0];
-      if (component) {
-        component.el.remove();
+    if (self.#components) {
+      while (self.#components.length > 0) {
+        const component: Component = self.#components[0];
+        if (component) {
+          component.el.remove();
+        }
+        self.#components.shift();
       }
-      shift();
     }
     self.#components = undefined;
   }
