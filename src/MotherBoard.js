@@ -78,7 +78,7 @@ export default class MotherBoard {
         componentsArray.forEach((componentString: string) => {
           const ComponentClass: any = self.getComponentByName(self.componentsMap, componentString);
           if (ComponentClass) {
-            const component: any = new ComponentClass();
+            let component: Component = new ComponentClass();
 
             self.registerNotification({
               name: componentString,
@@ -89,9 +89,24 @@ export default class MotherBoard {
             component.bind(el);
             self.components.push(component);
 
-            component.addEventListener(EventNames.NODE_REMOVED, function() {
-              component.destroy();
-            }, false);
+            let observer: MutationObserver = new MutationObserver((mutations: Array<MutationRecord>) => {
+              mutations.forEach((mutation: MutationRecord) => {
+                mutation.removedNodes.forEach((removedNode: Node) => {
+                  if (component && (removedNode === el)) {
+                    component.destroy();
+                    observer.disconnect();
+                    observer = undefined;
+                    el = undefined;
+                    component = undefined;
+                  }
+                });
+              });
+            });
+
+            observer.observe(document, {
+              childList: true,
+              subtree: true
+            });
           }
         });
       });

@@ -1,8 +1,11 @@
 // @flow
 import MotherBoard from '../MotherBoard';
 import ComponentMock from './__mocks__/ComponentMock';
+import MutationObserverMock from './__mocks__/MutationObserverMock';
 
 let motherboard: MotherBoard;
+
+global.MutationObserver = MutationObserverMock;
 
 const createView = () => {
   window.document.body.innerHTML = '<div id="test" data-component="test"><span>Hello Test</span></div>';
