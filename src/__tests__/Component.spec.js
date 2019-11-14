@@ -1,12 +1,9 @@
 // @flow
 import Component from '../components/Component';
-import MotherBoard from '../MotherBoard';
 import NotificationController from '../notifications/NotificationController';
-import ComponentMock from './__mocks__/ComponentMock';
 
 let componentA: Component;
 let componentB: Component;
-let motherboard: MotherBoard;
 
 const createView = () => {
   let html = '<div id="componentA" data-component="componentA"></div>';
@@ -17,16 +14,10 @@ const createView = () => {
 
 beforeAll(() => {
   createView();
-
-  motherboard = new MotherBoard();
-  motherboard.init({ 'test': ComponentMock });
-
   componentA = new Component();
-  componentA.init(motherboard);
   componentA.bind(document.getElementById('componentA'));
 
   componentB = new Component();
-  componentB.init(motherboard);
   componentB.bind(document.getElementById('componentB'));
 });
 
@@ -82,7 +73,7 @@ describe('Component destroy', () => {
     componentB.destroy();
 
     expect(nc.listeners).toHaveLength(0);
-    expect(componentA.events).toBeUndefined();
-    expect(componentB.events).toBeUndefined();
+    expect(componentA.events).toHaveLength(0);
+    expect(componentB.events).toHaveLength(0);
   });
 });
