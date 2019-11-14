@@ -8,6 +8,8 @@ export default class Component {
   #events: Array<EventObject>;
   #motherboard: MotherBoard;
 
+  props: Object;
+
   /**
    * Bind your component in the system.
    * @param {HTMLElement} pEl Connected Node
@@ -23,11 +25,6 @@ export default class Component {
     // window.onload trigger for component.
   }
 
-  /**
-   * @param {Object} pData Notification Data Object
-   */
-  handleNotifications(pData: Object): void {}
-
   addEventListener(pEventName: string, pHandler: function): void {
     this.#events.push(new EventObject(pEventName, pHandler));
     this.el.addEventListener(pEventName, pHandler, false);
@@ -42,29 +39,6 @@ export default class Component {
   }
 
   /**
-   * @param {string} pType Notification name
-   */
-  addListener(pType: string) {
-    this.#motherboard.notifier.addListener(this, pType, this.handleNotifications);
-  }
-
-  /**
-   * @param {string} pType Notification name
-   */
-  removeListener(pType: string): void {
-    this.#motherboard.notifier.removeListener(pType, this);
-  }
-
-  /**
-   *
-   * @param {string} pType Notification name
-   * @param {Object} [pParams={}] Data Object to send
-   */
-  notify(pType: string, pParams: Object = {}) {
-    this.#motherboard.notifier.notify(pType, pParams);
-  }
-
-  /**
    * @param {Object} pData Data object to use
    */
   render(pData: Object): void {
@@ -74,7 +48,7 @@ export default class Component {
       }
     }
     this.el.innerHTML = this.getTemplate(pData);
-    this.#motherboard.bind(this.el);
+    this.#motherboard.build(this.el);
   }
 
   /**
@@ -100,10 +74,8 @@ export default class Component {
     while (this.#events.length > 0) {
       this.removeEventListener(this.#events[0].name, this.#events[0].handler);
     }
-    this.#motherboard.notifier.removeAllListenersFor(this);
     this.#el = undefined;
     this.#events = undefined;
     this.#motherboard = undefined;
   }
-
 }

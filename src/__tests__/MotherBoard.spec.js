@@ -1,10 +1,11 @@
 // @flow
+
+/* eslint-disable */
 import MotherBoard from '../MotherBoard';
 import ComponentMock from './__mocks__/ComponentMock';
 import MutationObserverMock from './__mocks__/MutationObserverMock';
 
 let motherboard: MotherBoard;
-
 global.MutationObserver = MutationObserverMock;
 
 const createView = () => {
@@ -13,7 +14,7 @@ const createView = () => {
 
 beforeEach(() => {
   motherboard = MotherBoard.getInstance();
-  motherboard.componentsMap = { 'test': ComponentMock };
+  motherboard.init({ 'test': ComponentMock });
   createView();
 });
 
@@ -29,17 +30,8 @@ test('MotherBoard responds on DOMContentLoaded', () => {
   const mbBuild: function = jest.spyOn(motherboard, 'build');
   document.dispatchEvent(new Event('DOMContentLoaded'));
 
-  expect(mbBind).toHaveBeenCalledTimes(1);
-  expect(mbBuild).toHaveBeenCalledTimes(1);
-});
-
-test('MotherBoard registers Notifications', () => {
-  const cMock = new ComponentMock();
-  motherboard.registerNotification({
-    name: 'test',
-    notifications: '',
-    classRef: cMock
-  });
+  expect(mbBind).toHaveBeenCalled();
+  expect(mbBuild).toHaveBeenCalled();
 });
 
 test('MotherBoard responds on window.onload', () => {
@@ -58,6 +50,4 @@ test('MotherBoard should remove components on destroy', () => {
   window.dispatchEvent(new Event('beforeunload'));
   expect(destroy).toHaveBeenCalledTimes(1);
   expect(motherboard.components).toHaveLength(0);
-
 });
-

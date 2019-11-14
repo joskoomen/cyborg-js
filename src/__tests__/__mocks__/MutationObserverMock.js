@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // Import this named export into your test file:
 export const moObserve = jest.fn();
 export const moDisconnect = jest.fn();
