@@ -10,7 +10,7 @@ export function throttle(pFn: function, pDelay: number): function {
   let lastCall = 0;
   return (...args: any) => {
     const now = (new Date()).getTime();
-    if (now - lastCall < pDelay) {
+    if(now - lastCall < pDelay) {
       return;
     }
     lastCall = now;

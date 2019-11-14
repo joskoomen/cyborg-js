@@ -7,9 +7,6 @@ export default class Component {
   #el: HTMLElement;
   #events: Array<EventObject>;
   #motherboard: MotherBoard;
-  #listeners: Array<any>;
-
-  props: Object;
 
   /**
    * Bind your component in the system.
@@ -18,14 +15,19 @@ export default class Component {
   bind(pEl: HTMLElement): void {
     this.#el = pEl;
     this.name = pEl.dataset.component;
+    //
     this.#events = [];
-    this.#listeners = [];
     this.#motherboard = MotherBoard.getInstance();
   };
 
   onload(): void {
     // window.onload trigger for component.
   }
+
+  /**
+   * @param {Object} pData Notification Data Object
+   */
+  handleNotifications(pData: Object): void {}
 
   addEventListener(pEventName: string, pHandler: function): void {
     this.#events.push(new EventObject(pEventName, pHandler));
@@ -40,14 +42,27 @@ export default class Component {
     this.el.removeEventListener(pEventName, pHandler);
   }
 
-  subscribe(pFunction: function): void {
-    const unsubscribe: any = this.#motherboard.store.subscribe(pFunction);
-    console.log('unsubscribe', typeof unsubscribe);
-    this.#listeners.push(unsubscribe);
+  /**
+   * @param {string} pType Notification name
+   */
+  addListener(pType: string) {
+    this.#motherboard.notifier.addListener(this, pType, this.handleNotifications);
   }
 
-  dispatch(action: any): void {
-    this.#motherboard.store.dispatch(action);
+  /**
+   * @param {string} pType Notification name
+   */
+  removeListener(pType: string): void {
+    this.#motherboard.notifier.removeListener(pType, this);
+  }
+
+  /**
+   *
+   * @param {string} pType Notification name
+   * @param {Object} [pParams={}] Data Object to send
+   */
+  notify(pType: string, pParams: Object = {}) {
+    this.#motherboard.notifier.notify(pType, pParams);
   }
 
   /**
@@ -86,12 +101,6 @@ export default class Component {
     while (this.#events.length > 0) {
       this.removeEventListener(this.#events[0].name, this.#events[0].handler);
     }
-    while (this.#listeners.length > 0) {
-      this.#listeners[0]();
-    }
-    this.#el = undefined;
-    this.#events = undefined;
-    this.#listeners = undefined;
-    this.#motherboard = undefined;
+    this.#motherboard.notifier.removeAllListenersFor(this);
   }
 }

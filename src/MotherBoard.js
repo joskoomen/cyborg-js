@@ -1,20 +1,25 @@
 // @flow
+import NotificationController from './notifications/NotificationController';
 import EventNames from './events/EventNames';
 
+/**
+ * Motherboard
+ */
 export default class MotherBoard {
+
   static #instance: MotherBoard;
 
-  #components: Array<any>;
-  #store: any;
-  #componentsMap: Object;
+  components: Array<any>;
+
+  componentsMap: Object;
 
   constructor() {
     if (MotherBoard.#instance) {
       throw new Error('Use MotherBoard.getInstance()');
     }
     MotherBoard.#instance = this;
-    this.#components = [];
-    this.#componentsMap = {};
+    this.components = [];
+    this.init();
   }
 
   static getInstance(): MotherBoard {
@@ -26,18 +31,9 @@ export default class MotherBoard {
 
   /**
    * Init Application.
-   * @param pComponentsMap
-   * @param pStore
    */
-  init(pComponentsMap: Object, pStore?: any): void {
+  init(): void {
     const self: MotherBoard = this;
-
-    this.#componentsMap = pComponentsMap;
-
-    if (pStore) {
-      self.#store = pStore;
-    }
-
     window.onload = function() {
       self.onload();
     };
@@ -51,59 +47,7 @@ export default class MotherBoard {
     }, false);
   }
 
-  build(pEl: HTMLElement): void {
-    const components: NodeList<HTMLElement> = pEl.querySelectorAll('[data-component]');
-    if (components.length > 0) {
-      const self: MotherBoard = this;
-      components.forEach((el: HTMLElement) => {
-        const componentsArray: Array<string> = el.dataset.component.split(' ').join('').split(',');
-        componentsArray.forEach((componentString: string) => {
-          const ComponentClass: any = MotherBoard.getComponentByName(self.#componentsMap, componentString);
-          if (ComponentClass) {
-            let component: Component = new ComponentClass();
-
-            if (self.#store) {
-              component.props = self.store.getState();
-            } else {
-              component.props = null;
-            }
-            component.bind(el);
-            self.#components.push(component);
-
-            let observer: MutationObserver = new MutationObserver((pMutations: Array<MutationRecord>) => {
-              pMutations.forEach((pMutation: MutationRecord) => {
-                pMutation.removedNodes.forEach((pRemovedNode: Node) => {
-                  if (component && (pRemovedNode === el)) {
-                    component.destroy();
-                    observer.disconnect();
-                    observer = undefined;
-                    el = undefined;
-                    component = undefined;
-                  }
-                });
-              });
-            });
-
-            observer.observe(document, {
-              childList: true,
-              subtree: true
-            });
-          }
-        });
-      });
-    }
-  }
-
-  get store(): any {
-    return this.#store;
-  }
-
-  get components(): Array<any> {
-    return this.#components;
-  }
-
   /**
-   * @private
    * Document ready handler
    */
   bind(): void {
@@ -117,34 +61,83 @@ export default class MotherBoard {
   }
 
   /**
-   * @private
    * Window onload handler
    */
   onload(): void {
-    this.#components.forEach((pComponent: any) => {
+    this.components.forEach((pComponent: any) => {
       pComponent.onload();
     });
   }
 
+  build(pEl: HTMLElement): void {
+    const components: NodeList<HTMLElement> = pEl.querySelectorAll('[data-component]');
+    if (components.length > 0) {
+      const self: MotherBoard = this;
+      components.forEach((el: HTMLElement) => {
+        const componentsArray: Array<string> = el.dataset.component.split(' ').join('').split(',');
+        componentsArray.forEach((componentString: string) => {
+          const ComponentClass: any = self.getComponentByName(self.componentsMap, componentString);
+          if (ComponentClass) {
+            const component: any = new ComponentClass();
+
+            self.registerNotification({
+              name: componentString,
+              notifications: el.dataset.notifications,
+              classRef: component
+            });
+
+            component.bind(el);
+            self.components.push(component);
+
+            component.addEventListener(EventNames.NODE_REMOVED, function() {
+              component.destroy();
+            }, false);
+          }
+        });
+      });
+
+    }
+  }
+
   /**
-   * @private
+   * Register Notifications.
    */
-  static getComponentByName(pObject: Object, pName: string): any {
+  registerNotification(pObject: Object): void {
+    if (pObject.notifications) {
+      const notifications: Array<string> = pObject.notifications.replace(' ', '').split(',');
+      const classRef: Component = pObject.classRef;
+      notifications.forEach((pNotification: string) => {
+        NotificationController.getInstance().addListener(classRef, pNotification, classRef.handleNotifications);
+      });
+    }
+  }
+
+  /**
+   * Get NotificationController access.
+   * @returns {NotificationController}
+   */
+  get notifier(): NotificationController {
+    return NotificationController.getInstance();
+  }
+
+  /**
+   */
+  getComponentByName(pObject: Object, pName: string): any {
     return pObject[pName];
   }
 
   /**
-   * @private
    * destroy application
    */
   destroy(): void {
     const self = this;
-    while (self.#components.length > 0) {
-      const component: Component = self.#components[0];
+    while (self.components.length > 0) {
+      const component: Component = self.components[0];
       if (component) {
         component.el.remove();
       }
-      self.#components.shift();
+      self.components.shift();
     }
   }
+
 }
