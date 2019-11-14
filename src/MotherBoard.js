@@ -18,6 +18,7 @@ export default class MotherBoard {
     }
     MotherBoard.#instance = this;
     this.components = [];
+    this.componentsMap = {};
     this.init();
   }
 

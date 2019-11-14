@@ -8,7 +8,6 @@ export default class Component {
   #events: Array<EventObject>;
   #motherboard: MotherBoard;
 
-
   /**
    * Bind your component in the system.
    * @param {HTMLElement} pEl Connected Node
@@ -16,7 +15,6 @@ export default class Component {
   bind(pEl: HTMLElement): void {
     this.#el = pEl;
     this.name = pEl.dataset.component;
-    //
     this.#events = [];
     this.#motherboard = MotherBoard.getInstance();
   };
@@ -103,9 +101,9 @@ export default class Component {
       this.removeEventListener(this.#events[0].name, this.#events[0].handler);
     }
     this.#motherboard.notifier.removeAllListenersFor(this);
-
     this.#el = undefined;
     this.#events = undefined;
     this.#motherboard = undefined;
   }
+
 }

@@ -73,7 +73,7 @@ describe('Component destroy', () => {
     componentB.destroy();
 
     expect(nc.listeners).toHaveLength(0);
-    expect(componentA.events).toHaveLength(0);
-    expect(componentB.events).toHaveLength(0);
+    expect(componentA.events).toBeUndefined();
+    expect(componentB.events).toBeUndefined();
   });
 });
