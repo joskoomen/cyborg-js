@@ -9,16 +9,16 @@ export default class MotherBoard {
 
   static #instance: MotherBoard;
 
-  components: Array<any>;
-
   componentsMap: Object;
+  #components: Array<any>;
+  #reducers: Array<any>;
 
   constructor() {
     if (MotherBoard.#instance) {
       throw new Error('Use MotherBoard.getInstance()');
     }
     MotherBoard.#instance = this;
-    this.components = [];
+    this.#components = [];
     this.init();
   }
 
@@ -64,7 +64,7 @@ export default class MotherBoard {
    * Window onload handler
    */
   onload(): void {
-    this.components.forEach((pComponent: any) => {
+    this.#components.forEach((pComponent: any) => {
       pComponent.onload();
     });
   }
@@ -76,18 +76,21 @@ export default class MotherBoard {
       components.forEach((el: HTMLElement) => {
         const componentsArray: Array<string> = el.dataset.component.split(' ').join('').split(',');
         componentsArray.forEach((componentString: string) => {
-          const ComponentClass: any = self.getComponentByName(self.componentsMap, componentString);
+          const ComponentClass: any = MotherBoard.getComponentByName(self.componentsMap, componentString);
           if (ComponentClass) {
             const component: any = new ComponentClass();
 
-            self.registerNotification({
-              name: componentString,
-              notifications: el.dataset.notifications,
-              classRef: component
-            });
+            if (el.dataset.notifications) {
+              console.warn('registering notifications inline via data-notifications is deprecated');
+              self.registerNotification({
+                name: componentString,
+                notifications: el.dataset.notifications,
+                classRef: component
+              });
+            }
 
             component.bind(el);
-            self.components.push(component);
+            self.#components.push(component);
 
             component.addEventListener(EventNames.NODE_REMOVED, function() {
               component.destroy();
@@ -120,9 +123,13 @@ export default class MotherBoard {
     return NotificationController.getInstance();
   }
 
+  get components(): Array<any> {
+    return this.#components;
+  }
+
   /**
    */
-  getComponentByName(pObject: Object, pName: string): any {
+  static getComponentByName(pObject: Object, pName: string): any {
     return pObject[pName];
   }
 
@@ -131,12 +138,12 @@ export default class MotherBoard {
    */
   destroy(): void {
     const self = this;
-    while (self.components.length > 0) {
-      const component: Component = self.components[0];
+    while (self.#components.length > 0) {
+      const component: Component = self.#components[0];
       if (component) {
         component.el.remove();
       }
-      self.components.shift();
+      self.#components.shift();
     }
   }
 
