@@ -1,32 +1,36 @@
 // @flow
 import MotherBoard from '../MotherBoard';
 import ComponentMock from './__mocks__/ComponentMock';
+import MutationObserverMock from './__mocks__/MutationObserverMock';
 
 let motherboard: MotherBoard;
 
-global.MutationObserver = class {
-  constructor(callback: any) {return true;}
-
-  disconnect(): void {}
-
-  observe(element: Node, initObject: Object) {}
-};
+global.MutationObserver = MutationObserverMock;
 
 const createView = () => {
   window.document.body.innerHTML = '<div id="test" data-component="test"><span>Hello Test</span></div>';
 };
 
 beforeEach(() => {
-  motherboard = new MotherBoard();
-  motherboard.init({ 'test': ComponentMock });
+  motherboard = MotherBoard.getInstance();
+  motherboard.componentsMap = { 'test': ComponentMock };
   createView();
+});
+
+test('MotherBoard is singleton', () => {
+  expect(motherboard).toBeInstanceOf(MotherBoard);
+  expect(() => {
+    new MotherBoard();
+  }).toThrow(/MotherBoard.getInstance()/);
 });
 
 test('MotherBoard responds on DOMContentLoaded', () => {
   const mbBind: function = jest.spyOn(motherboard, 'bind');
+  const mbBuild: function = jest.spyOn(motherboard, 'build');
   document.dispatchEvent(new Event('DOMContentLoaded'));
 
   expect(mbBind).toHaveBeenCalledTimes(1);
+  expect(mbBuild).toHaveBeenCalledTimes(1);
 });
 
 test('MotherBoard registers Notifications', () => {
@@ -53,7 +57,7 @@ test('MotherBoard should remove components on destroy', () => {
   const destroy: function = jest.spyOn(motherboard, 'destroy');
   window.dispatchEvent(new Event('beforeunload'));
   expect(destroy).toHaveBeenCalledTimes(1);
-  expect(motherboard.components).toBeUndefined();
+  expect(motherboard.components).toHaveLength(0);
 
 });
 
