@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // Import this named export into your test file:
 export const cBind = jest.fn();
 export const cAddEventListener = jest.fn();

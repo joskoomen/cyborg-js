@@ -1,6 +1,7 @@
 // @flow
+/* eslint-disable */
+
 import Component from '../components/Component';
-import NotificationController from '../notifications/NotificationController';
 
 let componentA: Component;
 let componentB: Component;
@@ -35,19 +36,6 @@ test('Components registers events', () => {
   expect(componentA.events).toHaveLength(0);
 });
 
-test('Components handles notifications', () => {
-  const listener: function = jest.spyOn(componentB, 'handleNotifications');
-  componentB.addListener('test');
-  componentA.notify('test');
-  expect(listener).toHaveBeenCalledTimes(1);
-
-  componentB.removeListener('test');
-  setTimeout(() => {
-    componentA.notify('test');
-    expect(listener).toHaveBeenCalledTimes(0);
-  }, 0);
-});
-
 test('Components renders templates', () => {
   expect(componentB.el.children).toHaveLength(1);
   componentB.render({});
@@ -55,24 +43,18 @@ test('Components renders templates', () => {
 });
 
 describe('Component destroy', () => {
-
   it('shouldn\'t have any listeners', () => {
-    const nc: NotificationController = NotificationController.getInstance();
     const handler: function = jest.fn();
 
     componentA.addEventListener('click', handler);
     componentB.addEventListener('click', handler);
-    componentA.addListener('destroy_test');
-    componentB.addListener('destroy_test');
 
-    expect(nc.listeners.length).toBeGreaterThanOrEqual(1);
     expect(componentA.events).toHaveLength(1);
     expect(componentB.events).toHaveLength(1);
 
     componentA.destroy();
     componentB.destroy();
 
-    expect(nc.listeners).toHaveLength(0);
     expect(componentA.events).toBeUndefined();
     expect(componentB.events).toBeUndefined();
   });

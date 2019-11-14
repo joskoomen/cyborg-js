@@ -12,7 +12,7 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup -c",
     "dev": "rollup -c",
-    "lint": "eslint --ignore-pa th ./.gitignore './src/**/*.js'",
+    "lint": "eslint --ignore-path ./.gitignore './src/**/*.js' --fix",
     "test": "cross-env NODE_ENV=test jest",
     "precommit": "yarn lint --fix",
     "prebuild": "rimraf dist",
@@ -50,7 +50,6 @@
     "flow-bin": "^0.102.0",
     "jest": "^24.7.1",
     "jest-environment-jsdom": "^24.9.0",
-    "redux": "^4.0.4",
     "rimraf": "^2.6.3",
     "rollup": "^1.12.5",
     "rollup-plugin-babel": "^4.3.2",
