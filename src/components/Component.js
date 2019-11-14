@@ -7,6 +7,7 @@ export default class Component {
   #el: HTMLElement;
   #events: Array<EventObject>;
   #motherboard: MotherBoard;
+  #listeners: Array<any>;
 
   props: Object;
 
@@ -18,6 +19,7 @@ export default class Component {
     this.#el = pEl;
     this.name = pEl.dataset.component;
     this.#events = [];
+    this.#listeners = [];
     this.#motherboard = MotherBoard.getInstance();
   };
 
@@ -36,6 +38,16 @@ export default class Component {
     });
     this.#events.splice(index, 1);
     this.el.removeEventListener(pEventName, pHandler);
+  }
+
+  subscribe(pFunction: function): void {
+    const unsubscribe: any = this.#motherboard.store.subscribe(pFunction);
+    console.log('unsubscribe', typeof unsubscribe);
+    this.#listeners.push(unsubscribe);
+  }
+
+  dispatch(action: any): void {
+    this.#motherboard.store.dispatch(action);
   }
 
   /**
@@ -74,8 +86,12 @@ export default class Component {
     while (this.#events.length > 0) {
       this.removeEventListener(this.#events[0].name, this.#events[0].handler);
     }
+    while (this.#listeners.length > 0) {
+      this.#listeners[0]();
+    }
     this.#el = undefined;
     this.#events = undefined;
+    this.#listeners = undefined;
     this.#motherboard = undefined;
   }
 }
