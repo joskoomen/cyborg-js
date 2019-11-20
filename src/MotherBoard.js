@@ -80,7 +80,7 @@ export default class MotherBoard {
         componentsArray.forEach((componentString: string) => {
           const ComponentClass: Component = MotherBoard.getComponentByName(self.componentsMap, componentString);
           if (ComponentClass) {
-            const component: Component = new ComponentClass();
+            let component: Component = new ComponentClass();
 
             if (el.dataset.notifications) {
               console.warn('registering notifications inline via data-notifications is deprecated');
@@ -94,13 +94,27 @@ export default class MotherBoard {
             component.bind(el);
             self.#components.push(component);
 
-            component.addEventListener(EventNames.NODE_REMOVED, function() {
-              component.destroy();
-            }, false);
+            let observer: MutationObserver = new MutationObserver((mutations: Array<MutationRecord>) => {
+              mutations.forEach((mutation: MutationRecord) => {
+                mutation.removedNodes.forEach((removedNode: Node) => {
+                  if (component && (removedNode === el)) {
+                    component.destroy();
+                    observer.disconnect();
+                    observer = undefined;
+                    component = undefined;
+                    el = undefined;
+                  }
+                });
+              });
+            });
+
+            observer.observe(document, {
+              childList: true,
+              subtree: true
+            });
           }
         });
       });
-
     }
   }
 
