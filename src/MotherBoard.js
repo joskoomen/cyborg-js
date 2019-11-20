@@ -1,6 +1,7 @@
 // @flow
 import NotificationController from './notifications/NotificationController';
 import EventNames from './events/EventNames';
+import Modifier from './core/Modifier';
 
 /**
  * Motherboard
@@ -10,8 +11,8 @@ export default class MotherBoard {
   static #instance: MotherBoard;
 
   componentsMap: Object;
-  #components: Array<any>;
-  #reducers: Array<any>;
+  #components: Array<Component>;
+  #modifiers: Array<Modifier>;
 
   constructor() {
     if (MotherBoard.#instance) {
@@ -19,6 +20,7 @@ export default class MotherBoard {
     }
     MotherBoard.#instance = this;
     this.#components = [];
+    this.#modifiers = [];
     this.init();
   }
 
@@ -76,9 +78,9 @@ export default class MotherBoard {
       components.forEach((el: HTMLElement) => {
         const componentsArray: Array<string> = el.dataset.component.split(' ').join('').split(',');
         componentsArray.forEach((componentString: string) => {
-          const ComponentClass: any = MotherBoard.getComponentByName(self.componentsMap, componentString);
+          const ComponentClass: Component = MotherBoard.getComponentByName(self.componentsMap, componentString);
           if (ComponentClass) {
-            const component: any = new ComponentClass();
+            const component: Component = new ComponentClass();
 
             if (el.dataset.notifications) {
               console.warn('registering notifications inline via data-notifications is deprecated');
