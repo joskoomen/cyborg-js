@@ -1,4 +1,5 @@
 // @flow
+
 import NotificationController from './notifications/NotificationController';
 import EventNames from './events/EventNames';
 import Modifier from './core/Modifier';
@@ -11,8 +12,9 @@ export default class MotherBoard {
   static #instance: MotherBoard;
 
   componentsMap: Object;
+  modifiersMap: Object;
   #components: Array<Component>;
-  #modifiers: Array<Modifier>;
+  #modifiers: Set;
 
   constructor() {
     if (MotherBoard.#instance) {
@@ -20,7 +22,7 @@ export default class MotherBoard {
     }
     MotherBoard.#instance = this;
     this.#components = [];
-    this.#modifiers = [];
+    this.#modifiers = new Set();
     this.init();
   }
 
@@ -73,12 +75,13 @@ export default class MotherBoard {
 
   build(pEl: HTMLElement): void {
     const components: NodeList<HTMLElement> = pEl.querySelectorAll('[data-component]');
+    const references: NodeList<HTMLElement> = pEl.querySelectorAll('[data-ref]');
+    const self: MotherBoard = this;
     if (components.length > 0) {
-      const self: MotherBoard = this;
       components.forEach((el: HTMLElement) => {
         const componentsArray: Array<string> = el.dataset.component.split(' ').join('').split(',');
         componentsArray.forEach((componentString: string) => {
-          const ComponentClass: Component = MotherBoard.getComponentByName(self.componentsMap, componentString);
+          const ComponentClass: Component = MotherBoard.getMappedObjectByName(self.componentsMap, componentString);
           if (ComponentClass) {
             let component: Component = new ComponentClass();
 
@@ -116,6 +119,56 @@ export default class MotherBoard {
         });
       });
     }
+    if (references.length > 0) {
+
+      references.forEach((el: HTMLElement) => {
+        const modifierName: string = el.dataset.ref;
+        if(modifierName) {
+        const ModifierClass: Modifier = MotherBoard.getMappedObjectByName(self.modifiersMap, modifierName);
+        if (ModifierClass) {
+
+          let modifier: Modifier;
+          let match: boolean = false;
+          self.#modifiers.forEach((pObject: Object) => {
+            if (match) {
+              return;
+            }
+            if (pObject.name === modifierName) {
+              match = true;
+              modifier = pObject.modifier;
+            }
+          });
+
+          if (!match) {
+            modifier = new ModifierClass();
+            console.log('self.#modifiers.has()', self.#modifiers.has({ name: modifierName, modifier: modifier }));
+            modifier.bind(modifierName);
+            modifier.add(el);
+            self.#modifiers.add({ name: modifierName, modifier: modifier });
+
+            let observer: MutationObserver = new MutationObserver((mutations: Array<MutationRecord>) => {
+              mutations.forEach((mutation: MutationRecord) => {
+                mutation.removedNodes.forEach((removedNode: Node) => {
+                  if (modifierName && (removedNode === el)) {
+                    modifier.destroyRef(el);
+                    if () {
+                      observer.disconnect();
+                    }
+                    observer = undefined;
+                    el = undefined;
+                  }
+                });
+              });
+            });
+
+            observer.observe(document, {
+              childList: true,
+              subtree: true
+            });
+          }
+        }
+      });
+    }
   }
 
   /**
@@ -145,7 +198,7 @@ export default class MotherBoard {
 
   /**
    */
-  static getComponentByName(pObject: Object, pName: string): any {
+  static getMappedObjectByName(pObject: Object, pName: string): any {
     return pObject[pName];
   }
 
@@ -162,5 +215,4 @@ export default class MotherBoard {
       self.#components.shift();
     }
   }
-
 }
