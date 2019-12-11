@@ -1,24 +1,25 @@
 // @flow
+
 import NotificationController from './notifications/NotificationController';
 import EventNames from './events/EventNames';
+import ViewController from './ui/ViewController';
 
 /**
  * Motherboard
  */
 export default class MotherBoard {
-
   static #instance: MotherBoard;
 
-  components: Array<any>;
-
-  componentsMap: Object;
+  componentsMap: Object = {};
+  viewsMap: Object = {};
+  #components: Array<Component>;
 
   constructor() {
     if (MotherBoard.#instance) {
       throw new Error('Use MotherBoard.getInstance()');
     }
     MotherBoard.#instance = this;
-    this.components = [];
+    this.#components = [];
     this.init();
   }
 
@@ -53,6 +54,10 @@ export default class MotherBoard {
   bind(): void {
     this.build(window.document);
 
+    const views: NodeList<HTMLElement> = document.querySelectorAll('[data-view]');
+    if (views.length > 0) {
+      ViewController.getInstance().bind(views, this.viewsMap);
+    }
     const html: HTMLHtmlElement | null = document.querySelector('html');
     if (html) {
       html.classList.remove('no-js');
@@ -64,38 +69,69 @@ export default class MotherBoard {
    * Window onload handler
    */
   onload(): void {
-    this.components.forEach((pComponent: any) => {
+    this.#components.forEach((pComponent: any) => {
       pComponent.onload();
     });
   }
 
   build(pEl: HTMLElement): void {
     const components: NodeList<HTMLElement> = pEl.querySelectorAll('[data-component]');
+    const self: MotherBoard = this;
     if (components.length > 0) {
-      const self: MotherBoard = this;
       components.forEach((el: HTMLElement) => {
         const componentsArray: Array<string> = el.dataset.component.split(' ').join('').split(',');
         componentsArray.forEach((componentString: string) => {
-          const ComponentClass: any = self.getComponentByName(self.componentsMap, componentString);
+          const ComponentClass: Component = MotherBoard.getMappedObjectByName(self.componentsMap, componentString);
           if (ComponentClass) {
-            const component: any = new ComponentClass();
+            let component: Component = new ComponentClass();
 
-            self.registerNotification({
-              name: componentString,
-              notifications: el.dataset.notifications,
-              classRef: component
-            });
+            if (el.dataset.notifications) {
+              console.warn('registering notifications inline via data-notifications is deprecated amd will be removed from 1.2.0 use the notifications array inside your class');
+              self.registerNotification({
+                name: componentString,
+                notifications: el.dataset.notifications,
+                classRef: component
+              });
+            }
+            if (component.notifications && component.notifications.length > 0) {
+              self.registerNotification({
+                name: componentString,
+                notifications: component.notifications,
+                classRef: component
+              });
+            }
 
             component.bind(el);
-            self.components.push(component);
+            self.#components.push(component);
 
-            component.addEventListener(EventNames.NODE_REMOVED, function() {
-              component.destroy();
-            }, false);
+            if (window.MutationObserver) {
+              let observer: MutationObserver = new MutationObserver((mutations: Array<MutationRecord>) => {
+                mutations.forEach((mutation: MutationRecord) => {
+                  mutation.removedNodes.forEach((removedNode: Node) => {
+                    if (component && (removedNode === el)) {
+                      component.destroy();
+                      observer.disconnect();
+                      observer = undefined;
+                      component = undefined;
+                      el = undefined;
+                    }
+                  });
+                });
+              });
+              observer.observe(document, {
+                childList: true,
+                subtree: true
+              });
+            } else {
+              component.addEventListener(EventNames.NODE_REMOVED, function() {
+                component.destroy();
+                component = undefined;
+                el = undefined;
+              }, false);
+            }
           }
         });
       });
-
     }
   }
 
@@ -120,9 +156,13 @@ export default class MotherBoard {
     return NotificationController.getInstance();
   }
 
+  get components(): Array<any> {
+    return this.#components;
+  }
+
   /**
    */
-  getComponentByName(pObject: Object, pName: string): any {
+  static getMappedObjectByName(pObject: Object, pName: string): any {
     return pObject[pName];
   }
 
@@ -131,13 +171,15 @@ export default class MotherBoard {
    */
   destroy(): void {
     const self = this;
-    while (self.components.length > 0) {
-      const component: Component = self.components[0];
+    ViewController.getInstance().destroy();
+    while (self.#components.length > 0) {
+      const component: Component = self.#components[0];
       if (component) {
         component.el.remove();
       }
-      self.components.shift();
+      self.#components.shift();
     }
+    self.componentsMap = undefined;
+    self.viewsMap = undefined;
   }
-
 }

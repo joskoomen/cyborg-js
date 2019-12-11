@@ -1,16 +1,12 @@
 // @flow
 import MotherBoard from './MotherBoard';
-import Component from './components/Component';
+import Component from './Component';
 import Notification from './notifications/Notification';
-import { throttle } from './functions/throttle';
-import { equal } from './functions/equal';
-import { shuffle } from './functions/shuffle';
+import View from './ui/View';
 
 export {
   MotherBoard,
-  Component,
   Notification,
-  throttle,
-  equal,
-  shuffle
+  Component,
+  View
 };
