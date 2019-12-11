@@ -55,6 +55,4 @@ test('MotherBoard should remove core on destroy', () => {
   window.dispatchEvent(new Event('beforeunload'));
   expect(destroy).toHaveBeenCalledTimes(1);
   expect(motherboard.components).toHaveLength(0);
-
 });
-
