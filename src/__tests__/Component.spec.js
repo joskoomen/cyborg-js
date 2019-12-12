@@ -55,7 +55,6 @@ test('Components renders templates', () => {
 });
 
 describe('Component destroy', () => {
-
   it('shouldn\'t have any listeners', () => {
     const nc: NotificationController = NotificationController.getInstance();
     const handler: function = jest.fn();

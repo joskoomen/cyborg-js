@@ -3,6 +3,7 @@
 import NotificationController from './notifications/NotificationController';
 import EventNames from './events/EventNames';
 import ViewController from './ui/ViewController';
+import { registerNotification } from './functions/registerNotification';
 
 /**
  * Motherboard
@@ -86,15 +87,15 @@ export default class MotherBoard {
             let component: Component = new ComponentClass();
 
             if (el.dataset.notifications) {
-              console.warn('registering notifications inline via data-notifications is deprecated amd will be removed from 1.2.0 use the notifications array inside your class');
-              self.registerNotification({
+              console.warn('registering notifications inline via data-notifications is deprecated amd will be removed from 1.2.0 use the notifications "array" inside your class');
+              registerNotification({
                 name: componentString,
-                notifications: el.dataset.notifications,
+                notifications: el.dataset.notifications.replace(' ', '').split(','),
                 classRef: component
               });
             }
             if (component.notifications && component.notifications.length > 0) {
-              self.registerNotification({
+              registerNotification({
                 name: componentString,
                 notifications: component.notifications,
                 classRef: component
@@ -131,19 +132,6 @@ export default class MotherBoard {
             }
           }
         });
-      });
-    }
-  }
-
-  /**
-   * Register Notifications.
-   */
-  registerNotification(pObject: Object): void {
-    if (pObject.notifications) {
-      const notifications: Array<string> = pObject.notifications.replace(' ', '').split(',');
-      const classRef: Component = pObject.classRef;
-      notifications.forEach((pNotification: string) => {
-        NotificationController.getInstance().addListener(classRef, pNotification, classRef.handleNotifications);
       });
     }
   }
