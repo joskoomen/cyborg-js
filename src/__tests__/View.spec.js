@@ -40,12 +40,22 @@ test('View has a name and notifications', () => {
 test('Views can update attributes', () => {
   viewA.attr('src', 'another.jpg');
   expect(document.getElementById('viewA').src).toBe('https://cyborg-js.org/another.jpg');
+});
 
+test('Views can update content', () => {
   viewB.text('new text');
   expect(document.getElementById('viewB').innerText).toBe('new text');
 
   viewC.html('<p>Paragraph</p> text');
   expect(document.getElementById('viewC').innerHTML).toBe('<p>Paragraph</p> text');
+});
+
+test('Views can update classes', () => {
+  viewB.addClass('henk');
+  expect(document.getElementById('viewB').classList.contains('henk')).toBeTruthy();
+
+  viewB.removeClass('henk');
+  expect(document.getElementById('viewB').classList.contains('henk')).toBeFalsy();
 });
 
 test('Views handles notifications', () => {

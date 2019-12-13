@@ -33,8 +33,10 @@ There are a growing amount of `generators`. At this moment the following `comman
 
 | Command           | What                                                |
 |-------------------|-----------------------------------------------------|
-|`make:component`   | This will make a command with a view prompts        |
+|`make:component`   | This will make a component with a few prompts        |
+|`make:view`   | This will make a view with a few prompts        |
 |`make:motherboard` | This will make a custom motherboard with one prompt | 
+|`make:app` | This will make an App class with one prompt | 
 
 `Plop` let's you skip prompts by adding them as parameter.
 
@@ -46,6 +48,15 @@ There are a growing amount of `generators`. At this moment the following `comman
 |`comments`  | boolean | Want inline comments? Helpfull when you're new to Cyborg JS         |
 |`statement` | list    | handleNotifications prefilled with a `switch`, `if` or no statement |
 |`onload`    | boolean | Want an onload handler?                                             |
+|`destroy`   | boolean | Want to override the destroy method?                                |
+
+### make:view
+
+| Parameter  | Type    | What                                                                |
+|------------|---------|---------------------------------------------------------------------|
+|`name`      | string  |The name of your view. |                                        |
+|`comments`  | boolean | Want inline comments? Helpfull when you're new to Cyborg JS         |
+|`statement` | list    | handleNotifications prefilled with a `switch`, `if` or no statement |
 |`destroy`   | boolean | Want to override the destroy method?                                |
 
 ### make:motherboard
@@ -71,6 +82,7 @@ But we like creativity. So be creative and change it how you like:
     ...,
     "scripts" : {
         "mc": "plop make:component",
+        "mv": "plop make:view",
         "mm": "plop make:motherboard"
     },
     ...
