@@ -21,9 +21,10 @@ beforeAll(() => {
   componentB.bind(document.getElementById('componentB'));
 });
 
-test('Component has a name and element', () => {
+test('Component has a name, notifications and element', () => {
   expect(componentA.el).not.toBeUndefined();
   expect(componentA.name).not.toBeUndefined();
+  expect(componentA.notifications).not.toBeUndefined();
 });
 
 test('Components registers events', () => {

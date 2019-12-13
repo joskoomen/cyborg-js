@@ -26,8 +26,7 @@ export default class View {
   }
 
   destroy(): void {
-    this.#virtualEl = undefined;
+    this.#virtualEl.destroy();
     this.notifications = undefined;
-    super.destroy();
   }
 }

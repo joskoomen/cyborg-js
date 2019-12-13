@@ -1,14 +1,14 @@
 #  Cyborg JS
-Cyborg JS is a SEO friendly framework created with [Flow type](https://flow.org/) , which is created for large web applications where Javascript is only for additional and functional use.
+Cyborg JS is a SEO friendly framework created with [Flow type](https://flow.org/) , specially created for Page Based Applications.
 
-To use Cyborg JS in your application you need to create a `MotherBoard instance`. The `MotherBoard` is a `singleton` and the center of your application.
-Every `component` can communicate through `Notifications` and all `components` are created, and removed via the `MotherBoard`. Once you registered your `component`, everything is automated.
+Every Cyborg JS application starts with it's `MotherBoard`. The `MotherBoard` is a `singleton` and the center of front-end communication.
+Every `component` can communicate through the integrated `Notification` system.
 
 ## Garbage collection
-All components have a `destroy` method which will remove eventlisteners and can be extended to do everything once it's removed from your DOM.
+All `components` and `views` have a `destroy` method to remove the dom element and related events.
 
 ## Register your components
-Every component is added to a `HTMLElement` via your web application views or html pages.
+Every `component` and `view` is connected to a `HTMLElement` via your web application views or html pages.
 
 ```
 <ul class="menu" data-component="my-menu">
@@ -29,10 +29,13 @@ MotherBoard.getInstance().componentsMap = {
 Where the `key` is equal to your `data-component` value and the value is the `class` of the `component`.
 
 ## Notifications
-`Notifications` are like global events. You can add and remove listeners in your `component`. You can add listeners via the `addListener` method or direct in your components tag like `data-notifications="my-notification"` the value can be comma separated for multiple notifications.
+`Notifications` are like global events. You can add and remove listeners in your `component`. Add listeners via the `notifications array` or the `addListener` method.
 
 The following example is how to add or remove a listener, or send a notification in your javascript.
 ```.js
+// inited listeners
+notifications:Array<string> = ['my-inited-notification','another-inited-notification'];
+
 // add a listener
 this.addListener('my-notification');
 
@@ -44,7 +47,10 @@ let optionalDataObject:Object = {'foo' : bar};
 this.notify('my-notification', optionalDataObject);
 ```
 ## The Component
-The Component is your connection with your `HTMLElements`. It can be described as a `ViewController`. Read more about the `Cyborg JS Component` in it's [own section](/component/#/components) . 
+The Component is your connection with a `HTMLElement`. It can be described as a `Component Controller`. Read more about the `Cyborg JS Component` in it's [own section](/component/#/components) . 
+
+## The View
+The View is a simple connection with a `HTMLElement`. It can be described as a simple responder to data changes. Read more about the `Cyborg JS View` in it's [own section](/view/#/views) . 
 
 ## Getting started
 The following parts of code is enough to get started:
@@ -75,6 +81,8 @@ const app = new App();
 import { Component } from '@ypa/cyborg-js';
 
 export default class FirstComponent extends Component {
+  
+  notifications:Array<string> = ['someChanges', 'updateSomething'];
   
   bind(pEl:HTMLElement):void {
     super.bind(pEl);
@@ -128,7 +136,7 @@ export default class AnotherComponent extends Component {
 #### HTML
 ```
     <div class="container">
-        <div data-component="first" data-notifications="someChanges,updateSomething">
+        <div data-component="first">
             <!-- The data-component attribute is part where you map the Class to this HTMLElement -->
             <!-- The data-notifications is optional to add Notification Listeners comma separated -->
             <p>Hello world</p>

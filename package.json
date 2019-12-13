@@ -13,7 +13,7 @@
     "build": "cross-env NODE_ENV=production rollup -c",
     "dev": "rollup -c",
     "lint": "eslint --ignore-path ./.gitignore './src/**/*.js' --fix",
-    "test": "cross-env NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest --collect-coverage",
     "precommit": "yarn lint --fix",
     "prebuild": "rimraf dist",
     "prepush": "yarn test"
