@@ -21,6 +21,10 @@ export default class View {
     this.#virtualEl.addClass(pName);
   }
 
+  toggleClass(pName: string): void {
+    this.#virtualEl.toggleClass(pName);
+  }
+
   removeClass(pName: string): void {
     this.#virtualEl.removeClass(pName);
   }

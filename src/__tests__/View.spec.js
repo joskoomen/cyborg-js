@@ -56,6 +56,12 @@ test('Views can update classes', () => {
 
   viewB.removeClass('henk');
   expect(document.getElementById('viewB').classList.contains('henk')).toBeFalsy();
+
+  viewA.toggleClass('arie');
+  expect(document.getElementById('viewA').classList.contains('arie')).toBeTruthy();
+  viewA.toggleClass('arie');
+  expect(document.getElementById('viewA').classList.contains('arie')).toBeFalsy();
+
 });
 
 test('Views handles notifications', () => {
