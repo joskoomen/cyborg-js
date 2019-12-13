@@ -1,7 +1,7 @@
 {
   "name": "@ypa/cyborg-js",
-  "version": "1.1.0",
-  "description": "CyborgJS - A SEO Friendly Framework",
+  "version": "1.2.0",
+  "description": "CyborgJS - A SEO Friendly PBA Framework",
   "main": "dist/main.umd.js",
   "browser": "dist/main.umd.js",
   "author": "Jos Koomen <jos@yourpersonalagency.nl>",
