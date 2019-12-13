@@ -1,5 +1,5 @@
 // @flow
-import Component from '../components/Component';
+import Component from '../Component';
 import NotificationController from '../notifications/NotificationController';
 
 let componentA: Component;
@@ -21,9 +21,10 @@ beforeAll(() => {
   componentB.bind(document.getElementById('componentB'));
 });
 
-test('Component has a name and element', () => {
+test('Component has a name, notifications and element', () => {
   expect(componentA.el).not.toBeUndefined();
   expect(componentA.name).not.toBeUndefined();
+  expect(componentA.notifications).not.toBeUndefined();
 });
 
 test('Components registers events', () => {
@@ -55,7 +56,6 @@ test('Components renders templates', () => {
 });
 
 describe('Component destroy', () => {
-
   it('shouldn\'t have any listeners', () => {
     const nc: NotificationController = NotificationController.getInstance();
     const handler: function = jest.fn();
@@ -73,7 +73,7 @@ describe('Component destroy', () => {
     componentB.destroy();
 
     expect(nc.listeners).toHaveLength(0);
-    expect(componentA.events).toHaveLength(0);
-    expect(componentB.events).toHaveLength(0);
+    expect(componentA.events).toBeUndefined();
+    expect(componentB.events).toBeUndefined();
   });
 });

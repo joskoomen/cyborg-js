@@ -1,9 +1,12 @@
 // @flow
 
-import EventObject from '../events/EventObject';
-import MotherBoard from '../MotherBoard';
+import EventObject from './events/EventObject';
+import MotherBoard from './MotherBoard';
 
 export default class Component {
+  name: string;
+  notifications: $ReadOnlyArray<string> = [];
+
   #el: HTMLElement;
   #events: Array<EventObject>;
   #motherboard: MotherBoard;
@@ -15,7 +18,6 @@ export default class Component {
   bind(pEl: HTMLElement): void {
     this.#el = pEl;
     this.name = pEl.dataset.component;
-    //
     this.#events = [];
     this.#motherboard = MotherBoard.getInstance();
   };
@@ -24,9 +26,18 @@ export default class Component {
     // window.onload trigger for component.
   }
 
-  /**
-   * @param {Object} pData Notification Data Object
-   */
+  addListener(pType: string) {
+    this.motherboard.notifier.addListener(this, pType, this.handleNotifications);
+  }
+
+  removeListener(pType: string): void {
+    this.motherboard.notifier.removeListener(pType, this);
+  }
+
+  notify(pType: string, pParams: Object = {}) {
+    this.motherboard.notifier.notify(pType, pParams);
+  }
+
   handleNotifications(pData: Object): void {}
 
   addEventListener(pEventName: string, pHandler: function): void {
@@ -43,29 +54,6 @@ export default class Component {
   }
 
   /**
-   * @param {string} pType Notification name
-   */
-  addListener(pType: string) {
-    this.#motherboard.notifier.addListener(this, pType, this.handleNotifications);
-  }
-
-  /**
-   * @param {string} pType Notification name
-   */
-  removeListener(pType: string): void {
-    this.#motherboard.notifier.removeListener(pType, this);
-  }
-
-  /**
-   *
-   * @param {string} pType Notification name
-   * @param {Object} [pParams={}] Data Object to send
-   */
-  notify(pType: string, pParams: Object = {}) {
-    this.#motherboard.notifier.notify(pType, pParams);
-  }
-
-  /**
    * @param {Object} pData Data object to use
    */
   render(pData: Object): void {
@@ -75,7 +63,7 @@ export default class Component {
       }
     }
     this.el.innerHTML = this.getTemplate(pData);
-    this.#motherboard.build(this.el);
+    this.motherboard.build(this.el);
   }
 
   /**
@@ -90,6 +78,10 @@ export default class Component {
     return this.#el;
   }
 
+  get motherboard(): MotherBoard {
+    return this.#motherboard;
+  }
+
   get events(): Array<EventObject> {
     return this.#events;
   }
@@ -98,9 +90,13 @@ export default class Component {
    * Garbage collection ;)
    */
   destroy(): void {
+    this.motherboard.notifier.removeAllListenersFor(this);
     while (this.#events.length > 0) {
       this.removeEventListener(this.#events[0].name, this.#events[0].handler);
     }
-    this.#motherboard.notifier.removeAllListenersFor(this);
+    this.#events = undefined;
+    this.#el.remove();
+    this.#el = undefined;
+    this.notifications = undefined;
   }
 }

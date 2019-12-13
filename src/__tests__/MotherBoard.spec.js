@@ -1,6 +1,7 @@
 // @flow
 import MotherBoard from '../MotherBoard';
 import ComponentMock from './__mocks__/ComponentMock';
+import { registerNotification } from '../functions/registerNotification';
 
 let motherboard: MotherBoard;
 
@@ -32,9 +33,9 @@ test('MotherBoard responds on DOMContentLoaded', () => {
 
 test('MotherBoard registers Notifications', () => {
   const cMock = new ComponentMock();
-  motherboard.registerNotification({
+  registerNotification({
     name: 'test',
-    notifications: '',
+    notifications: [],
     classRef: cMock
   });
 });
@@ -45,7 +46,7 @@ test('MotherBoard responds on window.onload', () => {
   expect(onload).toHaveBeenCalledTimes(1);
 });
 
-test('MotherBoard should remove components on destroy', () => {
+test('MotherBoard should remove core on destroy', () => {
   const component: ComponentMock = new ComponentMock();
   component.bind(document.getElementById('test'));
   motherboard.components.push(component);
@@ -55,6 +56,4 @@ test('MotherBoard should remove components on destroy', () => {
   window.dispatchEvent(new Event('beforeunload'));
   expect(destroy).toHaveBeenCalledTimes(1);
   expect(motherboard.components).toHaveLength(0);
-
 });
-
