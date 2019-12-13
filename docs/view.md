@@ -21,4 +21,7 @@ Since CyborgJS is made to work on PBA's. A Component lifecycle runs within your 
 | `attr(pName: string, pValue: string): void`                   | Update an attribute value of your element |
 | `text(pValue: string): void`                                  | Set `innerText` of your element |
 | `html(pValue: string): void`                                  | Set `innerHTML` of your element |
+| `addClass(pName: string): void`                               | Add a class to your element |
+| `removeClass(pName: string): void`                               | Removes a class from your element |
+| `toggleClass(pName: string): void`                               | Toggle a class in your element |
 | `destroy(): void;`                                            |  Garbage collection |
