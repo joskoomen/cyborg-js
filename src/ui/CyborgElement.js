@@ -20,6 +20,18 @@ export default class CyborgElement {
     }
   }
 
+  addClass(pName: string): void {
+    if (!this.#el.classList.contains(pName)) {
+      this.#el.classList.add(pName);
+    }
+  }
+
+  removeClass(pName: string): void {
+    if (this.#el.classList.contains(pName)) {
+      this.#el.classList.remove(pName);
+    }
+  }
+
   destroy(): void {
     this.#el = undefined;
   }

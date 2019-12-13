@@ -87,7 +87,7 @@ export default class MotherBoard {
             let component: Component = new ComponentClass();
 
             if (el.dataset.notifications) {
-              console.warn('registering notifications inline via data-notifications is deprecated amd will be removed from 1.2.0 use the notifications "array" inside your class');
+              console.warn('registering notifications inline via data-notifications is deprecated amd will be removed in a future release. Please use the notifications "array" inside your class');
               registerNotification({
                 name: componentString,
                 notifications: el.dataset.notifications.replace(' ', '').split(','),

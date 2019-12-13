@@ -47,10 +47,10 @@ let optionalDataObject:Object = {'foo' : bar};
 this.notify('my-notification', optionalDataObject);
 ```
 ## The Component
-The Component is your connection with a `HTMLElement`. It can be described as a `Component Controller`. Read more about the `Cyborg JS Component` in it's [own section](/component/#/components) . 
+The Component is your connection with a `HTMLElement`. It can be described as a `Component Controller`. Read more about the `Cyborg JS Component` in it's [own section](/component?id=components) . 
 
 ## The View
-The View is a simple connection with a `HTMLElement`. It can be described as a simple responder to data changes. Read more about the `Cyborg JS View` in it's [own section](/view/#/views) . 
+The View is a simple connection with a `HTMLElement`. It can be described as a simple responder to data changes. Read more about the `Cyborg JS View` in it's [own section](/view?id=views) . 
 
 ## Getting started
 The following parts of code is enough to get started:
