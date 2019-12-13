@@ -1,6 +1,6 @@
 {
   "name": "@ypa/cyborg-js",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "CyborgJS - A SEO Friendly Framework",
   "main": "dist/main.umd.js",
   "browser": "dist/main.umd.js",
@@ -13,7 +13,7 @@
     "build": "cross-env NODE_ENV=production rollup -c",
     "dev": "rollup -c",
     "lint": "eslint --ignore-path ./.gitignore './src/**/*.js' --fix",
-    "test": "cross-env NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest --collect-coverage",
     "precommit": "yarn lint --fix",
     "prebuild": "rimraf dist",
     "prepush": "yarn test"

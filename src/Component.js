@@ -5,7 +5,7 @@ import MotherBoard from './MotherBoard';
 
 export default class Component {
   name: string;
-  notifications: Array<string> = [];
+  notifications: $ReadOnlyArray<string> = [];
 
   #el: HTMLElement;
   #events: Array<EventObject>;

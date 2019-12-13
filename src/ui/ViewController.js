@@ -1,6 +1,7 @@
 // @flow
 
 import View from './View';
+import { registerNotification } from '../functions/registerNotification';
 
 export default class ViewController {
   static #instance: ViewController;
@@ -29,6 +30,13 @@ export default class ViewController {
       if (ViewClass) {
         const view: View = new ViewClass();
         view.bind(el);
+        if (view.notifications && view.notifications.length > 0) {
+          registerNotification({
+            name: el.dataset.view,
+            notifications: view.notifications,
+            classRef: view
+          });
+        }
         self.#views.push(view);
       }
     });

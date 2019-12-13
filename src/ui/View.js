@@ -3,13 +3,15 @@
 import CyborgElement from './CyborgElement';
 
 export default class View {
-
   #virtualEl: CyborgElement;
+  notifications: $ReadOnlyArray<string> = [];
 
   bind(pEl: HTMLElement): void {
     this.#virtualEl = new CyborgElement(pEl);
     this.name = pEl.dataset.view;
   };
+
+  handleNotifications(pData: Object): void {}
 
   attr(pName: string, pValue: string): void {
     this.#virtualEl.setAttribute(pName, pValue);
@@ -24,7 +26,7 @@ export default class View {
   }
 
   destroy(): void {
-    this.#virtualEl = undefined;
-    super.destroy();
+    this.#virtualEl.destroy();
+    this.notifications = undefined;
   }
 }
