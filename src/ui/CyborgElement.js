@@ -8,18 +8,20 @@ export default class CyborgElement {
   }
 
   setAttribute(pName: string, pValue: string): void {
-    let attr: Attr = this.#el.attributes.getNamedItem(pName);
-    if (attr === null) {
-      attr = document.createAttribute(pName);
-      attr.value = pValue;
-      this.#el.setAttribute(attr);
-    } else {
-      attr.value = pValue;
-    }
+    const attr: Attr = this.#el.attributes.getNamedItem(pName);
+    attr.value = pValue;
   }
 
   removeAttribute(pName: string): void {
     this.#el.attributes.removeNamedItem(pName);
+  }
+
+  enable(): void {
+    this.#el.disabled = false;
+  }
+
+  disable(): void {
+    this.#el.disabled = true;
   }
 
   setText(pValue: string, pHTML: boolean = false): void {
