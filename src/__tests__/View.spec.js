@@ -38,7 +38,17 @@ test('View has a name and notifications', () => {
 });
 
 test('Views can update attributes', () => {
+  viewA.setAttribute('src', 'another.jpg');
+  expect(document.getElementById('viewA').src).toBe('https://cyborg-js.org/another.jpg');
 
+  viewB.disable();
+  expect(document.getElementById('viewB').disabled).toBeTruthy();
+
+  viewB.enable();
+  expect(document.getElementById('viewB').disabled).toBeFalsy();
+
+  viewA.removeAttribute('disabled');
+  expect(document.getElementById('viewA').disabled).toBeFalsy();
 });
 
 test('Views can update content', () => {
