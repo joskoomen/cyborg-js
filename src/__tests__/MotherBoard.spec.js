@@ -18,7 +18,7 @@ beforeEach(() => {
 test('MotherBoard is singleton', () => {
   expect(motherboard).toBeInstanceOf(MotherBoard);
   expect(() => {
-    new MotherBoard();
+    motherboard = new MotherBoard();
   }).toThrow(/MotherBoard.getInstance()/);
 });
 

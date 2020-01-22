@@ -12,6 +12,10 @@ export default class CyborgElement {
     attr.value = pValue;
   }
 
+  removeAttribute(pName: string): void {
+    this.#el.attributes.removeNamedItem(pName);
+  }
+
   setText(pValue: string, pHTML: boolean = false): void {
     if (pHTML) {
       this.#el.innerHTML = pValue;
