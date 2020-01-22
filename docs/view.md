@@ -20,6 +20,8 @@ Since CyborgJS is made to work on PBA's. A Component lifecycle runs within your 
 | `handleNotifications(pData:Object):void`                      | All notifications are handled by one method. `pData.notification` shows which notification is fired. So you know what to do next |
 | `setAttribute(pName: string, pValue: string): void`                   | Update an attribute value of your element |
 | `removeAttribute(pName: string): void`                   | Remove an attribute value of your element |
+| `enable(): void`                   | Enable your element |
+| `disable(): void`                   | Disable your element |
 | `text(pValue: string): void`                                  | Set `innerText` of your element |
 | `html(pValue: string): void`                                  | Set `innerHTML` of your element |
 | `addClass(pName: string): void`                               | Add a class to your element |

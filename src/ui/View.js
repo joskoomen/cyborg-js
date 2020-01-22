@@ -21,6 +21,14 @@ export default class View {
     this.#virtualEl.removeAttribute(pName);
   }
 
+  enable(): void {
+    this.#virtualEl.enable();
+  }
+
+  disable(): void {
+    this.#virtualEl.disable();
+  }
+
   addClass(pName: string): void {
     this.#virtualEl.addClass(pName);
   }
