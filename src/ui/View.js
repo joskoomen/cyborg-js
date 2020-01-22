@@ -13,8 +13,12 @@ export default class View {
 
   handleNotifications(pData: Object): void {}
 
-  attr(pName: string, pValue: string): void {
+  setAttribute(pName: string, pValue: string): void {
     this.#virtualEl.setAttribute(pName, pValue);
+  }
+
+  removeAttribute(pName: string): void {
+    this.#virtualEl.removeAttribute(pName);
   }
 
   addClass(pName: string): void {

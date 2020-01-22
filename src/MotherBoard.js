@@ -70,7 +70,7 @@ export default class MotherBoard {
    * Window onload handler
    */
   onload(): void {
-    this.#components.forEach((pComponent: any) => {
+    this.#components.forEach((pComponent: Component) => {
       pComponent.onload();
     });
   }

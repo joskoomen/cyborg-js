@@ -8,7 +8,7 @@ let viewB: View;
 let viewC: View;
 
 const createView = () => {
-  let html = '<img id="viewA" data-view="viewA" src="img.png">';
+  let html = '<img id="viewA" data-view="viewA" src="img.png" disabled>';
   html += '<span id="viewB" data-view="viewB">text</span>';
   html += '<span id="viewC" data-view="viewC"><strong>Strong</strong> text</span>';
   window.document.body.innerHTML = html;
@@ -38,8 +38,11 @@ test('View has a name and notifications', () => {
 });
 
 test('Views can update attributes', () => {
-  viewA.attr('src', 'another.jpg');
+  viewA.setAttribute('src', 'another.jpg');
   expect(document.getElementById('viewA').src).toBe('https://cyborg-js.org/another.jpg');
+
+  viewA.removeAttribute('disabled');
+  expect(document.getElementById('viewA').disabled).toBeUndefined();
 });
 
 test('Views can update content', () => {
@@ -61,7 +64,6 @@ test('Views can update classes', () => {
   expect(document.getElementById('viewA').classList.contains('arie')).toBeTruthy();
   viewA.toggleClass('arie');
   expect(document.getElementById('viewA').classList.contains('arie')).toBeFalsy();
-
 });
 
 test('Views handles notifications', () => {
@@ -77,7 +79,6 @@ test('Views handles notifications', () => {
 
 describe('View destroy', () => {
   it('shouldn\'t have a notifications array', () => {
-
     viewA.destroy();
     expect(viewA.notifications).toBeUndefined();
   });
