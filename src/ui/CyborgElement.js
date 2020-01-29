@@ -7,6 +7,11 @@ export default class CyborgElement {
     this.#el = pEl;
   }
 
+  getAttribute(pName: string): Attr {
+    const attr: Attr = this.#el.attributes.getNamedItem(pName);
+    return attr;
+  }
+
   setAttribute(pName: string, pValue: string): void {
     const attr: Attr = this.#el.attributes.getNamedItem(pName);
     attr.value = pValue;
