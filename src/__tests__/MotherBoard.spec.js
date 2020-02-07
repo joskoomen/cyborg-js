@@ -1,7 +1,6 @@
 // @flow
 import MotherBoard from '../MotherBoard';
 import ComponentMock from './__mocks__/ComponentMock';
-import { registerNotification } from '../functions/registerNotification';
 
 let motherboard: MotherBoard;
 
@@ -33,7 +32,7 @@ test('MotherBoard responds on DOMContentLoaded', () => {
 
 test('MotherBoard registers Notifications', () => {
   const cMock = new ComponentMock();
-  registerNotification({
+  motherboard.registerNotification({
     name: 'test',
     notifications: [],
     classRef: cMock
