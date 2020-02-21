@@ -1,12 +1,13 @@
 // @flow
+
 import MotherBoard from './MotherBoard';
-import Component from './Component';
+import Component from './ui/Component';
+import { ResponseBody } from './notifications/ResponseBody';
 import Notification from './notifications/Notification';
-import View from './ui/View';
 
 export {
   MotherBoard,
   Notification,
   Component,
-  View
+  ResponseBody
 };

@@ -1,7 +1,9 @@
 // @flow
 
-import EventObject from './events/EventObject';
-import MotherBoard from './MotherBoard';
+import EventObject from '../events/EventObject';
+import MotherBoard from '../MotherBoard';
+import RenderObject from './RenderObject';
+import type { ResponseBody } from '../notifications/ResponseBody';
 
 export default class Component {
   name: string;
@@ -38,11 +40,12 @@ export default class Component {
     this.motherboard.notifier.notify(pType, pParams);
   }
 
-  handleNotifications(pData: Object): void {}
+  handleNotifications(pData: ResponseBody): void {}
 
   addEventListener(pEventName: string, pHandler: function): void {
-    this.#events.push(new EventObject(pEventName, pHandler));
-    this.el.addEventListener(pEventName, pHandler, false);
+    const handler: function = pHandler.bind(this);
+    this.#events.push(new EventObject(pEventName, handler));
+    this.el.addEventListener(pEventName, handler, false);
   }
 
   removeEventListener(pEventName: string, pHandler: function): void {
@@ -54,15 +57,20 @@ export default class Component {
   }
 
   /**
-   * @param {Object} pData Data object to use
+   * @param {RenderObject} pData Data object to use
    */
-  render(pData: Object): void {
+  render(pData: RenderObject): void {
     if (this.el.children) {
       while (this.el.children.length > 0) {
         this.el.children[0].remove();
       }
     }
-    this.el.innerHTML = this.getTemplate(pData);
+
+    if (pData.template) {
+      this.el.innerHTML = pData.template(pData.data);
+    } else {
+      this.el.innerHTML = this.getTemplate(pData.data);
+    }
     this.motherboard.build(this.el);
   }
 

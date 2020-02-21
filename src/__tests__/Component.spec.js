@@ -1,5 +1,5 @@
 // @flow
-import Component from '../Component';
+import Component from '../ui/Component';
 import NotificationController from '../notifications/NotificationController';
 
 let componentA: Component;

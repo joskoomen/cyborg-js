@@ -2,10 +2,10 @@
 
 export default class Notification {
   #name: string;
-  #target: any;
+  #target: Component;
   #handler: function;
 
-  constructor(pTarget: any, pName: string, pHandler: function) {
+  constructor(pTarget: Component, pName: string, pHandler: function) {
     this.#name = pName;
     this.#handler = pHandler;
     this.#target = pTarget;
@@ -19,7 +19,7 @@ export default class Notification {
     return this.#handler;
   }
 
-  get target(): any {
+  get target(): Component {
     return this.#target;
   }
 }

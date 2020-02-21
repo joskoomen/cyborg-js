@@ -2,6 +2,7 @@
 
 import NotificationController from './notifications/NotificationController';
 import EventNames from './events/EventNames';
+import Component from './ui/Component';
 
 /**
  * Motherboard
@@ -139,7 +140,7 @@ export default class MotherBoard {
     return NotificationController.getInstance();
   }
 
-  get components(): Array<any> {
+  get components(): Array<Component> {
     return this.#components;
   }
 
