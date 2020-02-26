@@ -1,5 +1,7 @@
 // @flow
 
+import { Component } from '../ui/Component';
+
 export default class Notification {
   #name: string;
   #target: Component;

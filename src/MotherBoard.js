@@ -2,7 +2,7 @@
 
 import NotificationController from './notifications/NotificationController';
 import EventNames from './events/EventNames';
-import Component from './ui/Component';
+import { Component } from './ui/Component';
 
 /**
  * Motherboard
@@ -140,7 +140,7 @@ export default class MotherBoard {
     return NotificationController.getInstance();
   }
 
-  get components(): Array<Component> {
+  get components(): $ReadOnlyArray<Component> {
     return this.#components;
   }
 

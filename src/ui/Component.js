@@ -2,10 +2,27 @@
 
 import EventObject from '../events/EventObject';
 import MotherBoard from '../MotherBoard';
-import RenderObject from './RenderObject';
 import type { ResponseBody } from '../notifications/ResponseBody';
 
-export default class Component {
+class RenderObject {
+  #data: Object;
+  #template: function;
+
+  constructor(pData: Object, pTemplate?: function) {
+    this.#data = pData;
+    this.#template = pTemplate;
+  }
+
+  get data(): Object {
+    return this.#data;
+  }
+
+  get template(): function {
+    return this.#template;
+  }
+}
+
+class Component {
   name: string;
   notifications: $ReadOnlyArray<string> = [];
 
@@ -108,3 +125,8 @@ export default class Component {
     this.notifications = undefined;
   }
 }
+
+export {
+  RenderObject,
+  Component
+};
