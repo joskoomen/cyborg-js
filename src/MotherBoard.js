@@ -38,7 +38,7 @@ export default class MotherBoard {
       self.onload();
     };
 
-    window.onbeforeunload = function() {
+    window.onpagehide = function() {
       self.destroy();
     };
 
