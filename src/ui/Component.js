@@ -2,7 +2,6 @@
 
 import EventObject from '../events/EventObject';
 import MotherBoard from '../MotherBoard';
-import type { ResponseBody } from '../notifications/ResponseBody';
 
 class RenderObject {
   #data: Object;
@@ -57,7 +56,7 @@ class Component {
     this.motherboard.notifier.notify(pType, pParams);
   }
 
-  handleNotifications(pData: ResponseBody): void {}
+  handleNotifications(pData: Object): void {}
 
   addEventListener(pEventName: string, pHandler: function): void {
     const handler: function = pHandler.bind(this);

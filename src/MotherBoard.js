@@ -2,7 +2,6 @@
 
 import NotificationController from './notifications/NotificationController';
 import EventNames from './events/EventNames';
-import { Component } from './ui/Component';
 
 /**
  * Motherboard
@@ -11,7 +10,7 @@ export default class MotherBoard {
   static #instance: MotherBoard;
 
   componentsMap: Object = {};
-  #components: Array<Component>;
+  #components: Array<any>;
 
   constructor() {
     if (MotherBoard.#instance) {
@@ -140,7 +139,7 @@ export default class MotherBoard {
     return NotificationController.getInstance();
   }
 
-  get components(): $ReadOnlyArray<Component> {
+  get components(): $ReadOnlyArray<any> {
     return this.#components;
   }
 

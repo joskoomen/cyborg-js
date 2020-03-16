@@ -1,7 +1,5 @@
 // @flow
 import Notification from './Notification';
-import Component from '../ui/Component';
-import { ResponseBody } from './ResponseBody';
 
 export default class NotificationController {
   static #instance: NotificationController;
@@ -35,7 +33,7 @@ export default class NotificationController {
     });
 
     notes.forEach((note: Notification) => {
-      const body: ResponseBody = {
+      const body: Object = {
         notification: pType,
         data: pParams
       };
@@ -49,7 +47,7 @@ export default class NotificationController {
    * @param pType
    * @param pHandler
    */
-  addListener(pTarget: Component, pType: string, pHandler: function): void {
+  addListener(pTarget: any, pType: string, pHandler: function): void {
     const note: Notification = new Notification(pTarget, pType, pHandler.bind(pTarget));
     this.#listeners.push(note);
   }
@@ -59,7 +57,7 @@ export default class NotificationController {
    * @param pType string Notification name
    * @param pTarget Component object
    */
-  removeListener(pType: string, pTarget: Component): void {
+  removeListener(pType: string, pTarget: any): void {
     const listeners: Array<Notification> = this.#listeners;
     const index: number = listeners.findIndex((notification: Notification): boolean => {
       return (notification.name === pType) && (notification.target === pTarget);

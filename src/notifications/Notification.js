@@ -1,13 +1,11 @@
 // @flow
 
-import { Component } from '../ui/Component';
-
 export default class Notification {
   #name: string;
-  #target: Component;
+  #target: any;
   #handler: function;
 
-  constructor(pTarget: Component, pName: string, pHandler: function) {
+  constructor(pTarget: any, pName: string, pHandler: function) {
     this.#name = pName;
     this.#handler = pHandler;
     this.#target = pTarget;
@@ -21,7 +19,7 @@ export default class Notification {
     return this.#handler;
   }
 
-  get target(): Component {
+  get target(): any {
     return this.#target;
   }
 }
