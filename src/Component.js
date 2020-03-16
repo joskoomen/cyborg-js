@@ -1,7 +1,6 @@
 // @flow
 
-import EventObject from '../events/EventObject';
-import MotherBoard from '../MotherBoard';
+import MotherBoard from './MotherBoard';
 
 class RenderObject {
   #data: Object;
@@ -26,7 +25,7 @@ class Component {
   notifications: $ReadOnlyArray<string> = [];
 
   #el: HTMLElement;
-  #events: Array<EventObject>;
+  #events: Array<Object>;
   #motherboard: MotherBoard;
 
   /**
@@ -60,12 +59,12 @@ class Component {
 
   addEventListener(pEventName: string, pHandler: function): void {
     const handler: function = pHandler.bind(this);
-    this.#events.push(new EventObject(pEventName, handler));
+    this.#events.push({ name: pEventName, handler: handler });
     this.el.addEventListener(pEventName, handler, false);
   }
 
   removeEventListener(pEventName: string, pHandler: function): void {
-    const index: number = this.#events.findIndex((evtObj: EventObject) => {
+    const index: number = this.#events.findIndex((evtObj: Object) => {
       return (evtObj.name === pEventName) && (evtObj.handler === pHandler);
     });
     this.#events.splice(index, 1);
@@ -106,7 +105,7 @@ class Component {
     return this.#motherboard;
   }
 
-  get events(): Array<EventObject> {
+  get events(): $ReadOnlyArray<Object> {
     return this.#events;
   }
 

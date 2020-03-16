@@ -52,7 +52,7 @@ test('MotherBoard should remove core on destroy', () => {
   expect(motherboard.components.length).toBeGreaterThanOrEqual(1);
 
   const destroy: function = jest.spyOn(motherboard, 'destroy');
-  window.dispatchEvent(new Event('beforeunload'));
+  window.dispatchEvent(new Event('pagehide'));
   expect(destroy).toHaveBeenCalledTimes(1);
   expect(motherboard.components).toHaveLength(0);
 });

@@ -1,7 +1,7 @@
 // @flow
 
-import NotificationController from './notifications/NotificationController';
-import EventNames from './events/EventNames';
+import NotificationController from './NotificationController';
+import EventNames from './EventNames';
 
 /**
  * Motherboard

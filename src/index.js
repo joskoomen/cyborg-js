@@ -1,8 +1,8 @@
 // @flow
 
 import MotherBoard from './MotherBoard';
-import { Component, RenderObject} from './ui/Component';
-import Notification from './notifications/Notification';
+import { Component, RenderObject } from './Component';
+import Notification from './Notification';
 
 export {
   MotherBoard,
