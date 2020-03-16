@@ -1,9 +1,7 @@
 // @flow
 
-import NotificationController from './notifications/NotificationController';
-import EventNames from './events/EventNames';
-import ViewController from './ui/ViewController';
-import { registerNotification } from './functions/registerNotification';
+import NotificationController from './NotificationController';
+import EventNames from './EventNames';
 
 /**
  * Motherboard
@@ -12,8 +10,7 @@ export default class MotherBoard {
   static #instance: MotherBoard;
 
   componentsMap: Object = {};
-  viewsMap: Object = {};
-  #components: Array<Component>;
+  #components: Array<any>;
 
   constructor() {
     if (MotherBoard.#instance) {
@@ -55,10 +52,6 @@ export default class MotherBoard {
   bind(): void {
     this.build(window.document);
 
-    const views: NodeList<HTMLElement> = document.querySelectorAll('[data-view]');
-    if (views.length > 0) {
-      ViewController.getInstance().bind(views, this.viewsMap);
-    }
     const html: HTMLHtmlElement | null = document.querySelector('html');
     if (html) {
       html.classList.remove('no-js');
@@ -86,16 +79,8 @@ export default class MotherBoard {
           if (ComponentClass) {
             let component: Component = new ComponentClass();
 
-            if (el.dataset.notifications) {
-              console.warn('registering notifications inline via data-notifications is deprecated amd will be removed in a future release. Please use the notifications "array" inside your class');
-              registerNotification({
-                name: componentString,
-                notifications: el.dataset.notifications.replace(' ', '').split(','),
-                classRef: component
-              });
-            }
             if (component.notifications && component.notifications.length > 0) {
-              registerNotification({
+              this.registerNotification({
                 name: componentString,
                 notifications: component.notifications,
                 classRef: component
@@ -136,6 +121,16 @@ export default class MotherBoard {
     }
   }
 
+  registerNotification(pObject: Object): void {
+    if (pObject.notifications) {
+      const notifications: $ReadOnlyArray<string> = pObject.notifications;
+      const classRef: Component = pObject.classRef;
+      notifications.forEach((pNotification: string) => {
+        this.notifier.addListener(classRef, pNotification, classRef.handleNotifications);
+      });
+    }
+  }
+
   /**
    * Get NotificationController access.
    * @returns {NotificationController}
@@ -144,7 +139,7 @@ export default class MotherBoard {
     return NotificationController.getInstance();
   }
 
-  get components(): Array<any> {
+  get components(): $ReadOnlyArray<any> {
     return this.#components;
   }
 
@@ -159,7 +154,6 @@ export default class MotherBoard {
    */
   destroy(): void {
     const self = this;
-    ViewController.getInstance().destroy();
     while (self.#components.length > 0) {
       const component: Component = self.#components[0];
       if (component) {
@@ -168,6 +162,5 @@ export default class MotherBoard {
       self.#components.shift();
     }
     self.componentsMap = undefined;
-    self.viewsMap = undefined;
   }
 }
