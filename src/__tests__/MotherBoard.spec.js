@@ -1,7 +1,6 @@
 // @flow
 import MotherBoard from '../MotherBoard';
 import ComponentMock from './__mocks__/ComponentMock';
-import { registerNotification } from '../functions/registerNotification';
 
 let motherboard: MotherBoard;
 
@@ -33,7 +32,7 @@ test('MotherBoard responds on DOMContentLoaded', () => {
 
 test('MotherBoard registers Notifications', () => {
   const cMock = new ComponentMock();
-  registerNotification({
+  motherboard.registerNotification({
     name: 'test',
     notifications: [],
     classRef: cMock
@@ -53,7 +52,7 @@ test('MotherBoard should remove core on destroy', () => {
   expect(motherboard.components.length).toBeGreaterThanOrEqual(1);
 
   const destroy: function = jest.spyOn(motherboard, 'destroy');
-  window.dispatchEvent(new Event('beforeunload'));
+  window.dispatchEvent(new Event('pagehide'));
   expect(destroy).toHaveBeenCalledTimes(1);
   expect(motherboard.components).toHaveLength(0);
 });

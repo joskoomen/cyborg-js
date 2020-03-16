@@ -43,7 +43,7 @@ const config = [
     output: {
       sourcemap: true,
       name: pkg.name,
-      file: pkg.browser,
+      file: pkg.main,
       format: 'umd'
     },
     plugins: [

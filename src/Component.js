@@ -1,14 +1,31 @@
 // @flow
 
-import EventObject from './events/EventObject';
 import MotherBoard from './MotherBoard';
 
-export default class Component {
+class RenderObject {
+  #data: Object;
+  #template: function;
+
+  constructor(pData: Object, pTemplate?: function) {
+    this.#data = pData;
+    this.#template = pTemplate;
+  }
+
+  get data(): Object {
+    return this.#data;
+  }
+
+  get template(): function {
+    return this.#template;
+  }
+}
+
+class Component {
   name: string;
   notifications: $ReadOnlyArray<string> = [];
 
   #el: HTMLElement;
-  #events: Array<EventObject>;
+  #events: Array<Object>;
   #motherboard: MotherBoard;
 
   /**
@@ -41,12 +58,13 @@ export default class Component {
   handleNotifications(pData: Object): void {}
 
   addEventListener(pEventName: string, pHandler: function): void {
-    this.#events.push(new EventObject(pEventName, pHandler));
-    this.el.addEventListener(pEventName, pHandler, false);
+    const handler: function = pHandler.bind(this);
+    this.#events.push({ name: pEventName, handler: handler });
+    this.el.addEventListener(pEventName, handler, false);
   }
 
   removeEventListener(pEventName: string, pHandler: function): void {
-    const index: number = this.#events.findIndex((evtObj: EventObject) => {
+    const index: number = this.#events.findIndex((evtObj: Object) => {
       return (evtObj.name === pEventName) && (evtObj.handler === pHandler);
     });
     this.#events.splice(index, 1);
@@ -54,15 +72,20 @@ export default class Component {
   }
 
   /**
-   * @param {Object} pData Data object to use
+   * @param {RenderObject} pData Data object to use
    */
-  render(pData: Object): void {
+  render(pData: RenderObject): void {
     if (this.el.children) {
       while (this.el.children.length > 0) {
         this.el.children[0].remove();
       }
     }
-    this.el.innerHTML = this.getTemplate(pData);
+
+    if (pData.template) {
+      this.el.innerHTML = pData.template(pData.data);
+    } else {
+      this.el.innerHTML = this.getTemplate(pData.data);
+    }
     this.motherboard.build(this.el);
   }
 
@@ -82,7 +105,7 @@ export default class Component {
     return this.#motherboard;
   }
 
-  get events(): Array<EventObject> {
+  get events(): $ReadOnlyArray<Object> {
     return this.#events;
   }
 
@@ -100,3 +123,8 @@ export default class Component {
     this.notifications = undefined;
   }
 }
+
+export {
+  RenderObject,
+  Component
+};
