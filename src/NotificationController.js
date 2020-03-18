@@ -35,7 +35,7 @@ export default class NotificationController {
     notes.forEach((note: Notification) => {
       const body: Object = {
         notification: pType,
-        data: pParams
+        payload: pParams
       };
       note.handler(body);
     });
