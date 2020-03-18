@@ -8,7 +8,7 @@ Every `component` can communicate through the integrated `Notification` system.
 All `components` and `views` have a `destroy` method to remove the dom element and related events.
 
 ## Register your components
-Every `component` and `view` is connected to a `HTMLElement` via your web application views or html pages.
+Every `component` is connected to a `HTMLElement` via your web application views or html pages.
 
 ```
 <ul class="menu" data-component="my-menu">
@@ -29,7 +29,7 @@ MotherBoard.getInstance().componentsMap = {
 Where the `key` is equal to your `data-component` value and the value is the `class` of the `component`.
 
 ## Notifications
-`Notifications` are like global events. You can add and remove listeners in your `component`. Add listeners via the `notifications array` or the `addListener` method.
+`Notifications` are like global events. You can add and remove listeners in your `component`. Add listeners via the `notifications array` or the `addListener` method. Each Notification that's triggered will have 2 keys. `notification` and `payload`.
 
 The following example is how to add or remove a listener, or send a notification in your javascript.
 ```.js
@@ -48,9 +48,6 @@ this.notify('my-notification', optionalDataObject);
 ```
 ## The Component
 The Component is your connection with a `HTMLElement`. It can be described as a `Component Controller`. Read more about the `Cyborg JS Component` in it's [own section](/component?id=components) . 
-
-## The View
-The View is a simple connection with a `HTMLElement`. It can be described as a simple responder to data changes. Read more about the `Cyborg JS View` in it's [own section](/view?id=views) . 
 
 ## Getting started
 The following parts of code is enough to get started:
@@ -96,7 +93,7 @@ export default class FirstComponent extends Component {
       case 'someChanges':
         // this.render uses the getTemplate method to render
         // new data with the given template.
-        this.render({'title': pData.title});
+        this.render({'title': pData.payload.title});
         break;
       case 'updateSomething':
         this.render({'title': 'update something'});
