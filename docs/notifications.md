@@ -1,7 +1,7 @@
 #  Notifications
 A Cyborg JS `Notification` is created when sending a `notification`. Each `Notification` is an Object that will have 2 keys at any time.
 
-``` .js
+``` .javascript
 let data:Object = {
     notification:string,
     payload:Object

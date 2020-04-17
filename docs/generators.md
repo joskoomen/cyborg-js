@@ -17,7 +17,7 @@ npm install @ypa/cyborg-js-generators --save-dev
 
 ## Configuration
 1) Create a `plopfile.js` file in the root of your project and add the following content. Change `./your/scripts/source/path/` with the relative path to your scripts. In this folder the generated files will be added. 
-```.js
+```.javascript
 module.exports = function(plop) {
   plop.load('@ypa/cyborg-js-generators', {
     sourcePath: './your/scripts/source/path/'
