@@ -10,7 +10,7 @@ All `components` and `views` have a `destroy` method to remove the dom element a
 ## Register your components
 Every `component` is connected to a `HTMLElement` via your web application views or html pages.
 
-```
+```.html
 <ul class="menu" data-component="my-menu">
     <li>Menu Label</li>
     <li>Menu Label</li>
@@ -19,7 +19,7 @@ Every `component` is connected to a `HTMLElement` via your web application views
 </ul>
 ```
 And registered in your app with all other components in the `componentsMap`:
-```.js
+```.javascript
 
 MotherBoard.getInstance().componentsMap = {
   'my-menu': MyMenuComponent,
@@ -32,7 +32,7 @@ Where the `key` is equal to your `data-component` value and the value is the `cl
 `Notifications` are like global events. You can add and remove listeners in your `component`. Add listeners via the `notifications array` or the `addListener` method. Each Notification that's triggered will have 2 keys. `notification` and `payload`.
 
 The following example is how to add or remove a listener, or send a notification in your javascript.
-```.js
+```.javascript
 // inited listeners
 notifications:Array<string> = ['my-inited-notification','another-inited-notification'];
 
@@ -53,7 +53,7 @@ The Component is your connection with a `HTMLElement`. It can be described as a 
 The following parts of code is enough to get started:
 
 ### App.js 
-```.js
+```.javascript
 // @flow
 
 import FirstComponent from './components/FirstComponent';
@@ -73,8 +73,9 @@ class App {
 const app = new App();
 ```
 ### FirstComponent.js 
-```.js
+```.javascript
 // @flow
+
 import { Component } from '@ypa/cyborg-js';
 
 export default class FirstComponent extends Component {
@@ -107,8 +108,9 @@ export default class FirstComponent extends Component {
 ```
 
 ### AnotherComponent.js 
-```.js
+```.javascript
 // @flow
+
 import { Component } from '@ypa/cyborg-js';
 
 export default class AnotherComponent extends Component {
@@ -131,7 +133,7 @@ export default class AnotherComponent extends Component {
 ```
 
 #### HTML
-```
+```.html
     <div class="container">
         <div data-component="first">
             <!-- The data-component attribute is part where you map the Class to this HTMLElement -->
