@@ -1,6 +1,6 @@
 {
   "name" : "@ypa/cyborg-js",
-  "version" : "2.2.0",
+  "version" : "2.2.1",
   "description" : "CyborgJS - A SEO Friendly PBA Framework",
   "main" : "dist/main.umd.js",
   "author" : "YPA B.V. <info@yourpersonalagency.nl>",
