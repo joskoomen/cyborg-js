@@ -1,4 +1,8 @@
 #  Cyborg JS
+
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/@ypa/cyborg-js)
+![npm version](https://img.shields.io/npm/v/@ypa/cyborg-js)
+
 Cyborg JS is a SEO friendly framework created with [Flow type](https://flow.org/) , specially created for Page Based Applications.
 
 Every Cyborg JS application starts with it's `MotherBoard`. The `MotherBoard` is a `singleton` and the center of front-end communication.
