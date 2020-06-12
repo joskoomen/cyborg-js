@@ -43,6 +43,10 @@ class Component {
     // window.onload trigger for component.
   }
 
+  onunload(): void {
+    // window.onunload trigger for component.
+  }
+
   addListener(pType: string) {
     this.motherboard.notifier.addListener(this, pType, this.handleNotifications);
   }

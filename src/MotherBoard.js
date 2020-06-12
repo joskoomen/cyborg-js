@@ -37,6 +37,10 @@ export default class MotherBoard {
       self.onload();
     };
 
+    window.onunload = function() {
+      self.onunload();
+    };
+
     window.onpagehide = function() {
       self.destroy();
     };
@@ -57,15 +61,6 @@ export default class MotherBoard {
       html.classList.remove('no-js');
       html.classList.add('js');
     }
-  }
-
-  /**
-   * Window onload handler
-   */
-  onload(): void {
-    this.#components.forEach((pComponent: Component) => {
-      pComponent.onload();
-    });
   }
 
   build(pEl: HTMLElement): void {
@@ -119,6 +114,21 @@ export default class MotherBoard {
         });
       });
     }
+  }
+
+  /**
+   * Window onload handler
+   */
+  onload(): void {
+    this.#components.forEach((pComponent: Component) => {
+      pComponent.onload();
+    });
+  }
+
+  onunload(): void {
+    this.#components.forEach((pComponent: Component) => {
+      pComponent.onunload();
+    });
   }
 
   registerNotification(pObject: Object): void {
