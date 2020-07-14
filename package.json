@@ -1,24 +1,23 @@
 {
-  "name" : "@ypa/cyborg-js",
-  "version" : "2.2.1",
-  "description" : "CyborgJS - A SEO Friendly PBA Framework",
-  "main" : "dist/main.umd.js",
-  "author" : "YPA B.V. <info@yourpersonalagency.nl>",
-  "contributors" : [
+  "name": "@ypa/cyborg-js",
+  "version": "3.0.0",
+  "description": "CyborgJS - A SEO Friendly PBA Framework",
+  "main": "dist/main.umd.js",
+  "author": "YPA B.V. <info@yourpersonalagency.nl>",
+  "contributors": [
     {
-      "name" : "Jos Koomen",
-      "email" : "jos@yourpersonalagency.nl",
-      "url" : "https://joskoo.men"
+      "name": "Jos Koomen",
+      "email": "jos@yourpersonalagency.nl",
+      "url": "https://joskoo.men"
     }
   ],
-  "keywords" : [
+  "keywords": [
     "framework",
     "front-end",
     "javascript",
     "js",
     "dom",
-    "flow",
-    "flowtype",
+    "typescript",
     "ecmascript",
     "es6",
     "es2015",
@@ -26,70 +25,66 @@
     "web",
     "seo-friendly"
   ],
-  "license" : "MIT",
-  "private" : false,
-  "repository" : "https://github.com/your-personal-agency/cyborg-js",
-  "bugs" : {
-    "url" : "https://github.com/your-personal-agency/cyborg-js/issues",
-    "email" : "jos@yourpersonalagency.nl"
+  "license": "MIT",
+  "private": false,
+  "repository": "https://github.com/your-personal-agency/cyborg-js",
+  "bugs": {
+    "url": "https://github.com/your-personal-agency/cyborg-js/issues",
+    "email": "jos@yourpersonalagency.nl"
   },
-  "homepage" : "https://cyborg-js.org",
-  "scripts" : {
-    "build" : "cross-env NODE_ENV=production rollup -c",
-    "dev" : "rollup -c",
-    "lint" : "eslint --ignore-path ./.gitignore './src/**/*.js' --fix",
-    "test" : "cross-env NODE_ENV=test jest --collect-coverage",
-    "precommit" : "yarn lint --fix",
-    "prebuild" : "rimraf dist",
-    "prepush" : "yarn test"
+  "homepage": "https://cyborg-js.org",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production rollup -c",
+    "dev": "rollup -c",
+    "lint": "eslint --ignore-path ./.gitignore './src/**/*.js' --fix",
+    "test": "cross-env NODE_ENV=test jest --collect-coverage",
+    "precommit": "yarn lint --fix",
+    "prebuild": "rimraf dist",
+    "prepush": "yarn test"
   },
-  "engines" : {
-    "node" : "<13.0.0",
-    "npm" : ">=6.0.0"
+  "engines": {
+    "node": "^12.0"
   },
-  "files" : [
+  "files": [
     "dist",
     "src"
   ],
-  "dependencies" : {
-    "core-js" : "^3.2.1",
-    "lodash.clonedeep" : "^4.5.0",
-    "lodash.isequal" : "^4.5.0"
+  "dependencies": {
+    "core-js": "^3.2.1",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.isequal": "^4.5.0"
   },
-  "devDependencies" : {
-    "@babel/core" : "^7.4.3",
-    "@babel/plugin-external-helpers" : "^7.2.0",
-    "@babel/plugin-proposal-class-properties" : "^7.4.4",
-    "@babel/plugin-proposal-private-methods" : "^7.4.3",
-    "@babel/plugin-transform-classes" : "^7.4.3",
-    "@babel/preset-env" : "^7.4.3",
-    "@babel/preset-flow" : "^7.0.0",
-    "babel-eslint" : "^10.0.1",
-    "babel-jest" : "^24.7.1",
-    "babel-loader" : "^8.0.5",
-    "babel-preset-minify" : "^0.5.0",
-    "cross-env" : "^5.2.0",
-    "eslint" : "^5.16.0",
-    "eslint-config-standard" : "^12.0.0",
-    "eslint-plugin-babel" : "^5.3.0",
-    "eslint-plugin-flow" : "^2.29.1",
-    "eslint-plugin-flowtype" : "^3.6.1",
-    "eslint-plugin-import" : "^2.17.2",
-    "eslint-plugin-node" : "^8.0.1",
-    "eslint-plugin-promise" : "^4.1.1",
-    "eslint-plugin-standard" : "^4.0.0",
-    "flow-bin" : "^0.102.0",
-    "jest" : "^24.7.1",
-    "jest-environment-jsdom" : "^24.9.0",
-    "rimraf" : "^2.6.3",
-    "rollup" : "^1.12.5",
-    "rollup-plugin-babel" : "^4.3.2",
-    "rollup-plugin-commonjs" : "^10.0.0",
-    "rollup-plugin-node-resolve" : "^5.0.0",
-    "rollup-plugin-sourcemaps" : "^0.4.2",
-    "rollup-plugin-terser" : "^5.1.2",
-    "stylelint" : "^10.0.1",
-    "webpack" : "^4.30.0",
-    "webpack-cli" : "^3.3.1"
+  "devDependencies": {
+    "@babel/core": "^7.10.4",
+    "@babel/plugin-external-helpers": "^7.2.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-private-methods": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-typescript": "^7.10.4",
+    "@rollup/plugin-babel": "^5.1.0",
+    "@rollup/plugin-commonjs": "^14.0.0",
+    "@rollup/plugin-node-resolve": "^8.4.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.7.1",
+    "babel-loader": "^8.0.5",
+    "babel-preset-minify": "^0.5.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "flow-bin": "^0.102.0",
+    "jest": "^24.7.1",
+    "jest-environment-jsdom": "^24.9.0",
+    "rimraf": "^2.6.3",
+    "rollup": "^2.21.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-terser": "^5.1.2",
+    "typescript": "^3.9.6",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1"
   }
 }
