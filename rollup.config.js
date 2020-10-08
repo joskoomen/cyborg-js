@@ -1,36 +1,20 @@
 /* eslint-disable filenames/match-exported, sort-keys */
-import pkg from './package.json';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import babel from '@rollup/plugin-babel';
-import { terser } from 'rollup-plugin-terser';
-import sourcemaps from 'rollup-plugin-sourcemaps';
-
-// eslint-disable-next-line no-process-env
-const production = process.env.NODE_ENV === 'production';
+import typescript from "@rollup/plugin-typescript";
+import commonjs from "@rollup/plugin-commonjs";
+import resolve from "@rollup/plugin-node-resolve";
+import pkg from "./package.json";
 
 const plugins = [
-  sourcemaps(),
-  babel({
-    exclude: [
-      '../../node_modules/**',
-      'node_modules/**'
-    ]
-  }),
   resolve({
     customResolveOptions: {
-      moduleDirectory: [
-        'node_modules',
-        '../../node_modules'
-      ]
+      moduleDirectory: ["node_modules", "../../node_modules"]
     }
   }),
   commonjs()
 ];
 
-// NOTE: see https://github.com/rollup/rollup/issues/408 to understand why we silences `THIS_IS_UNDEFINED` warnings
 const onwarn = (warning, warn) => {
-  if (warning.code === 'THIS_IS_UNDEFINED') {
+  if (warning.code === "THIS_IS_UNDEFINED") {
     return;
   }
   warn(warning);
@@ -38,18 +22,15 @@ const onwarn = (warning, warn) => {
 
 const config = [
   {
-    input: 'src/index.js',
+    input: "src/index.ts",
     onwarn,
     output: {
       sourcemap: true,
       name: pkg.name,
       file: pkg.main,
-      format: 'umd'
+      format: "umd"
     },
-    plugins: [
-      ...plugins,
-      production && terser()
-    ]
+    plugins: [...plugins, typescript()]
   }
 ];
 
