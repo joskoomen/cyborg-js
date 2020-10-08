@@ -1,37 +1,28 @@
-/* eslint-disable filenames/match-exported, sort-keys */
-import typescript from "@rollup/plugin-typescript";
-import commonjs from "@rollup/plugin-commonjs";
-import resolve from "@rollup/plugin-node-resolve";
+import typescript from "rollup-plugin-typescript2";
 import pkg from "./package.json";
-
-const plugins = [
-  resolve({
-    customResolveOptions: {
-      moduleDirectory: ["node_modules", "../../node_modules"]
-    }
-  }),
-  commonjs()
-];
-
-const onwarn = (warning, warn) => {
-  if (warning.code === "THIS_IS_UNDEFINED") {
-    return;
-  }
-  warn(warning);
-};
-
-const config = [
-  {
-    input: "src/index.ts",
-    onwarn,
-    output: {
-      sourcemap: true,
-      name: pkg.name,
+import { terser } from "rollup-plugin-terser";
+export default {
+  input: "src/index.ts", // our source file
+  output: [
+    {
       file: pkg.main,
-      format: "umd"
+      format: "cjs"
     },
-    plugins: [...plugins, typescript()]
-  }
-];
-
-export default config;
+    {
+      file: pkg.module,
+      format: "es" // the preferred format
+    },
+    {
+      file: pkg.browser,
+      format: "iife",
+      name: "CyborgJs" // the global which can be used in a browser
+    }
+  ],
+  external: [...Object.keys(pkg.dependencies || {})],
+  plugins: [
+    typescript({
+      typescript: require("typescript")
+    }),
+    terser() // minifies generated bundles
+  ]
+};

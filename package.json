@@ -3,6 +3,8 @@
   "version": "3.0.0",
   "description": "CyborgJS - A SEO Friendly PBA Framework",
   "main": "dist/main.umd.js",
+  "browser": "dist/main.js",
+  "module": "dist/main.es.js",
   "typings": "dist/index.d.ts",
   "author": "YPA B.V. <info@yourpersonalagency.nl>",
   "contributors": [
@@ -39,7 +41,7 @@
     "dev": "rollup -c",
     "lint": "eslint --ignore-path ./.gitignore './src/**/*.ts' --fix",
     "test": "cross-env NODE_ENV=test jest --collect-coverage",
-    "precommit": "yarn lint --fix",
+    "precommit": "yarn lint --fix && yarn run build",
     "prebuild": "rimraf dist",
     "prepush": "yarn test"
   },
@@ -48,17 +50,18 @@
     "src"
   ],
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^11.0.0",
-    "@rollup/plugin-node-resolve": "^9.0.0",
-    "@rollup/plugin-typescript": "^3.1.1",
     "@typescript-eslint/eslint-plugin": "^2.19.0",
     "@typescript-eslint/parser": "^2.19.0",
+    "babel-eslint": "^10.0.1",
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
+    "fsevents": "^2",
     "prettier": "^1.19.1",
-    "rollup": "^1.20.0",
+    "rollup": "^2.29.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.27.3",
     "tslib": "^2.0.2",
     "typescript": "^4.0.0"
   },
