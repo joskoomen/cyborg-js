@@ -1,56 +1,28 @@
-/* eslint-disable filenames/match-exported, sort-keys */
-import pkg from './package.json';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import babel from 'rollup-plugin-babel';
-import { terser } from 'rollup-plugin-terser';
-import sourcemaps from 'rollup-plugin-sourcemaps';
-
-// eslint-disable-next-line no-process-env
-const production = process.env.NODE_ENV === 'production';
-
-const plugins = [
-  sourcemaps(),
-  babel({
-    exclude: [
-      '../../node_modules/**',
-      'node_modules/**'
-    ]
-  }),
-  resolve({
-    customResolveOptions: {
-      moduleDirectory: [
-        'node_modules',
-        '../../node_modules'
-      ]
-    }
-  }),
-  commonjs()
-];
-
-// NOTE: see https://github.com/rollup/rollup/issues/408 to understand why we silences `THIS_IS_UNDEFINED` warnings
-const onwarn = (warning, warn) => {
-  if (warning.code === 'THIS_IS_UNDEFINED') {
-    return;
-  }
-  warn(warning);
-};
-
-const config = [
-  {
-    input: 'src/index.js',
-    onwarn,
-    output: {
-      sourcemap: true,
-      name: pkg.name,
+import typescript from "rollup-plugin-typescript2";
+import pkg from "./package.json";
+import { terser } from "rollup-plugin-terser";
+export default {
+  input: "src/index.ts", // our source file
+  output: [
+    {
       file: pkg.main,
-      format: 'umd'
+      format: "cjs"
     },
-    plugins: [
-      ...plugins,
-      production && terser()
-    ]
-  }
-];
-
-export default config;
+    {
+      file: pkg.module,
+      format: "es" // the preferred format
+    },
+    {
+      file: pkg.browser,
+      format: "iife",
+      name: "CyborgJs" // the global which can be used in a browser
+    }
+  ],
+  external: [...Object.keys(pkg.dependencies || {})],
+  plugins: [
+    typescript({
+      typescript: require("typescript")
+    }),
+    terser() // minifies generated bundles
+  ]
+};
