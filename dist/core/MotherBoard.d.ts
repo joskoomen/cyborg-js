@@ -6,7 +6,7 @@ declare interface ComponentConstructor {
 }
 export default class MotherBoard {
     static _instance: MotherBoard;
-    componentsMap: Record<string, any>;
+    componentsMap: Record<string, IAmComponent>;
     private _components;
     private _data;
     constructor();
