@@ -1,11 +1,10 @@
 import MotherBoard from './MotherBoard';
-import IAmComponent from '../interfaces/IAmComponent';
 import { EventObject } from '../events/EventObject';
 import { walkDom } from '../functions/walkDom';
 import { cyborgEval } from '../functions/cyborgEval';
 import { NotificationBody } from '../notifications/NotificationBody';
 
-export default class Component implements IAmComponent {
+export default class Component {
   name = '';
   notifications: ReadonlyArray<string> = [];
   private _el: HTMLElement | undefined;
@@ -90,8 +89,8 @@ export default class Component implements IAmComponent {
     this.motherboard.notifier.notify(pType, pParams);
   }
 
-  handleNotifications(pData: NotificationBody): void {
-    pData.notification;
+  handleNotifications(pObject: NotificationBody): void {
+    pObject.notification;
   }
 
   registerInlineListeners(): void {

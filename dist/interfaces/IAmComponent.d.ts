@@ -4,8 +4,6 @@ import ICanHandleNotifications from './ICanHandleNotifications';
 import ICanHandleEvents from './ICanHandleEvents';
 import ICanNotify from './ICanNotify';
 export default interface IAmComponent extends ICanBind, ICanDestroy, ICanHandleNotifications, ICanNotify, ICanHandleEvents {
-    readonly el: HTMLElement | undefined;
-    notifications: ReadonlyArray<string>;
     onload(): void;
     onunload(): void;
 }

@@ -2,10 +2,10 @@ import ICanHandleNotifications from '../interfaces/ICanHandleNotifications';
 import { NotificationRegistration } from '../notifications/NotificationRegistration';
 import EventNames from '../constants/EventNames';
 import NotificationController from '../notifications/NotificationController';
-import IAmComponent from '../interfaces/IAmComponent';
+import Component from './Component';
 
 declare interface ComponentConstructor {
-  new (): IAmComponent;
+  new (): Component;
 }
 
 declare const componentsMapping: Map<string, ComponentConstructor>;
@@ -13,8 +13,8 @@ declare const componentsMapping: Map<string, ComponentConstructor>;
 export default class MotherBoard {
   static _instance: MotherBoard;
 
-  public componentsMap: Record<string, IAmComponent> = {};
-  private _components: Array<IAmComponent> = [];
+  public componentsMap: Record<string, Component> = {};
+  private _components: Array<Component> = [];
   private _data: Record<string, any> = {};
 
   constructor() {
@@ -88,7 +88,7 @@ export default class MotherBoard {
               componentString
             );
             if (ComponentClass) {
-              const component: IAmComponent = new ComponentClass();
+              const component: Component = new ComponentClass();
               if (
                 component.notifications &&
                 component.notifications.length > 0
@@ -114,19 +114,19 @@ export default class MotherBoard {
    * Window onload handler
    */
   onload(): void {
-    this._components.forEach((pComponent: IAmComponent) => {
+    this._components.forEach((pComponent: Component) => {
       pComponent.onload();
     });
   }
 
   onunload(): void {
-    this._components.forEach((pComponent: IAmComponent) => {
+    this._components.forEach((pComponent: Component) => {
       pComponent.onunload();
     });
   }
 
-  destroyComponentListener(pComponent: IAmComponent, pEl: HTMLElement): void {
-    let component: IAmComponent | null = pComponent;
+  destroyComponentListener(pComponent: Component, pEl: HTMLElement): void {
+    let component: Component | null = pComponent;
     let el: HTMLElement | null = pEl;
     if (el) {
       if (window.MutationObserver) {
@@ -188,7 +188,7 @@ export default class MotherBoard {
     return this._data;
   }
 
-  get components(): ReadonlyArray<IAmComponent> {
+  get components(): ReadonlyArray<Component> {
     return this._components;
   }
 
@@ -206,7 +206,7 @@ export default class MotherBoard {
    */
   destroy(): void {
     while (this._components.length > 0) {
-      const component: IAmComponent = this._components[0];
+      const component: Component = this._components[0];
       if (component && component.el) {
         component.el.remove();
       }

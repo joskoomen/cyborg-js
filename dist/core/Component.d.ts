@@ -1,7 +1,6 @@
 import MotherBoard from './MotherBoard';
-import IAmComponent from '../interfaces/IAmComponent';
 import { NotificationBody } from '../notifications/NotificationBody';
-export default class Component implements IAmComponent {
+export default class Component {
     name: string;
     notifications: ReadonlyArray<string>;
     private _el;
@@ -20,7 +19,7 @@ export default class Component implements IAmComponent {
     addListener(pType: string): void;
     removeListener(pType: string): void;
     notify(pType: string, pParams?: Record<string, any>): void;
-    handleNotifications(pData: NotificationBody): void;
+    handleNotifications(pObject: NotificationBody): void;
     registerInlineListeners(): void;
     addEventListener(pEventName: string, pHandler: EventListenerOrEventListenerObject): void;
     removeEventListener(pEventName: string, pHandler: EventListenerOrEventListenerObject): void;
