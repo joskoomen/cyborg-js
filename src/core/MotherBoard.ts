@@ -166,10 +166,10 @@ export default class MotherBoard {
       const notifications: ReadonlyArray<string> = pObject.notifications;
       const classRef: ICanHandleNotifications = pObject.classRef;
       notifications.forEach((pNotification: string) => {
-        // eslint-disable-next-line @typescript-eslint/unbound-method
         this.notifier.addNotificationListener(
           classRef,
           pNotification,
+          // eslint-disable-next-line @typescript-eslint/unbound-method
           classRef.handleNotifications
         );
       });

@@ -24,6 +24,6 @@
     "dist",
     "docs",
     "rollup.config.js",
-    "**/*.spec.ts"
+    "src/core/__tests__/*.spec.ts"
   ]
 }
