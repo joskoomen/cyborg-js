@@ -6,7 +6,7 @@ import { NotificationBody } from '../notifications/NotificationBody';
 
 export default class Component {
   name = '';
-  notifications: ReadonlyArray<string> = [];
+  
   private _el: HTMLElement | undefined;
   private _events: Array<EventObject>;
   private _motherboard: MotherBoard;
@@ -206,6 +206,10 @@ export default class Component {
   getTemplate(pData?: Record<string, any>): string {
     pData = pData || {};
     return '';
+  }
+
+  get notifications(): ReadonlyArray<string>  {
+    return []; 
   }
 
   get el(): HTMLElement | undefined {

@@ -11,6 +11,9 @@ export default interface IAmComponent
     ICanNotify,
     ICanHandleEvents {
 
+  notifications: ReadonlyArray<string>;
+  el: HTMLElement | undefined;
+  
   onload(): void;
 
   onunload(): void;

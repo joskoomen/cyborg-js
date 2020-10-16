@@ -1,11 +1,10 @@
 {
   "name": "@ypa/cyborg-js",
-  "version": "3.0.8-beta",
+  "version": "3.0.13-beta",
   "description": "CyborgJS - A SEO Friendly PBA Framework",
-  "main": "dist/main.umd.js",
-  "browser": "dist/main.js",
-  "module": "dist/main.es.js",
-  "typings": "dist/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "author": "YPA B.V. <info@yourpersonalagency.nl>",
   "contributors": [
     {
