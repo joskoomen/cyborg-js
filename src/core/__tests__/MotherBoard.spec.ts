@@ -4,10 +4,11 @@ import { mocked } from 'ts-jest/utils';
 import Component from '../Component';
 
 let motherboard: MotherBoard;
-let component: Component; 
+let component: Component;
 
 const createView = () => {
-  window.document.body.innerHTML = '<div id="test" data-component="test"><span>Hello Test</span></div>';
+  window.document.body.innerHTML =
+    '<div id="test" data-component="test"><span>Hello Test</span></div>';
 };
 
 beforeAll(() => {
@@ -16,7 +17,6 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  
   motherboard = MotherBoard.getInstance();
   motherboard.componentsMap = { test: component };
   createView();
@@ -58,7 +58,7 @@ test('MotherBoard should remove core on destroy', () => {
     component.bind(test);
     motherboard.build(test);
     expect(motherboard.components.length).toBeGreaterThanOrEqual(1);
-  
+
     const destroy: any = jest.spyOn(motherboard, 'destroy');
     window.dispatchEvent(new Event('pagehide'));
     expect(destroy).toHaveBeenCalledTimes(1);

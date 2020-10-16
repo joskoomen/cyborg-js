@@ -1,13 +1,12 @@
 import MotherBoard from './MotherBoard';
-import IAmComponent from '../interfaces/IAmComponent';
 import { EventObject } from '../events/EventObject';
 import { walkDom } from '../functions/walkDom';
 import { cyborgEval } from '../functions/cyborgEval';
 import { NotificationBody } from '../notifications/NotificationBody';
 
-export default class Component implements IAmComponent {
+export default class Component {
   name = '';
-  notifications: ReadonlyArray<string> = [];
+  
   private _el: HTMLElement | undefined;
   private _events: Array<EventObject>;
   private _motherboard: MotherBoard;
@@ -36,18 +35,23 @@ export default class Component implements IAmComponent {
       pEventName: string,
       pHandler: Function
     ): HTMLElement => {
-      const index: number = this._events.findIndex((evtObj: EventObject) => {
-        return evtObj.name === pEventName && evtObj.handler === pHandler;
-      });
+      const index: number = this._events.findIndex(
+        (evtObj: EventObject) => {
+          return (
+            evtObj.name === pEventName &&
+            evtObj.handler === pHandler
+          );
+        }
+      );
       this._events.splice(index, 1);
       return pTarget;
     };
   }
 
   /**
-   * Bind your component in the system.
-   * @param {HTMLElement} pEl Connected Node
-   */
+  * Bind your component in the system.
+  * @param {HTMLElement} pEl Connected Node
+  */
   bind(pEl: HTMLElement): void {
     this._el = pEl;
     this.name = pEl.dataset.component || pEl.toString();
@@ -72,15 +76,21 @@ export default class Component implements IAmComponent {
   }
 
   removeListener(pType: string): void {
-    this.motherboard.notifier.removeNotificationListener(pType, this);
+    this.motherboard.notifier.removeNotificationListener(
+      pType,
+      this
+    );
   }
 
-  notify(pType: string, pParams: Record<string, any> = {}): void {
+  notify(
+    pType: string,
+    pParams: Record<string, any> = {}
+  ): void {
     this.motherboard.notifier.notify(pType, pParams);
   }
 
-  handleNotifications(pData: NotificationBody): string {
-    return pData.notification;
+  handleNotifications(pObject: NotificationBody): void {
+    pObject.notification;
   }
 
   registerInlineListeners(): void {
@@ -89,32 +99,49 @@ export default class Component implements IAmComponent {
         if (element.dataset.component) {
           return;
         }
-        Array.from(element.attributes).forEach((pAttribute: Attr) => {
-          if (!pAttribute.name.startsWith('on')) return;
-          element.dataset[pAttribute.name] = pAttribute.value;
-          const event: string = pAttribute.name.replace('data-on:', '');
-          element.removeAttribute(pAttribute.name);
-          const isFunction: boolean =
-            pAttribute.value.includes('(') && pAttribute.value.includes(')');
+        Array.from(element.attributes).forEach(
+          (pAttribute: Attr) => {
+            if (!pAttribute.name.startsWith('on')) return;
+            element.dataset[pAttribute.name] = pAttribute.value;
+            const event: string = pAttribute.name.replace(
+              'data-on:',
+              ''
+            );
+            element.removeAttribute(pAttribute.name);
+            const isFunction: boolean =
+              pAttribute.value.includes('(') &&
+              pAttribute.value.includes(')');
 
-          if (isFunction) {
-            const handler: Function = this._addEventListener(
-              element,
-              event,
-              new Function(`this.${pAttribute.value}`).bind(this)
-            );
-            element.addEventListener(event, handler as EventListener);
-          } else {
-            const handler: Function = this._addEventListener(
-              element,
-              event,
-              () => {
-                cyborgEval(this._motherboard.data, pAttribute.value);
-              }
-            );
-            element.addEventListener(event, handler as EventListener);
+            if (isFunction) {
+              const handler: Function = this._addEventListener(
+                element,
+                event,
+                new Function(`this.${pAttribute.value}`).bind(
+                  this
+                )
+              );
+              element.addEventListener(
+                event,
+                handler as EventListener
+              );
+            } else {
+              const handler: Function = this._addEventListener(
+                element,
+                event,
+                () => {
+                  cyborgEval(
+                    this._motherboard.data,
+                    pAttribute.value
+                  );
+                }
+              );
+              element.addEventListener(
+                event,
+                handler as EventListener
+              );
+            }
           }
-        });
+        );
       });
     }
   }
@@ -148,10 +175,13 @@ export default class Component implements IAmComponent {
   }
 
   /**
-   * @param {Object} pData Data object to use
-   * @param {function} pTemplate template function
-   */
-  render(pData: Record<string, any>, pTemplate?: Function): void {
+  * @param {Object} pData Data object to use
+  * @param {function} pTemplate template function
+  */
+  render(
+    pData: Record<string, any>,
+    pTemplate?: Function
+  ): void {
     if (this._el) {
       if (this._el.children) {
         while (this._el.children.length > 0) {
@@ -169,13 +199,17 @@ export default class Component implements IAmComponent {
   }
 
   /**
-   * @param {Object} pData
-   * @returns {string}
-   */
+  * @param {Object} pData
+  * @returns {string}
+  */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getTemplate(pData?: Record<string, any>): string {
     pData = pData || {};
     return '';
+  }
+
+  get notifications(): ReadonlyArray<string>  {
+    return []; 
   }
 
   get el(): HTMLElement | undefined {
@@ -191,13 +225,17 @@ export default class Component implements IAmComponent {
   }
 
   /**
-   * Garbage collection ;)
-   */
+  * Garbage collection ;)
+  */
   destroy(): void {
     this.motherboard.notifier.removeAllListenersFor(this);
     while (this._events.length > 0) {
       const event: EventObject = this._events[0];
-      this._removeEventListener(event.target, event.name, event.handler);
+      this._removeEventListener(
+        event.target,
+        event.name,
+        event.handler
+      );
       event.target.removeEventListener(
         event.name,
         event.handler as EventListenerOrEventListenerObject
