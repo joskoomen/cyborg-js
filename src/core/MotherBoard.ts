@@ -3,6 +3,7 @@ import { NotificationRegistration } from '../notifications/NotificationRegistrat
 import EventNames from '../constants/EventNames';
 import NotificationController from '../notifications/NotificationController';
 import IAmComponent from '../interfaces/IAmComponent';
+import { ComponentMap } from './ComponentMap';
 
 declare interface ComponentConstructor {
   new (): IAmComponent;
@@ -13,7 +14,7 @@ declare const componentsMapping: Map<string, ComponentConstructor>;
 export default class MotherBoard {
   static _instance: MotherBoard;
 
-  public componentsMap: Record<string, IAmComponent> = {};
+  public componentsMap: Array<ComponentMap> = [];
   private _components: Array<IAmComponent> = [];
   private _data: Record<string, any> = {};
 
@@ -83,7 +84,7 @@ export default class MotherBoard {
             .replace(' ', '')
             .split(',');
           componentsArray.forEach((componentString: string) => {
-            const ComponentClass: ComponentConstructor = MotherBoard.getMappedObjectByName(
+            const ComponentClass: ComponentConstructor | null = MotherBoard.getComponentMapByName(
               this.componentsMap,
               componentString
             );
@@ -166,10 +167,11 @@ export default class MotherBoard {
       const notifications: ReadonlyArray<string> = pObject.notifications;
       const classRef: ICanHandleNotifications = pObject.classRef;
       notifications.forEach((pNotification: string) => {
-        // eslint-disable-next-line @typescript-eslint/unbound-method
+        
         this.notifier.addNotificationListener(
           classRef,
           pNotification,
+          // eslint-disable-next-line @typescript-eslint/unbound-method
           classRef.handleNotifications
         );
       });
@@ -194,11 +196,14 @@ export default class MotherBoard {
 
   /**
    */
-  static getMappedObjectByName(
-    pObject: Record<string, any>,
+  static getComponentMapByName(
+    pArray: Array<ComponentMap>,
     pName: string
-  ): ComponentConstructor {
-    return pObject[pName];
+  ): ComponentConstructor | null {
+    if (pArray && (pArray.length > 0)) {
+      return pArray[pName] || null;
+    }
+    return null;
   }
 
   /**

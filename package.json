@@ -1,6 +1,6 @@
 {
   "name": "@ypa/cyborg-js",
-  "version": "3.0.2-beta",
+  "version": "3.0.8-beta",
   "description": "CyborgJS - A SEO Friendly PBA Framework",
   "main": "dist/main.umd.js",
   "browser": "dist/main.js",
@@ -39,7 +39,7 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup -c",
     "dev": "rollup -c",
-    "lint": "eslint --ignore-path ./.gitignore './src/**/*.ts' --fix",
+    "lint": "eslint --ignore-path ./.eslintignore './src/**/*.ts' --fix",
     "test": "cross-env NODE_ENV=test jest --collect-coverage",
     "precommit": "yarn lint --fix && yarn run build",
     "prebuild": "rimraf dist",
