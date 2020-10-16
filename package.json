@@ -50,6 +50,8 @@
     "src"
   ],
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^15.1.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
     "@types/jest": "^26.0.14",
     "@typescript-eslint/eslint-plugin": "^2.19.0",
     "@typescript-eslint/parser": "^2.19.0",
@@ -61,7 +63,8 @@
     "fsevents": "^2",
     "jest": "^26.5.2",
     "prettier": "^1.19.1",
-    "rollup": "^2.29.0",
+     "rollup": "^2.29.0",
+    "rollup-plugin-peer-deps-external": "^2.2.3",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.27.3",
     "ts-jest": "^26.4.1",
