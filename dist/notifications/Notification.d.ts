@@ -1,7 +1,7 @@
-import ICanHandleNotifications from "../interfaces/ICanHandleNotifications";
+import IAmComponent from "../interfaces/IAmComponent";
 export declare class Notification {
     readonly name: string;
-    readonly target: ICanHandleNotifications;
+    readonly target: IAmComponent;
     readonly handler: Function;
-    constructor(pTarget: ICanHandleNotifications, pName: string, pHandler: Function);
+    constructor(pTarget: IAmComponent, pName: string, pHandler: Function);
 }

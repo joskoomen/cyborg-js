@@ -1,4 +1,3 @@
-import ICanHandleNotifications from '../interfaces/ICanHandleNotifications';
 import { NotificationRegistration } from '../notifications/NotificationRegistration';
 import EventNames from '../constants/EventNames';
 import NotificationController from '../notifications/NotificationController';
@@ -165,7 +164,7 @@ export default class MotherBoard {
   registerNotification(pObject: NotificationRegistration): void {
     if (pObject.notifications) {
       const notifications: ReadonlyArray<string> = pObject.notifications;
-      const classRef: ICanHandleNotifications = pObject.classRef;
+      const classRef: IAmComponent = pObject.classRef;
       notifications.forEach((pNotification: string) => {
         
         this.notifier.addNotificationListener(

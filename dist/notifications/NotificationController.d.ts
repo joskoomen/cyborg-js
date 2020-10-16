@@ -1,7 +1,6 @@
 import { Notification } from "./Notification";
-import ICanHandleNotifications from "../interfaces/ICanHandleNotifications";
-import ICanNotify from "../interfaces/ICanNotify";
-export default class NotificationController implements ICanNotify {
+import { IAmComponent } from "..";
+export default class NotificationController {
     static _instance: NotificationController;
     private _listeners;
     constructor();
@@ -18,13 +17,13 @@ export default class NotificationController implements ICanNotify {
      * @param pType
      * @param pHandler
      */
-    addNotificationListener(pTarget: ICanHandleNotifications, pType: string, pHandler: Function): void;
+    addNotificationListener(pTarget: IAmComponent, pType: string, pHandler: Function): void;
     /**
      * Remove a given listener. This only removes one record.
      * @param pType string Notification name
      * @param pTarget Component object
      */
     removeNotificationListener(pType: string, pTarget: any): void;
-    removeAllListenersFor(pInstance: ICanHandleNotifications): void;
+    removeAllListenersFor(pInstance: IAmComponent): void;
     get listeners(): Array<Notification>;
 }
