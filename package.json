@@ -1,11 +1,11 @@
 {
   "name": "@ypa/cyborg-js",
-  "version": "3.0.7-beta",
+  "version": "3.0.8-beta",
   "description": "CyborgJS - A SEO Friendly PBA Framework",
   "main": "dist/main.umd.js",
   "browser": "dist/main.js",
   "module": "dist/main.es.js",
-  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
   "author": "YPA B.V. <info@yourpersonalagency.nl>",
   "contributors": [
     {
@@ -39,7 +39,7 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup -c",
     "dev": "rollup -c",
-    "lint": "eslint --ignore-path ./.gitignore './src/**/*.ts' --fix",
+    "lint": "eslint --ignore-path ./.eslintignore './src/**/*.ts' --fix",
     "test": "cross-env NODE_ENV=test jest --collect-coverage",
     "precommit": "yarn lint --fix && yarn run build",
     "prebuild": "rimraf dist",
@@ -50,9 +50,12 @@
     "src"
   ],
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^15.1.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
     "@types/jest": "^26.0.14",
     "@typescript-eslint/eslint-plugin": "^2.19.0",
-    "@typescript-eslint/parser": "^2.0.0",
+    "@typescript-eslint/parser": "^2.19.0",
+    "babel-eslint": "^10.0.1",
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
@@ -60,7 +63,8 @@
     "fsevents": "^2",
     "jest": "^26.5.2",
     "prettier": "^1.19.1",
-    "rollup": "^2.29.0",
+     "rollup": "^2.29.0",
+    "rollup-plugin-peer-deps-external": "^2.2.3",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.27.3",
     "ts-jest": "^26.4.1",

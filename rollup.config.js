@@ -1,28 +1,30 @@
+import peerDepsExternal from "rollup-plugin-peer-deps-external";
+import resolve from "@rollup/plugin-node-resolve";
+import commonjs from "@rollup/plugin-commonjs";
 import typescript from "rollup-plugin-typescript2";
-import pkg from "./package.json";
 import { terser } from "rollup-plugin-terser";
+
+const pkg = require("./package.json");
+
 export default {
-  input: "src/index.ts", // our source file
+  input: "src/index.ts",
   output: [
     {
       file: pkg.main,
-      format: "cjs"
+      format: "cjs",
+      sourcemap: true
     },
     {
       file: pkg.module,
-      format: "es" // the preferred format
-    },
-    {
-      file: pkg.browser,
-      format: "iife",
-      name: "CyborgJs" // the global which can be used in a browser
+      format: "esm",
+      sourcemap: true
     }
   ],
-  external: [...Object.keys(pkg.dependencies || {})],
   plugins: [
-    typescript({
-      typescript: require("typescript")
-    }),
-    terser() // minifies generated bundles
+    peerDepsExternal(),
+    resolve(),
+    terser(),
+    commonjs(),
+    typescript({ useTsconfigDeclarationDir: true })
   ]
 };

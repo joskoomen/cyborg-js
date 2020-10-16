@@ -18,7 +18,7 @@ beforeAll(() => {
 
 beforeEach(() => {
   motherboard = MotherBoard.getInstance();
-  motherboard.componentsMap = { test: Component };
+  motherboard.componentsMap = { test: component };
   createView();
 });
 

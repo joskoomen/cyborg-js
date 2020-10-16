@@ -2,10 +2,11 @@ import ICanHandleNotifications from '../interfaces/ICanHandleNotifications';
 import { NotificationRegistration } from '../notifications/NotificationRegistration';
 import EventNames from '../constants/EventNames';
 import NotificationController from '../notifications/NotificationController';
-import Component from './Component';
+import IAmComponent from '../interfaces/IAmComponent';
+import { ComponentMap } from './ComponentMap';
 
 declare interface ComponentConstructor {
-  new (): Component;
+  new (): IAmComponent;
 }
 
 declare const componentsMapping: Map<string, ComponentConstructor>;
@@ -13,8 +14,8 @@ declare const componentsMapping: Map<string, ComponentConstructor>;
 export default class MotherBoard {
   static _instance: MotherBoard;
 
-  public componentsMap: Record<string, Component> = {};
-  private _components: Array<Component> = [];
+  public componentsMap: Array<ComponentMap> = [];
+  private _components: Array<IAmComponent> = [];
   private _data: Record<string, any> = {};
 
   constructor() {
@@ -83,12 +84,12 @@ export default class MotherBoard {
             .replace(' ', '')
             .split(',');
           componentsArray.forEach((componentString: string) => {
-            const ComponentClass: ComponentConstructor = MotherBoard.getMappedObjectByName(
+            const ComponentClass: ComponentConstructor | null = MotherBoard.getComponentMapByName(
               this.componentsMap,
               componentString
             );
             if (ComponentClass) {
-              const component: Component = new ComponentClass();
+              const component: IAmComponent = new ComponentClass();
               if (
                 component.notifications &&
                 component.notifications.length > 0
@@ -114,19 +115,19 @@ export default class MotherBoard {
    * Window onload handler
    */
   onload(): void {
-    this._components.forEach((pComponent: Component) => {
+    this._components.forEach((pComponent: IAmComponent) => {
       pComponent.onload();
     });
   }
 
   onunload(): void {
-    this._components.forEach((pComponent: Component) => {
+    this._components.forEach((pComponent: IAmComponent) => {
       pComponent.onunload();
     });
   }
 
-  destroyComponentListener(pComponent: Component, pEl: HTMLElement): void {
-    let component: Component | null = pComponent;
+  destroyComponentListener(pComponent: IAmComponent, pEl: HTMLElement): void {
+    let component: IAmComponent | null = pComponent;
     let el: HTMLElement | null = pEl;
     if (el) {
       if (window.MutationObserver) {
@@ -166,6 +167,7 @@ export default class MotherBoard {
       const notifications: ReadonlyArray<string> = pObject.notifications;
       const classRef: ICanHandleNotifications = pObject.classRef;
       notifications.forEach((pNotification: string) => {
+        
         this.notifier.addNotificationListener(
           classRef,
           pNotification,
@@ -188,17 +190,20 @@ export default class MotherBoard {
     return this._data;
   }
 
-  get components(): ReadonlyArray<Component> {
+  get components(): ReadonlyArray<IAmComponent> {
     return this._components;
   }
 
   /**
    */
-  static getMappedObjectByName(
-    pObject: Record<string, any>,
+  static getComponentMapByName(
+    pArray: Array<ComponentMap>,
     pName: string
-  ): ComponentConstructor {
-    return pObject[pName];
+  ): ComponentConstructor | null {
+    if (pArray && (pArray.length > 0)) {
+      return pArray[pName] || null;
+    }
+    return null;
   }
 
   /**
@@ -206,7 +211,7 @@ export default class MotherBoard {
    */
   destroy(): void {
     while (this._components.length > 0) {
-      const component: Component = this._components[0];
+      const component: IAmComponent = this._components[0];
       if (component && component.el) {
         component.el.remove();
       }

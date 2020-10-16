@@ -1,12 +1,13 @@
 import { NotificationRegistration } from '../notifications/NotificationRegistration';
 import NotificationController from '../notifications/NotificationController';
-import Component from './Component';
+import IAmComponent from '../interfaces/IAmComponent';
+import { ComponentMap } from './ComponentMap';
 declare interface ComponentConstructor {
-    new (): Component;
+    new (): IAmComponent;
 }
 export default class MotherBoard {
     static _instance: MotherBoard;
-    componentsMap: Record<string, Component>;
+    componentsMap: Array<ComponentMap>;
     private _components;
     private _data;
     constructor();
@@ -25,7 +26,7 @@ export default class MotherBoard {
      */
     onload(): void;
     onunload(): void;
-    destroyComponentListener(pComponent: Component, pEl: HTMLElement): void;
+    destroyComponentListener(pComponent: IAmComponent, pEl: HTMLElement): void;
     registerNotification(pObject: NotificationRegistration): void;
     /**
      * Get NotificationController access.
@@ -33,10 +34,10 @@ export default class MotherBoard {
      */
     get notifier(): NotificationController;
     get data(): Record<string, any>;
-    get components(): ReadonlyArray<Component>;
+    get components(): ReadonlyArray<IAmComponent>;
     /**
      */
-    static getMappedObjectByName(pObject: Record<string, any>, pName: string): ComponentConstructor;
+    static getComponentMapByName(pArray: Array<ComponentMap>, pName: string): ComponentConstructor | null;
     /**
      * destroy application
      */
