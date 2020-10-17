@@ -3,8 +3,9 @@ import { EventObject } from '../events/EventObject';
 import { walkDom } from '../functions/walkDom';
 import { cyborgEval } from '../functions/cyborgEval';
 import { NotificationBody } from '../notifications/NotificationBody';
+import  IAmComponent from '../interfaces/IAmComponent';
 
-export default class Component {
+export default class Component implements IAmComponent{
   name = '';
   
   private _el: HTMLElement | undefined;

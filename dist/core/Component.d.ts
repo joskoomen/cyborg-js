@@ -1,6 +1,7 @@
 import MotherBoard from './MotherBoard';
 import { NotificationBody } from '../notifications/NotificationBody';
-export default class Component {
+import IAmComponent from '../interfaces/IAmComponent';
+export default class Component implements IAmComponent {
     name: string;
     private _el;
     private _events;
