@@ -1,8 +1,8 @@
 import MotherBoard from './core/MotherBoard';
 import Component from './core/Component';
-import { ComponentMap } from './core/ComponentMap';
+import type { ComponentMap } from './core/ComponentMap';
 import { Notification } from './notifications/Notification';
-import { NotificationBody } from './notifications/NotificationBody';
+import type { NotificationBody } from './notifications/NotificationBody';
 import IAmComponent from './interfaces/IAmComponent';
 
 

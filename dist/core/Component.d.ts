@@ -2,12 +2,12 @@ import MotherBoard from './MotherBoard';
 import { NotificationBody } from '../notifications/NotificationBody';
 import IAmComponent from '../interfaces/IAmComponent';
 export default class Component implements IAmComponent {
-    name: string;
     private _el;
     private _events;
     private _motherboard;
     private _addEventListener;
     private _removeEventListener;
+    protected _notifications: ReadonlyArray<string>;
     constructor();
     /**
     * Bind your component in the system.

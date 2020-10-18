@@ -1,6 +1,6 @@
-import {Notification} from "./Notification";
-import {NotificationBody} from "./NotificationBody";
-import { IAmComponent } from "..";
+import Notification from "./Notification";
+import type {NotificationBody} from "./NotificationBody";
+import IAmComponent from "../interfaces/IAmComponent";
 
 export default class NotificationController {
     static _instance: NotificationController;
@@ -34,10 +34,7 @@ export default class NotificationController {
         });
 
         notes.forEach((note: Notification) => {
-            const body: NotificationBody = {
-                notification: pType,
-                payload: pParams || {}
-            };
+            const body: NotificationBody = {notification: pType, payload: pParams || {}};
             note.handler(body);
         });
     }

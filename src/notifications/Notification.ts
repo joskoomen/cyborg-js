@@ -1,6 +1,6 @@
 import IAmComponent from "../interfaces/IAmComponent";
 
-export class Notification {
+export default class Notification {
     readonly name: string;
     readonly target: IAmComponent;
     readonly handler: Function;

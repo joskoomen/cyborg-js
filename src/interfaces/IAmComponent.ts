@@ -3,8 +3,7 @@ import { NotificationBody } from '../notifications/NotificationBody';
 export default interface IAmComponent {
   notifications: ReadonlyArray<string>;
   el: HTMLElement | undefined;
-  name: string;
-  
+
   bind(pEl: HTMLElement): void;
   onload(): void;
   onunload(): void;
