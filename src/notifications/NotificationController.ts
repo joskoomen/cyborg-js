@@ -1,9 +1,9 @@
-import {Notification} from "./Notification";
-import {NotificationBody} from "./NotificationBody";
-import ICanHandleNotifications from "../interfaces/ICanHandleNotifications";
-import ICanNotify from "../interfaces/ICanNotify";
+import { Notification } from "./Notification";
+import type { NotificationBody } from "./NotificationBody";
+import { IAmComponent } from "../interfaces/IAmComponent";
+import { ICanHandleNotifications } from "../interfaces/ICanHandleNotifications";
 
-export default class NotificationController implements ICanNotify {
+export class NotificationController {
     static _instance: NotificationController;
 
     private _listeners: Array<Notification>;
@@ -35,10 +35,7 @@ export default class NotificationController implements ICanNotify {
         });
 
         notes.forEach((note: Notification) => {
-            const body: NotificationBody = {
-                notification: pType,
-                payload: pParams || {}
-            };
+            const body: NotificationBody = {notification: pType, payload: pParams || {}};
             note.handler(body);
         });
     }
@@ -67,7 +64,7 @@ export default class NotificationController implements ICanNotify {
         this._listeners = listeners.splice(index, 1);
     }
 
-    removeAllListenersFor(pInstance: ICanHandleNotifications): void {
+    removeAllListenersFor(pInstance: IAmComponent): void {
         const listeners: Array<Notification> = this._listeners;
         this._listeners = listeners.filter((notification: Notification): boolean => {
             return (notification.target.name !== pInstance.name);

@@ -1,9 +1,9 @@
-import ICanHandleNotifications from '../interfaces/ICanHandleNotifications';
 import { NotificationRegistration } from '../notifications/NotificationRegistration';
-import EventNames from '../constants/EventNames';
-import NotificationController from '../notifications/NotificationController';
-import IAmComponent from '../interfaces/IAmComponent';
-import { ComponentMap } from './ComponentMap';
+import { EventNames } from '../constants/EventNames';
+import { NotificationController } from '../notifications/NotificationController';
+import { IAmComponent } from '../interfaces/IAmComponent';
+import type { ComponentMap } from './ComponentMap';
+import { ICanHandleNotifications } from '../interfaces/ICanHandleNotifications';
 
 declare interface ComponentConstructor {
   new (): IAmComponent;
@@ -11,7 +11,7 @@ declare interface ComponentConstructor {
 
 declare const componentsMapping: Map<string, ComponentConstructor>;
 
-export default class MotherBoard {
+export class MotherBoard {
   static _instance: MotherBoard;
 
   public componentsMap: Array<ComponentMap> = [];

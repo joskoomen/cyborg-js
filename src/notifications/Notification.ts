@@ -1,4 +1,4 @@
-import ICanHandleNotifications from "../interfaces/ICanHandleNotifications";
+import { ICanHandleNotifications } from "../interfaces/ICanHandleNotifications";
 
 export class Notification {
     readonly name: string;

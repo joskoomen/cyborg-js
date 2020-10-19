@@ -2,7 +2,7 @@
   "compilerOptions": {
     "declaration": true,
     "declarationDir": "dist",
-    "module": "esnext",
+    "module": "ESNext",
     "target": "es5",
     "lib": [
       "es6",
@@ -15,12 +15,8 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
-  "include": [
-    "src/**/*"
-  ],
   "exclude": [
     "node_modules",
-    "build",
     "dist",
     "docs",
     "rollup.config.js",

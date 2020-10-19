@@ -30,7 +30,6 @@ beforeAll(() => {
 
 test('Component has a name, notifications and element', () => {
   expect(componentA.el).not.toBeNull();
-  expect(componentA.name).not.toBeUndefined();
   expect(componentA.notifications).not.toBeUndefined();
 });
 
