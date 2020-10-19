@@ -1,11 +1,11 @@
-import IAmComponent from "../interfaces/IAmComponent";
+import { ICanHandleNotifications } from "../interfaces/ICanHandleNotifications";
 
-export default class Notification {
+export class Notification {
     readonly name: string;
-    readonly target: IAmComponent;
+    readonly target: ICanHandleNotifications;
     readonly handler: Function;
 
-    constructor(pTarget: IAmComponent, pName: string, pHandler: Function) {
+    constructor(pTarget: ICanHandleNotifications, pName: string, pHandler: Function) {
         this.name = pName;
         this.handler = pHandler;
         this.target = pTarget;

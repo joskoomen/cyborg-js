@@ -1,8 +1,9 @@
-import MotherBoard from './MotherBoard';
+import { MotherBoard } from './MotherBoard';
 import { NotificationBody } from '../notifications/NotificationBody';
-import IAmComponent from '../interfaces/IAmComponent';
-export default class Component implements IAmComponent {
+import { IAmComponent } from '../interfaces/IAmComponent';
+export declare class Component implements IAmComponent {
     private _el;
+    private _name;
     private _events;
     private _motherboard;
     private _addEventListener;
@@ -34,6 +35,7 @@ export default class Component implements IAmComponent {
     */
     getTemplate(pData?: Record<string, any>): string;
     get notifications(): ReadonlyArray<string>;
+    get name(): string;
     get el(): HTMLElement | undefined;
     get motherboard(): MotherBoard;
     get events(): ReadonlyArray<Record<string, any>>;

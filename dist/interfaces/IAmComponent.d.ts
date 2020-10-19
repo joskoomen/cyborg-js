@@ -1,15 +1,12 @@
-import { NotificationBody } from '../notifications/NotificationBody';
-export default interface IAmComponent {
-    notifications: ReadonlyArray<string>;
-    el: HTMLElement | undefined;
+import { ICanBind } from "./ICanBind";
+import { ICanDestroy } from "./ICanDestroy";
+import { ICanHandleNotifications } from "./ICanHandleNotifications";
+import { ICanHandleEvents } from "./ICanHandleEvents";
+import { ICanNotify } from "./ICanNotify";
+export interface IAmComponent extends ICanBind, ICanDestroy, ICanHandleNotifications, ICanNotify, ICanHandleEvents {
     bind(pEl: HTMLElement): void;
     onload(): void;
     onunload(): void;
-    destroy(): void;
-    notify(pType: string, pParams?: Record<string, any>): void;
-    handleNotifications(pObject: NotificationBody): void;
-    addListener(pType: string): void;
-    removeListener(pType: string): void;
-    addEventListener(pEventName: string, pHandler: EventListenerOrEventListenerObject): void;
-    removeEventListener(pEventName: string, pHandler: EventListenerOrEventListenerObject): void;
+    readonly el: HTMLElement | undefined;
+    notifications: ReadonlyArray<string> | undefined;
 }

@@ -1,13 +1,14 @@
-import MotherBoard from './MotherBoard';
+import { MotherBoard } from './MotherBoard';
 import { EventObject } from '../events/EventObject';
 import { walkDom } from '../functions/walkDom';
 import { cyborgEval } from '../functions/cyborgEval';
 import { NotificationBody } from '../notifications/NotificationBody';
-import  IAmComponent from '../interfaces/IAmComponent';
+import { IAmComponent } from '../interfaces/IAmComponent';
 
-export default class Component implements IAmComponent{
+export class Component implements IAmComponent{
   
   private _el: HTMLElement | undefined;
+  private _name = '';
   private _events: Array<EventObject>;
   private _motherboard: MotherBoard;
   private _addEventListener: Function;
@@ -51,6 +52,7 @@ export default class Component implements IAmComponent{
   */
   bind(pEl: HTMLElement): void {
     this._el = pEl;
+    this._name = pEl.dataset.component || '';
     this.registerInlineListeners();
   }
 
@@ -179,6 +181,10 @@ export default class Component implements IAmComponent{
 
   get notifications(): ReadonlyArray<string>  {
     return this._notifications; 
+  }
+
+  get name(): string {
+    return this._name;
   }
 
   get el(): HTMLElement | undefined {

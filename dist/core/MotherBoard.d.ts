@@ -1,11 +1,11 @@
 import { NotificationRegistration } from '../notifications/NotificationRegistration';
-import NotificationController from '../notifications/NotificationController';
-import IAmComponent from '../interfaces/IAmComponent';
-import { ComponentMap } from './ComponentMap';
+import { NotificationController } from '../notifications/NotificationController';
+import { IAmComponent } from '../interfaces/IAmComponent';
+import type { ComponentMap } from './ComponentMap';
 declare interface ComponentConstructor {
     new (): IAmComponent;
 }
-export default class MotherBoard {
+export declare class MotherBoard {
     static _instance: MotherBoard;
     componentsMap: Array<ComponentMap>;
     private _components;
