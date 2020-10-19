@@ -1,27 +1,26 @@
-import MotherBoard from './MotherBoard';
+import { MotherBoard } from './MotherBoard';
 import { EventObject } from '../events/EventObject';
 import { walkDom } from '../functions/walkDom';
 import { cyborgEval } from '../functions/cyborgEval';
 import { NotificationBody } from '../notifications/NotificationBody';
-import  IAmComponent from '../interfaces/IAmComponent';
+import { IAmComponent } from '../interfaces/IAmComponent';
 
-export default class Component implements IAmComponent{
-  name = '';
+export class Component implements IAmComponent{
   
   private _el: HTMLElement | undefined;
+  private _name = '';
   private _events: Array<EventObject>;
   private _motherboard: MotherBoard;
   private _addEventListener: Function;
   private _removeEventListener: Function;
 
+  protected _notifications: ReadonlyArray<string> = [];
+
   constructor() {
     this._motherboard = MotherBoard.getInstance();
     this._events = [];
-    this._addEventListener = (
-      pTarget: HTMLElement,
-      pEventName: string,
-      pHandler: Function
-    ): Function => {
+
+    this._addEventListener = (pTarget: HTMLElement,pEventName: string,pHandler: Function): Function => {
       const handler: Function = pHandler.bind(this);
       this._events.push({
         target: pTarget,
@@ -31,9 +30,7 @@ export default class Component implements IAmComponent{
       return handler;
     };
 
-    this._removeEventListener = (
-      pTarget: HTMLElement,
-      pEventName: string,
+    this._removeEventListener = (pTarget: HTMLElement,pEventName: string,
       pHandler: Function
     ): HTMLElement => {
       const index: number = this._events.findIndex(
@@ -55,7 +52,7 @@ export default class Component implements IAmComponent{
   */
   bind(pEl: HTMLElement): void {
     this._el = pEl;
-    this.name = pEl.dataset.component || pEl.toString();
+    this._name = pEl.dataset.component || '';
     this.registerInlineListeners();
   }
 
@@ -83,10 +80,7 @@ export default class Component implements IAmComponent{
     );
   }
 
-  notify(
-    pType: string,
-    pParams: Record<string, any> = {}
-  ): void {
+  notify(pType: string, pParams: Record<string, any> = {}): void {
     this.motherboard.notifier.notify(pType, pParams);
   }
 
@@ -103,43 +97,25 @@ export default class Component implements IAmComponent{
         Array.from(element.attributes).forEach(
           (pAttribute: Attr) => {
             if (!pAttribute.name.startsWith('on')) return;
+            const event: string = pAttribute.name.replace('data-on:','');
+            
             element.dataset[pAttribute.name] = pAttribute.value;
-            const event: string = pAttribute.name.replace(
-              'data-on:',
-              ''
-            );
             element.removeAttribute(pAttribute.name);
-            const isFunction: boolean =
-              pAttribute.value.includes('(') &&
-              pAttribute.value.includes(')');
+            
+            const isFunction: boolean = pAttribute.value.includes('(') && pAttribute.value.includes(')');
 
             if (isFunction) {
-              const handler: Function = this._addEventListener(
-                element,
-                event,
-                new Function(`this.${pAttribute.value}`).bind(
-                  this
-                )
-              );
-              element.addEventListener(
-                event,
-                handler as EventListener
-              );
+              const handler: Function = this._addEventListener(element, event, new Function(`this.${pAttribute.value}`).bind(this));
+              element.addEventListener(event, handler as EventListener);
             } else {
-              const handler: Function = this._addEventListener(
-                element,
-                event,
-                () => {
+              const handler: Function = this._addEventListener(element, event, () => {
                   cyborgEval(
                     this._motherboard.data,
                     pAttribute.value
                   );
                 }
               );
-              element.addEventListener(
-                event,
-                handler as EventListener
-              );
+              element.addEventListener(event,handler as EventListener);
             }
           }
         );
@@ -147,10 +123,7 @@ export default class Component implements IAmComponent{
     }
   }
 
-  addEventListener(
-    pEventName: string,
-    pHandler: EventListenerOrEventListenerObject
-  ): void {
+  addEventListener(pEventName: string,pHandler: EventListenerOrEventListenerObject): void {
     if (this._el) {
       const handler: Function = this._addEventListener(
         this._el,
@@ -163,12 +136,9 @@ export default class Component implements IAmComponent{
         false
       );
     }
-  }
+}
 
-  removeEventListener(
-    pEventName: string,
-    pHandler: EventListenerOrEventListenerObject
-  ): void {
+  removeEventListener(pEventName: string,pHandler: EventListenerOrEventListenerObject): void {
     if (this._el) {
       this._removeEventListener(this._el, pEventName, pHandler);
       this._el.removeEventListener(pEventName, pHandler);
@@ -210,7 +180,11 @@ export default class Component implements IAmComponent{
   }
 
   get notifications(): ReadonlyArray<string>  {
-    return []; 
+    return this._notifications; 
+  }
+
+  get name(): string {
+    return this._name;
   }
 
   get el(): HTMLElement | undefined {

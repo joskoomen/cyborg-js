@@ -1,8 +1,9 @@
-import {Notification} from "./Notification";
-import {NotificationBody} from "./NotificationBody";
-import { IAmComponent } from "..";
+import { Notification } from "./Notification";
+import type { NotificationBody } from "./NotificationBody";
+import { IAmComponent } from "../interfaces/IAmComponent";
+import { ICanHandleNotifications } from "../interfaces/ICanHandleNotifications";
 
-export default class NotificationController {
+export class NotificationController {
     static _instance: NotificationController;
 
     private _listeners: Array<Notification>;
@@ -34,10 +35,7 @@ export default class NotificationController {
         });
 
         notes.forEach((note: Notification) => {
-            const body: NotificationBody = {
-                notification: pType,
-                payload: pParams || {}
-            };
+            const body: NotificationBody = {notification: pType, payload: pParams || {}};
             note.handler(body);
         });
     }
@@ -48,7 +46,7 @@ export default class NotificationController {
      * @param pType
      * @param pHandler
      */
-    addNotificationListener(pTarget: IAmComponent, pType: string, pHandler: Function): void {
+    addNotificationListener(pTarget: ICanHandleNotifications, pType: string, pHandler: Function): void {
         const note: Notification = new Notification(pTarget, pType, pHandler.bind(pTarget));
         this._listeners.push(note);
     }

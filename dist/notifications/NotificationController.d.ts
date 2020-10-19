@@ -1,6 +1,7 @@
 import { Notification } from "./Notification";
-import { IAmComponent } from "..";
-export default class NotificationController {
+import { IAmComponent } from "../interfaces/IAmComponent";
+import { ICanHandleNotifications } from "../interfaces/ICanHandleNotifications";
+export declare class NotificationController {
     static _instance: NotificationController;
     private _listeners;
     constructor();
@@ -17,7 +18,7 @@ export default class NotificationController {
      * @param pType
      * @param pHandler
      */
-    addNotificationListener(pTarget: IAmComponent, pType: string, pHandler: Function): void;
+    addNotificationListener(pTarget: ICanHandleNotifications, pType: string, pHandler: Function): void;
     /**
      * Remove a given listener. This only removes one record.
      * @param pType string Notification name
