@@ -1,3 +1,3 @@
 export interface ICanBind {
-    bind(pEl: HTMLElement): void;
+  bind(pEl: HTMLElement): void
 }

@@ -84,12 +84,13 @@ export class MotherBoard {
             .replace(' ', '')
             .split(',');
           componentsArray.forEach((componentString: string) => {
-            const ComponentClass: ComponentConstructor | null = MotherBoard.getComponentMapByName(
+            const ComponentClass: ComponentMap | null = MotherBoard.getComponentMapByName(
               this.componentsMap,
               componentString
             );
             if (ComponentClass) {
-              const component: IAmComponent = new ComponentClass();
+              const component: IAmComponent = new ComponentClass.class();
+              console.log('component', component);
               if (
                 component.notifications &&
                 component.notifications.length > 0
@@ -199,9 +200,10 @@ export class MotherBoard {
   static getComponentMapByName(
     pArray: Array<ComponentMap>,
     pName: string
-  ): ComponentConstructor | null {
+  ): ComponentMap | null {
     if (pArray && (pArray.length > 0)) {
-      return pArray[pName] || null;
+      let component: ComponentMap | null = pArray.find((pRec:ComponentMap) => pRec.reference === pName) || null;
+      return component;
     }
     return null;
   }

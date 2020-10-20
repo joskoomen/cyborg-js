@@ -1,5 +1,5 @@
-import IAmComponent from "../interfaces/IAmComponent";
-export declare type ComponentMap = {
-    id: string;
-    class: IAmComponent;
-};
+export declare class ComponentMap {
+    reference: string;
+    class: any;
+    constructor(pReference: string, pClass: any);
+}

@@ -1,3 +1,3 @@
 export interface ICanDestroy {
-    destroy(): void;
+  destroy(): void
 }

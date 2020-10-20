@@ -1,59 +1,59 @@
-import { MotherBoard } from './MotherBoard';
-import { EventObject } from '../events/EventObject';
-import { walkDom } from '../functions/walkDom';
-import { cyborgEval } from '../functions/cyborgEval';
-import { NotificationBody } from '../notifications/NotificationBody';
-import { IAmComponent } from '../interfaces/IAmComponent';
+import { MotherBoard } from './MotherBoard'
+import { EventObject } from '../events/EventObject'
+import { walkDom } from '../functions/walkDom'
+import { cyborgEval } from '../functions/cyborgEval'
+import { NotificationBody } from '../notifications/NotificationBody'
+import { IAmComponent } from '../interfaces/IAmComponent'
 
-export class Component implements IAmComponent{
-  
-  private _el: HTMLElement | undefined;
-  private _name = '';
-  private _events: Array<EventObject>;
-  private _motherboard: MotherBoard;
-  private _addEventListener: Function;
-  private _removeEventListener: Function;
+export class Component implements IAmComponent {
+  private _el: HTMLElement | undefined
+  private _name = ''
+  private _events: Array<EventObject>
+  private _motherboard: MotherBoard
+  private _addEventListener: Function
+  private _removeEventListener: Function
 
-  protected _notifications: ReadonlyArray<string> = [];
+  protected _notifications: ReadonlyArray<string> = []
 
   constructor() {
-    this._motherboard = MotherBoard.getInstance();
-    this._events = [];
+    this._motherboard = MotherBoard.getInstance()
+    this._events = []
 
-    this._addEventListener = (pTarget: HTMLElement,pEventName: string,pHandler: Function): Function => {
-      const handler: Function = pHandler.bind(this);
+    this._addEventListener = (
+      pTarget: HTMLElement,
+      pEventName: string,
+      pHandler: Function
+    ): Function => {
+      const handler: Function = pHandler.bind(this)
       this._events.push({
         target: pTarget,
         name: pEventName,
-        handler: handler,
-      });
-      return handler;
-    };
+        handler: handler
+      })
+      return handler
+    }
 
-    this._removeEventListener = (pTarget: HTMLElement,pEventName: string,
+    this._removeEventListener = (
+      pTarget: HTMLElement,
+      pEventName: string,
       pHandler: Function
     ): HTMLElement => {
-      const index: number = this._events.findIndex(
-        (evtObj: EventObject) => {
-          return (
-            evtObj.name === pEventName &&
-            evtObj.handler === pHandler
-          );
-        }
-      );
-      this._events.splice(index, 1);
-      return pTarget;
-    };
+      const index: number = this._events.findIndex((evtObj: EventObject) => {
+        return evtObj.name === pEventName && evtObj.handler === pHandler
+      })
+      this._events.splice(index, 1)
+      return pTarget
+    }
   }
 
   /**
-  * Bind your component in the system.
-  * @param {HTMLElement} pEl Connected Node
-  */
+   * Bind your component in the system.
+   * @param {HTMLElement} pEl Connected Node
+   */
   bind(pEl: HTMLElement): void {
-    this._el = pEl;
-    this._name = pEl.dataset.component || '';
-    this.registerInlineListeners();
+    this._el = pEl
+    this._name = pEl.dataset.component || ''
+    this.registerInlineListeners()
   }
 
   onload(): void {
@@ -70,155 +70,154 @@ export class Component implements IAmComponent{
       pType,
       // eslint-disable-next-line @typescript-eslint/unbound-method
       this.handleNotifications
-    );
+    )
   }
 
   removeListener(pType: string): void {
-    this.motherboard.notifier.removeNotificationListener(
-      pType,
-      this
-    );
+    this.motherboard.notifier.removeNotificationListener(pType, this)
   }
 
   notify(pType: string, pParams: Record<string, any> = {}): void {
-    this.motherboard.notifier.notify(pType, pParams);
+    this.motherboard.notifier.notify(pType, pParams)
   }
 
   handleNotifications(pObject: NotificationBody): void {
-    pObject.notification;
+    pObject.notification
   }
 
   registerInlineListeners(): void {
     if (this._el) {
       walkDom(this._el, (element: HTMLElement) => {
         if (element.dataset.component) {
-          return;
+          return
         }
-        Array.from(element.attributes).forEach(
-          (pAttribute: Attr) => {
-            if (!pAttribute.name.startsWith('on')) return;
-            const event: string = pAttribute.name.replace('data-on:','');
-            
-            element.dataset[pAttribute.name] = pAttribute.value;
-            element.removeAttribute(pAttribute.name);
-            
-            const isFunction: boolean = pAttribute.value.includes('(') && pAttribute.value.includes(')');
+        Array.from(element.attributes).forEach((pAttribute: Attr) => {
+          if (!pAttribute.name.startsWith('on')) return
+          const event: string = pAttribute.name.replace('data-on:', '')
 
-            if (isFunction) {
-              const handler: Function = this._addEventListener(element, event, new Function(`this.${pAttribute.value}`).bind(this));
-              element.addEventListener(event, handler as EventListener);
-            } else {
-              const handler: Function = this._addEventListener(element, event, () => {
-                  cyborgEval(
-                    this._motherboard.data,
-                    pAttribute.value
-                  );
-                }
-              );
-              element.addEventListener(event,handler as EventListener);
-            }
+          element.dataset[pAttribute.name] = pAttribute.value
+          element.removeAttribute(pAttribute.name)
+
+          const isFunction: boolean =
+            pAttribute.value.includes('(') && pAttribute.value.includes(')')
+
+          if (isFunction) {
+            const handler: Function = this._addEventListener(
+              element,
+              event,
+              new Function(`this.${pAttribute.value}`).bind(this)
+            )
+            element.addEventListener(event, handler as EventListener)
+          } else {
+            const handler: Function = this._addEventListener(
+              element,
+              event,
+              () => {
+                cyborgEval(this._motherboard.data, pAttribute.value)
+              }
+            )
+            element.addEventListener(event, handler as EventListener)
           }
-        );
-      });
+        })
+      })
     }
   }
 
-  addEventListener(pEventName: string,pHandler: EventListenerOrEventListenerObject): void {
+  addEventListener(
+    pEventName: string,
+    pHandler: EventListenerOrEventListenerObject
+  ): void {
     if (this._el) {
       const handler: Function = this._addEventListener(
         this._el,
         pEventName,
         pHandler
-      );
+      )
       this._el.addEventListener(
         pEventName,
         handler as EventListenerOrEventListenerObject,
         false
-      );
+      )
     }
-}
+  }
 
-  removeEventListener(pEventName: string,pHandler: EventListenerOrEventListenerObject): void {
+  removeEventListener(
+    pEventName: string,
+    pHandler: EventListenerOrEventListenerObject
+  ): void {
     if (this._el) {
-      this._removeEventListener(this._el, pEventName, pHandler);
-      this._el.removeEventListener(pEventName, pHandler);
+      this._removeEventListener(this._el, pEventName, pHandler)
+      this._el.removeEventListener(pEventName, pHandler)
     }
   }
 
   /**
-  * @param {Object} pData Data object to use
-  * @param {function} pTemplate template function
-  */
-  render(
-    pData: Record<string, any>,
-    pTemplate?: Function
-  ): void {
+   * @param {Object} pData Data object to use
+   * @param {function} pTemplate template function
+   */
+  render(pData: Record<string, any>, pTemplate?: Function): void {
     if (this._el) {
       if (this._el.children) {
         while (this._el.children.length > 0) {
-          this._el.children[0].remove();
+          this._el.children[0].remove()
         }
       }
 
       if (pTemplate) {
-        this._el.innerHTML = pTemplate(pData);
+        this._el.innerHTML = pTemplate(pData)
       } else {
-        this._el.innerHTML = this.getTemplate(pData);
+        this._el.innerHTML = this.getTemplate(pData)
       }
-      this.motherboard.build(this._el);
+      this.motherboard.build(this._el)
     }
   }
 
   /**
-  * @param {Object} pData
-  * @returns {string}
-  */
+   * @param {Object} pData
+   * @returns {string}
+   */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getTemplate(pData?: Record<string, any>): string {
-    pData = pData || {};
-    return '';
+    pData = pData || {}
+    return ''
   }
 
-  get notifications(): ReadonlyArray<string>  {
-    return this._notifications; 
+  get notifications(): ReadonlyArray<string> {
+    return this._notifications
   }
 
   get name(): string {
-    return this._name;
+    return this._name
   }
 
   get el(): HTMLElement | undefined {
-    return this._el;
+    return this._el
   }
 
   get motherboard(): MotherBoard {
-    return this._motherboard;
+    return this._motherboard
   }
 
   get events(): ReadonlyArray<Record<string, any>> {
-    return this._events;
+    return this._events
   }
 
   /**
-  * Garbage collection ;)
-  */
+   * Garbage collection ;)
+   */
   destroy(): void {
-    this.motherboard.notifier.removeAllListenersFor(this);
+    this.motherboard.notifier.removeAllListenersFor(this)
     while (this._events.length > 0) {
-      const event: EventObject = this._events[0];
-      this._removeEventListener(
-        event.target,
-        event.name,
-        event.handler
-      );
+      const event: EventObject = this._events[0]
+      this._removeEventListener(event.target, event.name, event.handler)
       event.target.removeEventListener(
         event.name,
         event.handler as EventListenerOrEventListenerObject
-      );
+      )
     }
     if (this._el) {
-      this._el.remove();
-      this._el = undefined;
+      this._el.remove()
+      this._el = undefined
     }
   }
 }

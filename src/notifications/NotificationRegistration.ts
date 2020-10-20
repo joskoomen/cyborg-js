@@ -1,7 +1,7 @@
-import { ICanHandleNotifications } from "../interfaces/ICanHandleNotifications";
+import { ICanHandleNotifications } from '../interfaces/ICanHandleNotifications'
 
 export type NotificationRegistration = {
-    name: string;
-    notifications: ReadonlyArray<string>;
-    classRef: ICanHandleNotifications;
+  name: string
+  notifications: ReadonlyArray<string>
+  classRef: ICanHandleNotifications
 }

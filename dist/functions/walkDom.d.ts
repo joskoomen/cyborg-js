@@ -1,1 +1,1 @@
-export declare function walkDom(pEl: Element, pCallback: Function): void;
+export declare function walkDom(pEl: Element | null, pCallback: Function): void;

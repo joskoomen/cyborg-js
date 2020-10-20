@@ -1,6 +1,9 @@
-import IAmComponent from "../interfaces/IAmComponent";
+export class ComponentMap {
+  reference: string
+  class: any
 
-export type ComponentMap = {
-    id: string;
-    class: IAmComponent;
+  constructor(pReference: string, pClass: any) {
+    this.reference = pReference
+    this.class = pClass
+  }
 }

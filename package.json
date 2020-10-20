@@ -1,10 +1,13 @@
 {
   "name": "@ypa/cyborg-js",
-  "version": "3.1.0-beta",
+  "version": "3.0.0",
   "description": "CyborgJS - A SEO Friendly PBA Framework",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cyborg-js.umd.js",
+  "module": "dist/cyborg-js.es5.js",
+  "typings": "dist/cyborg-js.d.ts",
+  "files": [
+    "dist"
+  ],
   "author": "YPA B.V. <info@yourpersonalagency.nl>",
   "contributors": [
     {
@@ -16,14 +19,8 @@
   "keywords": [
     "framework",
     "front-end",
-    "javascript",
-    "js",
     "dom",
     "typescript",
-    "ecmascript",
-    "es6",
-    "es2015",
-    "babel",
     "web",
     "seo-friendly"
   ],
@@ -35,51 +32,101 @@
     "email": "jos@yourpersonalagency.nl"
   },
   "homepage": "https://cyborg-js.org",
+  "engines": {
+    "node": ">=13.0.0"
+  },
   "scripts": {
-    "build": "cross-env NODE_ENV=production rollup -c",
-    "dev": "rollup -c",
-    "lint": "eslint --ignore-path ./.eslintignore './src/**/*.ts' --fix",
-    "test": "cross-env NODE_ENV=test jest --collect-coverage",
-    "precommit": "yarn lint --fix && yarn run build",
+    "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "prepush": "yarn test"
+    "build": "tsc --module commonjs && rollup -c rollup.config.ts",
+    "start": "rollup -c rollup.config.ts -w",
+    "test": "jest --coverage",
+    "test:prod": "npm run lint && npm run test -- --no-cache",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "commit": "git-cz",
+    "semantic-release": "semantic-release",
+    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
+    "precommit": "lint-staged"
   },
-  "files": [
-    "dist",
-    "src"
-  ],
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^15.1.0",
-    "@rollup/plugin-node-resolve": "^9.0.0",
-    "@types/jest": "^26.0.14",
-    "@typescript-eslint/eslint-plugin": "^2.19.0",
-    "@typescript-eslint/parser": "^2.19.0",
-    "babel-eslint": "^10.0.1",
-    "cross-env": "^7.0.2",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "fsevents": "^2",
-    "jest": "^26.5.2",
-    "prettier": "^1.19.1",
-     "rollup": "^2.29.0",
-    "rollup-plugin-peer-deps-external": "^2.2.3",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript2": "^0.27.3",
-    "ts-jest": "^26.4.1",
-    "tslib": "^2.0.2",
-    "typescript": "^4.0.0"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+  "lint-staged": {
+    "{src,test}/**/*.ts": [
+      "prettier --write",
+      "git add"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "testEnvironment": "node",
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 95,
+        "lines": 95,
+        "statements": 95
+      }
+    },
+    "collectCoverageFrom": [
+      "src/*.{js,ts}"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@types/jest": "^23.3.2",
+    "@types/node": "^10.11.0",
+    "colors": "^1.3.2",
+    "commitizen": "^3.0.0",
+    "coveralls": "^3.0.2",
+    "cross-env": "^5.2.0",
+    "cz-conventional-changelog": "^2.1.0",
+    "jest": "^23.6.0",
+    "jest-config": "^23.6.0",
+    "lint-staged": "^8.0.0",
+    "lodash.camelcase": "^4.3.0",
+    "prettier": "^1.14.3",
+    "prompt": "^1.0.0",
+    "replace-in-file": "^3.4.2",
+    "rimraf": "^2.6.2",
+    "rollup": "^2.29.0",
+    "rollup-plugin-commonjs": "^9.1.8",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-typescript2": "^0.27.3",
+    "semantic-release": "^17.2.1",
+    "shelljs": "^0.8.3",
+    "travis-deploy-once": "^5.0.9",
+    "ts-jest": "^23.10.2",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-config-standard": "^9.0.0",
+    "typescript": "^4.0.0"
   }
 }
