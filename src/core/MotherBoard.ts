@@ -1,8 +1,9 @@
-import ICanHandleNotifications from '../interfaces/ICanHandleNotifications';
 import { NotificationRegistration } from '../notifications/NotificationRegistration';
-import EventNames from '../constants/EventNames';
-import NotificationController from '../notifications/NotificationController';
-import IAmComponent from '../interfaces/IAmComponent';
+import { EventNames } from '../constants/EventNames';
+import { NotificationController } from '../notifications/NotificationController';
+import { IAmComponent } from '../interfaces/IAmComponent';
+import type { ComponentMap } from './ComponentMap';
+import { ICanHandleNotifications } from '../interfaces/ICanHandleNotifications';
 
 declare interface ComponentConstructor {
   new (): IAmComponent;
@@ -10,10 +11,10 @@ declare interface ComponentConstructor {
 
 declare const componentsMapping: Map<string, ComponentConstructor>;
 
-export default class MotherBoard {
+export class MotherBoard {
   static _instance: MotherBoard;
 
-  public componentsMap: Record<string, any> = {};
+  public componentsMap: Array<ComponentMap> = [];
   private _components: Array<IAmComponent> = [];
   private _data: Record<string, any> = {};
 
@@ -48,9 +49,13 @@ export default class MotherBoard {
       this.destroy();
     };
 
-    document.addEventListener(EventNames.DOCUMENT_READY, (): void => {
-      this.bind();
-    }, false);
+    document.addEventListener(
+      EventNames.DOCUMENT_READY,
+      (): void => {
+        this.bind();
+      },
+      false
+    );
   }
 
   /**
@@ -75,14 +80,17 @@ export default class MotherBoard {
       componentsList.forEach((el: HTMLElement) => {
         const dataset: DOMStringMap = el.dataset;
         if (dataset && dataset.component) {
-          const componentsArray: Array<string> = dataset.component.replace(' ','').split(',');
+          const componentsArray: Array<string> = dataset.component
+            .replace(' ', '')
+            .split(',');
           componentsArray.forEach((componentString: string) => {
-            const ComponentClass: ComponentConstructor = MotherBoard.getMappedObjectByName(
+            const ComponentClass: ComponentMap | null = MotherBoard.getComponentMapByName(
               this.componentsMap,
               componentString
             );
             if (ComponentClass) {
-              const component: IAmComponent = new ComponentClass();
+              const component: IAmComponent = new ComponentClass.class();
+              console.log('component', component);
               if (
                 component.notifications &&
                 component.notifications.length > 0
@@ -146,7 +154,7 @@ export default class MotherBoard {
           subtree: true,
         });
       } else {
-        pComponent.addEventListener(EventNames.NODE_REMOVED, function () {
+        pComponent.addEventListener(EventNames.NODE_REMOVED, function() {
           pComponent.destroy();
           component = null;
           el = null;
@@ -160,8 +168,13 @@ export default class MotherBoard {
       const notifications: ReadonlyArray<string> = pObject.notifications;
       const classRef: ICanHandleNotifications = pObject.classRef;
       notifications.forEach((pNotification: string) => {
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        this.notifier.addNotificationListener(classRef, pNotification, classRef.handleNotifications);
+        
+        this.notifier.addNotificationListener(
+          classRef,
+          pNotification,
+          // eslint-disable-next-line @typescript-eslint/unbound-method
+          classRef.handleNotifications
+        );
       });
     }
   }
@@ -184,11 +197,15 @@ export default class MotherBoard {
 
   /**
    */
-  static getMappedObjectByName(
-    pObject: Record<string, any>,
+  static getComponentMapByName(
+    pArray: Array<ComponentMap>,
     pName: string
-  ): ComponentConstructor {
-    return pObject[pName];
+  ): ComponentMap | null {
+    if (pArray && (pArray.length > 0)) {
+      let component: ComponentMap | null = pArray.find((pRec:ComponentMap) => pRec.reference === pName) || null;
+      return component;
+    }
+    return null;
   }
 
   /**

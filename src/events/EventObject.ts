@@ -1,5 +1,5 @@
 export type EventObject = {
-    target: HTMLElement;
-    name: string;
-    handler: Function;
+  target: HTMLElement
+  name: string
+  handler: Function
 }

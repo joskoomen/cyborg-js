@@ -1,3 +1,3 @@
-export default interface ICanBind {
-    bind(pEl: HTMLElement): void;
+export interface ICanBind {
+  bind(pEl: HTMLElement): void
 }

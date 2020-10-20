@@ -1,12 +1,11 @@
-export function walkDom(pEl: Element, pCallback: Function): void{
-    if (pEl) {
-        pCallback(pEl);
-        pEl = pEl.firstElementChild as Element;
+export function walkDom(pEl: Element | null, pCallback: Function): void {
+  if (pEl) {
+    pCallback(pEl)
+    pEl = pEl.firstElementChild
 
-        while (pEl) {
-            walkDom(pEl, pCallback);
-            pEl = pEl.nextElementSibling as Element;
-        }
-        
+    while (pEl) {
+      walkDom(pEl, pCallback)
+      pEl = pEl.nextElementSibling
     }
+  }
 }

@@ -1,3 +1,3 @@
-export default interface ICanDestroy {
-    destroy(): void;
+export interface ICanDestroy {
+  destroy(): void
 }

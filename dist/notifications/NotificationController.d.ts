@@ -1,7 +1,7 @@
 import { Notification } from "./Notification";
-import ICanHandleNotifications from "../interfaces/ICanHandleNotifications";
-import ICanNotify from "../interfaces/ICanNotify";
-export default class NotificationController implements ICanNotify {
+import { IAmComponent } from "../interfaces/IAmComponent";
+import { ICanHandleNotifications } from "../interfaces/ICanHandleNotifications";
+export declare class NotificationController {
     static _instance: NotificationController;
     private _listeners;
     constructor();
@@ -25,6 +25,6 @@ export default class NotificationController implements ICanNotify {
      * @param pTarget Component object
      */
     removeNotificationListener(pType: string, pTarget: any): void;
-    removeAllListenersFor(pInstance: ICanHandleNotifications): void;
+    removeAllListenersFor(pInstance: IAmComponent): void;
     get listeners(): Array<Notification>;
 }

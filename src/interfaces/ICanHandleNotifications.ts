@@ -1,12 +1,11 @@
-import {NotificationBody} from "../notifications/NotificationBody";
+import { NotificationBody } from '../notifications/NotificationBody'
 
-export default interface ICanHandleNotifications {
+export interface ICanHandleNotifications {
+  name: string
 
-    name: string;
+  handleNotifications(pObject: NotificationBody): void
 
-    handleNotifications(pObject: NotificationBody): void;
+  addListener(pType: string): void
 
-    addListener(pType: string): void;
-
-    removeListener(pType: string): void;
+  removeListener(pType: string): void
 }

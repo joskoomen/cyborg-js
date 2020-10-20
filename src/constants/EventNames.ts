@@ -1,4 +1,4 @@
-export default {
-  DOCUMENT_READY: 'DOMContentLoaded',
-  NODE_REMOVED: 'DOMNodeRemovedFromDocument'
-};
+export enum EventNames {
+  DOCUMENT_READY = 'DOMContentLoaded',
+  NODE_REMOVED = 'DOMNodeRemovedFromDocument'
+}
