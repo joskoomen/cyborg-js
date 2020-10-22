@@ -68,14 +68,14 @@ var NotificationController = /** @class */ (function () {
     NotificationController.prototype.removeNotificationListener = function (pType, pTarget) {
         var listeners = this._listeners;
         var index = listeners.findIndex(function (notification) {
-            return (notification.name === pType) && (notification.target === pTarget);
+            return notification.name === pType && notification.target === pTarget;
         });
         this._listeners = listeners.splice(index, 1);
     };
     NotificationController.prototype.removeAllListenersFor = function (pInstance) {
         var listeners = this._listeners;
         this._listeners = listeners.filter(function (notification) {
-            return (notification.target.name !== pInstance.name);
+            return notification.target.name !== pInstance.name;
         });
     };
     Object.defineProperty(NotificationController.prototype, "listeners", {
@@ -90,7 +90,6 @@ var NotificationController = /** @class */ (function () {
 
 var MotherBoard = /** @class */ (function () {
     function MotherBoard() {
-        this.componentsMap = [];
         this._components = [];
         this._data = {};
         if (MotherBoard._instance) {
@@ -148,10 +147,8 @@ var MotherBoard = /** @class */ (function () {
                     componentsArray.forEach(function (componentString) {
                         var ComponentClass = MotherBoard.getComponentMapByName(_this.componentsMap, componentString);
                         if (ComponentClass) {
-                            var component = new ComponentClass.class();
-                            console.log('component', component);
-                            if (component.notifications &&
-                                component.notifications.length > 0) {
+                            var component = new ComponentClass();
+                            if (component.notifications && component.notifications.length > 0) {
                                 _this.registerNotification({
                                     name: componentString,
                                     notifications: component.notifications,
@@ -253,12 +250,8 @@ var MotherBoard = /** @class */ (function () {
     });
     /**
      */
-    MotherBoard.getComponentMapByName = function (pArray, pName) {
-        if (pArray && (pArray.length > 0)) {
-            var component = pArray.find(function (pRec) { return pRec.reference === pName; }) || null;
-            return component;
-        }
-        return null;
+    MotherBoard.getComponentMapByName = function (pObject, pName) {
+        return pObject[pName] || null;
     };
     /**
      * destroy application
@@ -329,23 +322,22 @@ var Component = /** @class */ (function () {
             _this._events.push({
                 target: pTarget,
                 name: pEventName,
-                handler: handler,
+                handler: handler
             });
             return handler;
         };
         this._removeEventListener = function (pTarget, pEventName, pHandler) {
             var index = _this._events.findIndex(function (evtObj) {
-                return (evtObj.name === pEventName &&
-                    evtObj.handler === pHandler);
+                return evtObj.name === pEventName && evtObj.handler === pHandler;
             });
             _this._events.splice(index, 1);
             return pTarget;
         };
     }
     /**
-    * Bind your component in the system.
-    * @param {HTMLElement} pEl Connected Node
-    */
+     * Bind your component in the system.
+     * @param {HTMLElement} pEl Connected Node
+     */
     Component.prototype.bind = function (pEl) {
         this._el = pEl;
         this._name = pEl.dataset.component || '';
@@ -413,9 +405,9 @@ var Component = /** @class */ (function () {
         }
     };
     /**
-    * @param {Object} pData Data object to use
-    * @param {function} pTemplate template function
-    */
+     * @param {Object} pData Data object to use
+     * @param {function} pTemplate template function
+     */
     Component.prototype.render = function (pData, pTemplate) {
         if (this._el) {
             if (this._el.children) {
@@ -433,9 +425,9 @@ var Component = /** @class */ (function () {
         }
     };
     /**
-    * @param {Object} pData
-    * @returns {string}
-    */
+     * @param {Object} pData
+     * @returns {string}
+     */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Component.prototype.getTemplate = function (pData) {
         return '';
@@ -476,8 +468,8 @@ var Component = /** @class */ (function () {
         configurable: true
     });
     /**
-    * Garbage collection ;)
-    */
+     * Garbage collection ;)
+     */
     Component.prototype.destroy = function () {
         this.motherboard.notifier.removeAllListenersFor(this);
         while (this._events.length > 0) {

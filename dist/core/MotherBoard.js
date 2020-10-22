@@ -5,7 +5,6 @@ var EventNames_1 = require("../constants/EventNames");
 var NotificationController_1 = require("../notifications/NotificationController");
 var MotherBoard = /** @class */ (function () {
     function MotherBoard() {
-        this.componentsMap = [];
         this._components = [];
         this._data = {};
         if (MotherBoard._instance) {
@@ -63,10 +62,8 @@ var MotherBoard = /** @class */ (function () {
                     componentsArray.forEach(function (componentString) {
                         var ComponentClass = MotherBoard.getComponentMapByName(_this.componentsMap, componentString);
                         if (ComponentClass) {
-                            var component = new ComponentClass.class();
-                            console.log('component', component);
-                            if (component.notifications &&
-                                component.notifications.length > 0) {
+                            var component = new ComponentClass();
+                            if (component.notifications && component.notifications.length > 0) {
                                 _this.registerNotification({
                                     name: componentString,
                                     notifications: component.notifications,
@@ -168,12 +165,8 @@ var MotherBoard = /** @class */ (function () {
     });
     /**
      */
-    MotherBoard.getComponentMapByName = function (pArray, pName) {
-        if (pArray && (pArray.length > 0)) {
-            var component = pArray.find(function (pRec) { return pRec.reference === pName; }) || null;
-            return component;
-        }
-        return null;
+    MotherBoard.getComponentMapByName = function (pObject, pName) {
+        return pObject[pName] || null;
     };
     /**
      * destroy application
