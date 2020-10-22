@@ -50,14 +50,14 @@ var NotificationController = /** @class */ (function () {
     NotificationController.prototype.removeNotificationListener = function (pType, pTarget) {
         var listeners = this._listeners;
         var index = listeners.findIndex(function (notification) {
-            return (notification.name === pType) && (notification.target === pTarget);
+            return notification.name === pType && notification.target === pTarget;
         });
         this._listeners = listeners.splice(index, 1);
     };
     NotificationController.prototype.removeAllListenersFor = function (pInstance) {
         var listeners = this._listeners;
         this._listeners = listeners.filter(function (notification) {
-            return (notification.target.name !== pInstance.name);
+            return notification.target.name !== pInstance.name;
         });
     };
     Object.defineProperty(NotificationController.prototype, "listeners", {

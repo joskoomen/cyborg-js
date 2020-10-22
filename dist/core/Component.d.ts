@@ -11,9 +11,9 @@ export declare class Component implements IAmComponent {
     protected _notifications: ReadonlyArray<string>;
     constructor();
     /**
-    * Bind your component in the system.
-    * @param {HTMLElement} pEl Connected Node
-    */
+     * Bind your component in the system.
+     * @param {HTMLElement} pEl Connected Node
+     */
     bind(pEl: HTMLElement): void;
     onload(): void;
     onunload(): void;
@@ -25,14 +25,14 @@ export declare class Component implements IAmComponent {
     addEventListener(pEventName: string, pHandler: EventListenerOrEventListenerObject): void;
     removeEventListener(pEventName: string, pHandler: EventListenerOrEventListenerObject): void;
     /**
-    * @param {Object} pData Data object to use
-    * @param {function} pTemplate template function
-    */
+     * @param {Object} pData Data object to use
+     * @param {function} pTemplate template function
+     */
     render(pData: Record<string, any>, pTemplate?: Function): void;
     /**
-    * @param {Object} pData
-    * @returns {string}
-    */
+     * @param {Object} pData
+     * @returns {string}
+     */
     getTemplate(pData?: Record<string, any>): string;
     get notifications(): ReadonlyArray<string>;
     get name(): string;
@@ -40,7 +40,7 @@ export declare class Component implements IAmComponent {
     get motherboard(): MotherBoard;
     get events(): ReadonlyArray<Record<string, any>>;
     /**
-    * Garbage collection ;)
-    */
+     * Garbage collection ;)
+     */
     destroy(): void;
 }

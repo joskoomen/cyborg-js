@@ -1,4 +1,4 @@
-import { NotificationBody } from "../notifications/NotificationBody";
+import { NotificationBody } from '../notifications/NotificationBody';
 export interface ICanHandleNotifications {
     name: string;
     handleNotifications(pObject: NotificationBody): void;

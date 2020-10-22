@@ -16,23 +16,22 @@ var Component = /** @class */ (function () {
             _this._events.push({
                 target: pTarget,
                 name: pEventName,
-                handler: handler,
+                handler: handler
             });
             return handler;
         };
         this._removeEventListener = function (pTarget, pEventName, pHandler) {
             var index = _this._events.findIndex(function (evtObj) {
-                return (evtObj.name === pEventName &&
-                    evtObj.handler === pHandler);
+                return evtObj.name === pEventName && evtObj.handler === pHandler;
             });
             _this._events.splice(index, 1);
             return pTarget;
         };
     }
     /**
-    * Bind your component in the system.
-    * @param {HTMLElement} pEl Connected Node
-    */
+     * Bind your component in the system.
+     * @param {HTMLElement} pEl Connected Node
+     */
     Component.prototype.bind = function (pEl) {
         this._el = pEl;
         this._name = pEl.dataset.component || '';
@@ -100,9 +99,9 @@ var Component = /** @class */ (function () {
         }
     };
     /**
-    * @param {Object} pData Data object to use
-    * @param {function} pTemplate template function
-    */
+     * @param {Object} pData Data object to use
+     * @param {function} pTemplate template function
+     */
     Component.prototype.render = function (pData, pTemplate) {
         if (this._el) {
             if (this._el.children) {
@@ -120,9 +119,9 @@ var Component = /** @class */ (function () {
         }
     };
     /**
-    * @param {Object} pData
-    * @returns {string}
-    */
+     * @param {Object} pData
+     * @returns {string}
+     */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Component.prototype.getTemplate = function (pData) {
         pData = pData || {};
@@ -164,8 +163,8 @@ var Component = /** @class */ (function () {
         configurable: true
     });
     /**
-    * Garbage collection ;)
-    */
+     * Garbage collection ;)
+     */
     Component.prototype.destroy = function () {
         this.motherboard.notifier.removeAllListenersFor(this);
         while (this._events.length > 0) {

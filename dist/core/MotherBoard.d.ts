@@ -1,10 +1,9 @@
 import { NotificationRegistration } from '../notifications/NotificationRegistration';
 import { NotificationController } from '../notifications/NotificationController';
 import { IAmComponent } from '../interfaces/IAmComponent';
-import type { ComponentMap } from './ComponentMap';
 export declare class MotherBoard {
     static _instance: MotherBoard;
-    componentsMap: Array<ComponentMap>;
+    componentsMap: Record<string, any>;
     private _components;
     private _data;
     constructor();
@@ -34,7 +33,7 @@ export declare class MotherBoard {
     get components(): ReadonlyArray<IAmComponent>;
     /**
      */
-    static getComponentMapByName(pArray: Array<ComponentMap>, pName: string): ComponentMap | null;
+    static getComponentMapByName(pObject: Record<string, any>, pName: string): any;
     /**
      * destroy application
      */
