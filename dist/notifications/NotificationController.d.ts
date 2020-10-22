@@ -1,6 +1,6 @@
-import { Notification } from "./Notification";
-import { IAmComponent } from "../interfaces/IAmComponent";
-import { ICanHandleNotifications } from "../interfaces/ICanHandleNotifications";
+import { Notification } from './Notification';
+import { IAmComponent } from '../interfaces/IAmComponent';
+import { ICanHandleNotifications } from '../interfaces/ICanHandleNotifications';
 export declare class NotificationController {
     static _instance: NotificationController;
     private _listeners;

@@ -2,7 +2,6 @@ import { NotificationRegistration } from '../notifications/NotificationRegistrat
 import { EventNames } from '../constants/EventNames';
 import { NotificationController } from '../notifications/NotificationController';
 import { IAmComponent } from '../interfaces/IAmComponent';
-import type { ComponentMap } from './ComponentMap';
 import { ICanHandleNotifications } from '../interfaces/ICanHandleNotifications';
 
 declare interface ComponentConstructor {
@@ -14,7 +13,7 @@ declare const componentsMapping: Map<string, ComponentConstructor>;
 export class MotherBoard {
   static _instance: MotherBoard;
 
-  public componentsMap: Array<ComponentMap> = [];
+  public componentsMap: Record<string,any>;
   private _components: Array<IAmComponent> = [];
   private _data: Record<string, any> = {};
 
@@ -84,17 +83,13 @@ export class MotherBoard {
             .replace(' ', '')
             .split(',');
           componentsArray.forEach((componentString: string) => {
-            const ComponentClass: ComponentMap | null = MotherBoard.getComponentMapByName(
+            const ComponentClass: any = MotherBoard.getComponentMapByName(
               this.componentsMap,
               componentString
             );
             if (ComponentClass) {
-              const component: IAmComponent = new ComponentClass.class();
-              console.log('component', component);
-              if (
-                component.notifications &&
-                component.notifications.length > 0
-              ) {
+              const component: IAmComponent = new ComponentClass();
+              if (component.notifications && component.notifications.length > 0) {
                 this.registerNotification({
                   name: componentString,
                   notifications: component.notifications,
@@ -197,15 +192,8 @@ export class MotherBoard {
 
   /**
    */
-  static getComponentMapByName(
-    pArray: Array<ComponentMap>,
-    pName: string
-  ): ComponentMap | null {
-    if (pArray && (pArray.length > 0)) {
-      let component: ComponentMap | null = pArray.find((pRec:ComponentMap) => pRec.reference === pName) || null;
-      return component;
-    }
-    return null;
+  static getComponentMapByName(pObject: Record<string, any>,pName: string): any {
+   return pObject[pName] || null;
   }
 
   /**
