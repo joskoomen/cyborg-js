@@ -1,6 +1,6 @@
 {
   "name": "@ypa/cyborg-js",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "CyborgJS - A SEO Friendly PBA Framework",
   "main": "dist/cyborg-js.umd.js",
   "module": "dist/cyborg-js.es5.js",
@@ -33,7 +33,7 @@
   },
   "homepage": "https://cyborg-js.org",
   "engines": {
-    "node": ">=13.0.0"
+    "node": ">=12.0.0"
   },
   "scripts": {
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
