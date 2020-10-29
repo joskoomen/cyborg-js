@@ -92,29 +92,19 @@ export class Component implements IAmComponent {
           return
         }
         Array.from(element.attributes).forEach((pAttribute: Attr) => {
-          if (!pAttribute.name.startsWith('on')) return
+          if (!pAttribute.name.startsWith('data-on:')) return
           const event: string = pAttribute.name.replace('data-on:', '')
 
-          element.dataset[pAttribute.name] = pAttribute.value
-          element.removeAttribute(pAttribute.name)
-
-          const isFunction: boolean =
-            pAttribute.value.includes('(') && pAttribute.value.includes(')')
+          const isFunction: boolean = pAttribute.value.includes('(') && pAttribute.value.includes(')')
 
           if (isFunction) {
             const handler: Function = this._addEventListener(
-              element,
-              event,
-              new Function(`this.${pAttribute.value}`).bind(this)
+              element, event, new Function(`this.${pAttribute.value}`).bind(this)
             )
             element.addEventListener(event, handler as EventListener)
           } else {
             const handler: Function = this._addEventListener(
-              element,
-              event,
-              () => {
-                cyborgEval(this._motherboard.data, pAttribute.value)
-              }
+              element, event, () => {cyborgEval(this._motherboard.data, pAttribute.value)}
             )
             element.addEventListener(event, handler as EventListener)
           }
