@@ -279,7 +279,9 @@
           pCallback(pEl);
           pEl = pEl.firstElementChild;
           while (pEl) {
-              walkDom(pEl, pCallback);
+              if (!pEl.hasAttribute('data-component')) {
+                  walkDom(pEl, pCallback);
+              }
               pEl = pEl.nextElementSibling;
           }
       }
