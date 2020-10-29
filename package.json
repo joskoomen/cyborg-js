@@ -1,6 +1,6 @@
 {
   "name": "@ypa/cyborg-js",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "CyborgJS - A SEO Friendly PBA Framework",
   "main": "dist/cyborg-js.umd.js",
   "module": "dist/cyborg-js.es5.js",

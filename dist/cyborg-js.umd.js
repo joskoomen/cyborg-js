@@ -378,20 +378,16 @@
                       return;
                   }
                   Array.from(element.attributes).forEach(function (pAttribute) {
-                      if (!pAttribute.name.startsWith('on'))
+                      if (!pAttribute.name.startsWith('data-on:'))
                           return;
                       var event = pAttribute.name.replace('data-on:', '');
-                      element.dataset[pAttribute.name] = pAttribute.value;
-                      element.removeAttribute(pAttribute.name);
                       var isFunction = pAttribute.value.includes('(') && pAttribute.value.includes(')');
                       if (isFunction) {
                           var handler = _this._addEventListener(element, event, new Function("this." + pAttribute.value).bind(_this));
                           element.addEventListener(event, handler);
                       }
                       else {
-                          var handler = _this._addEventListener(element, event, function () {
-                              cyborgEval(_this._motherboard.data, pAttribute.value);
-                          });
+                          var handler = _this._addEventListener(element, event, function () { cyborgEval(_this._motherboard.data, pAttribute.value); });
                           element.addEventListener(event, handler);
                       }
                   });
