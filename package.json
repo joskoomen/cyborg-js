@@ -1,10 +1,9 @@
 {
   "name": "@ypa/cyborg-js",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "CyborgJS - A SEO Friendly PBA Framework",
-  "main": "dist/cyborg-js.umd.js",
-  "module": "dist/cyborg-js.es5.js",
-  "typings": "dist/cyborg-js.d.ts",
+  "main": "dist/cyborg-js.js",
+  "types": "dist/cyborg-js.d.ts",
   "files": [
     "dist"
   ],
@@ -38,26 +37,15 @@
   "scripts": {
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts",
-    "start": "rollup -c rollup.config.ts -w",
+    "build": "tsc --module commonjs",
     "test": "jest --coverage",
-    "test:prod": "npm run lint && npm run test -- --no-cache",
-    "report-coverage": "cat ./coverage/lcov.info | coveralls",
-    "commit": "git-cz",
-    "semantic-release": "semantic-release",
-    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
-    "precommit": "lint-staged"
+    "test:prod": "yarn lint && yarn test --no-cache"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
       "prettier --write",
       "git add"
     ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
-    }
   },
   "jest": {
     "transform": {
