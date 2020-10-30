@@ -13,7 +13,7 @@ declare const componentsMapping: Map<string, ComponentConstructor>;
 export class MotherBoard {
   static _instance: MotherBoard;
 
-  public componentsMap: Record<string,any>;
+  public componentsMap: Record<string, any> = {};
   private _components: Array<IAmComponent> = [];
   private _data: Record<string, any> = {};
 
