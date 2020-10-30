@@ -1,6 +1,5 @@
 node_modules/
 .*
-rollup.config.js
 yarn.lock
 docs/
 coverage/

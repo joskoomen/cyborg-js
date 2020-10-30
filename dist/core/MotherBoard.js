@@ -5,6 +5,7 @@ var EventNames_1 = require("../constants/EventNames");
 var NotificationController_1 = require("../notifications/NotificationController");
 var MotherBoard = /** @class */ (function () {
     function MotherBoard() {
+        this.componentsMap = {};
         this._components = [];
         this._data = {};
         if (MotherBoard._instance) {
