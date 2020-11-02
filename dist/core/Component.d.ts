@@ -36,9 +36,10 @@ export declare class Component implements IAmComponent {
     getTemplate(pData?: Record<string, any>): string;
     get notifications(): ReadonlyArray<string>;
     get name(): string;
-    get el(): HTMLElement | undefined;
+    get el(): HTMLElement;
     get motherboard(): MotherBoard;
     get events(): ReadonlyArray<Record<string, any>>;
+    dump(): void;
     /**
      * Garbage collection ;)
      */
