@@ -180,8 +180,11 @@ export class Component implements IAmComponent {
     return this._name
   }
 
-  get el(): HTMLElement | undefined {
-    return this._el
+  get el(): HTMLElement {
+    if (this._el === undefined) {
+      console.error('[CYBORG JS]', `${this._name} has no element binding. Add super.bind() in your bind method.`);
+    }
+    return this._el as HTMLElement;
   }
 
   get motherboard(): MotherBoard {
