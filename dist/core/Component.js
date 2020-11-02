@@ -139,6 +139,9 @@ var Component = /** @class */ (function () {
     });
     Object.defineProperty(Component.prototype, "el", {
         get: function () {
+            if (this._el === undefined) {
+                console.error('[CYBORG JS]', this._name + " has no element binding. Add super.bind() in your bind method.");
+            }
             return this._el;
         },
         enumerable: false,
@@ -158,6 +161,11 @@ var Component = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    Component.prototype.dump = function () {
+        console.log(this._name + " notifications:", this._notifications);
+        console.log(this._name + " events:", this._events);
+        console.log(this._name + " element:", this._el);
+    };
     /**
      * Garbage collection ;)
      */
