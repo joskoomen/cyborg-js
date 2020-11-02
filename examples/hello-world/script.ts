@@ -1,6 +1,6 @@
 import { Component, MotherBoard } from "../../dist/cyborg-js";
 
-class HelloWorldComponent extends Component {
+class HelloWorld extends Component {
 
     /**
      * bind is the moment your component's element is available in the DOM
@@ -41,10 +41,14 @@ class HelloWorldComponent extends Component {
 class Application {
 
     constructor() {
+
+        // map the data-component value to a class
         const map: Record<string, any> = {
-            'hello-world' : HelloWorldComponent
+            'hello-world' : HelloWorld
         }
-        MotherBoard.getInstance().componentsMap = 
+
+        // register the map to start.. that's all
+        MotherBoard.getInstance().componentsMap = map;
     }
 }
 
