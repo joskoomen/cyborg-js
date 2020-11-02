@@ -1,8 +1,13 @@
 #  Generators
+
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/@ypa/cyborg-js-generators)
+![npm version](https://img.shields.io/npm/v/@ypa/cyborg-js-generators)
+
 To avoid copy paste or typing all over the same thing everytime, we've created a generator file with [plop.js](https://plopjs.com).
 You can generate:
 * Custom Component
 * Custom Motherboard
+* Notifications Enum File
 
 ## Installation
 Install the Generator package (asuming you have `cyborg-js` installed.
