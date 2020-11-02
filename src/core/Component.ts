@@ -195,6 +195,12 @@ export class Component implements IAmComponent {
     return this._events
   }
 
+  dump(): void {
+    console.log(`${this._name} notifications:`, this._notifications);
+    console.log(`${this._name} events:`, this._events);
+    console.log(`${this._name} element:`, this._el);
+  }
+  
   /**
    * Garbage collection ;)
    */
