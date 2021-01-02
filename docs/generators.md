@@ -1,27 +1,25 @@
-#  Generators
+# Generators
 
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@ypa/cyborg-js-generators)
 ![npm version](https://img.shields.io/npm/v/@ypa/cyborg-js-generators)
 
 To avoid copy paste or typing all over the same thing everytime, we've created a generator file with [plop.js](https://plopjs.com).
 You can generate:
-* Custom Component
-* Custom Motherboard
-* Notifications Enum File
 
-## Installation
-Install the Generator package (asuming you have `cyborg-js` installed.
+- Custom Component
+- App File
+- Notifications Enum File
 
-``` .bash
-yarn add @ypa/cyborg-js-generators --dev
-```
-or
-```.bash
-npm install @ypa/cyborg-js-generators --save-dev
-```
+## Getting started
+
+Install the Generator package
+
+`yarn add @ypa/cyborg-js-generators --dev` or `npm i @ypa/cyborg-js-generators -d`
 
 ## Configuration
-1) Create a `plopfile.js` file in the root of your project and add the following content. Change `./your/scripts/source/path/` with the relative path to your scripts. In this folder the generated files will be added. 
+
+1. Create a `plopfile.js` file in the root of your project and add the following content. Change `./your/scripts/source/path/` with the relative path to your scripts. In this folder the generated files will be added.
+
 ```.javascript
 module.exports = function(plop) {
   plop.load('@ypa/cyborg-js-generators', {
@@ -30,48 +28,56 @@ module.exports = function(plop) {
 };
 ```
 
-2) In your `package.json` add a reference to `plop` a simple `plop: plop` is enough. But you can be creative and can make commands shorter. Read more [here](#scripts).
-
+2. In your `package.json` add a reference to `plop` a simple `plop: plop` is enough. But you can be creative and can make commands shorter. Read more [here](#scripts).
 
 ## Commands
+
 There are a growing amount of `generators`. At this moment the following `commands` are available:
 
-| Command           | What                                                |
-|-------------------|-----------------------------------------------------|
-|`make:component`   | This will make a component with a few prompts        |
-|`make:view`   | This will make a view with a few prompts        |
-|`make:motherboard` | This will make a custom motherboard with one prompt | 
-|`make:app` | This will make an App class with one prompt | 
+| Command              | What                                                      |
+| -------------------- | --------------------------------------------------------- |
+| `make:component`     | This will make a component with a few prompts             |
+| `make:app`           | This will make an App class with one prompt               |
+| `make:notifications` | This will create an Notifcations Enum fle with one prompt |
 
-`Plop` let's you skip prompts by adding them as parameter.
+### make:component command
 
-### make:component
+`plop make:component` will create a `Component` based on some questions inside a `components` folder, which is located in your `sourcePath`:
 
-| Parameter  | Type    | What                                                                |
-|------------|---------|---------------------------------------------------------------------|
-|`name`      | string  |The name of your component. |                                        |
-|`comments`  | boolean | Want inline comments? Helpfull when you're new to Cyborg JS         |
-|`statement` | list    | handleNotifications prefilled with a `switch`, `if` or no statement |
-|`onload`    | boolean | Want an onload handler?                                             |
-|`destroy`   | boolean | Want to override the destroy method?                                |
+| Prompt      | Type    | What                                                                |
+| ----------- | ------- | ------------------------------------------------------------------- |
+| `name`      | string  | The name of your component.                                         |
+| `comments`  | boolean | Want inline comments? Helpfull when you're new to CyborgJS          |
+| `statement` | list    | handleNotifications prefilled with a `switch`, `if` or no statement |
+| `onload`    | boolean | Want an onload handler? `                                           |
+| `onunload`  | boolean | Want an onunload handler? `                                         |
+| `destroy`   | boolean | Want to override the destroy method?                                |
 
-### make:view
+### make:app command
 
-| Parameter  | Type    | What                                                                |
-|------------|---------|---------------------------------------------------------------------|
-|`name`      | string  |The name of your view. |                                        |
-|`comments`  | boolean | Want inline comments? Helpfull when you're new to Cyborg JS         |
-|`statement` | list    | handleNotifications prefilled with a `switch`, `if` or no statement |
-|`destroy`   | boolean | Want to override the destroy method?                                |
+`plop make:app` will create an `App` file in the root of your given `sourcePath`. This `command` does not have any `prompts`.
 
-### make:motherboard
+### make:notifications command
 
-| Parameter  | Type    | What                                                                |
-|------------|---------|---------------------------------------------------------------------|
-|`name`      | string  |The name of your custom motherboard.                                  |
+`plop make:notifications` will create a `Notifications` enum file in the root of your given `sourcePath`:.
 
-## Scripts
-By adding a `plop` reference to your scripts all commands are runnable with `plop <your-command>`. But creating your own shortcodes are possible as well. This is the minimal setup:
+| Prompt     | Type    | What                                                       |
+| ---------- | ------- | ---------------------------------------------------------- |
+| `name`     | string  | The name of your First Notification.                       |
+| `comments` | boolean | Want inline comments? Helpfull when you're new to CyborgJS |
+
+### Bypassing prompts
+
+You can skip some of the questions by adding prefilled prompts.
+For example skipping the comments prompt in the `make:component` command you can add `-- --comments false` to your command. Like this: `plop make:component -- --comments false`;
+More info on skipping prompts read the [Plop documentation](https://plopjs.com/documentation/#bypassing-prompts-by-name-).
+
+## Add as npm script
+
+### Minimal setup
+
+By adding a `plop` reference to your scripts all commands are runnable with `plop <your-command>`. But creating your own shortcodes are possible as well:
+
 ```.json
     // package.json
     ...,
@@ -81,20 +87,24 @@ By adding a `plop` reference to your scripts all commands are runnable with `plo
     ...
 ```
 
-But we like creativity. So be creative and change it how you like:
+### More advanced setup
+
+Be creative and change the `scripts` how you like it:
+
 ```.json
     // package.json
     ...,
     "scripts" : {
         "mc": "plop make:component",
-        "mv": "plop make:view",
-        "mm": "plop make:motherboard"
     },
     ...
 ```
 
-In this case you can run `yarn run mc` to create a component. Even prefilling some default prompts is possible to avoid answering the same questions over and over.
-after `plop make:component -- ` you can add `--prompt-name` with your value. 
+Now you can run `yarn run mc` to create a `Component`.
+
+### Bypassing prompts
+
+Bypassing prompts are still possible ;)
 
 ```.json
     // package.json
@@ -105,9 +115,10 @@ after `plop make:component -- ` you can add `--prompt-name` with your value.
     ...
 ```
 
-In your `make:component` command you can make prefills complete with one of the following:
-- `--statement 'None'`; 
-- `--statement 'Switch statement'`;
-- `--statement 'If statement'` 
-
-
+<blockquote>To bypass the `statement` prompt in your `make:component` command you can add one of the following parts in your command:
+<code>
+--statement 'None' 
+--statement 'Switch statement'
+--statement 'If statement'
+</code>
+</blockquote>
