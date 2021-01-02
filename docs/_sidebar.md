@@ -1,5 +1,2 @@
 * [Cyborg JS](/)
-* [Motherboard](/motherboard)
-* [Component](/component?=components)
-* [Notifications](/notifications?=notifications)
 * [Generators](/generators?id=generators)
